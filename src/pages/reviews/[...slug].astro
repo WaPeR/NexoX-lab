@@ -1,0 +1,49 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { withBase } from '../../lib/paths';
+import { getYouTubeId } from '../../lib/youtube';
+export async function getStaticPaths() {
+  const entries = await getCollection('reviews', ({ data }) => !data.draft);
+  return entries.map(entry => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { data } = entry;
+const youtubeId = getYouTubeId(data.youtube);
+---
+<Layout title={data.title} description={data.description}>
+  <article class="article">
+    <a class="back" href={withBase('/')}>← Todos los artículos</a>
+    <p class="eyebrow">{data.genre || 'NexoX'}</p><h1>{data.title}</h1><p class="lead">{data.description}</p>
+    <time class="meta" datetime={data.date.toISOString()}>{data.date.toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})}</time>
+    {data.platforms.length > 0 && <div class="tags">{data.platforms.map(platform => <span class="tag">{platform}</span>)}</div>}
+    {data.image && <img class="cover" src={withBase(data.image)} alt={`Portada de ${data.title}`} />}
+    <div class="prose"><Content /></div>
+    {youtubeId && (
+      <section class="review-video" aria-labelledby="review-video-title">
+        <h2 id="review-video-title">Vídeo</h2>
+        <div class="video-frame">
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${youtubeId}`}
+            title={`Vídeo de YouTube: ${data.title}`}
+            width="560"
+            height="315"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <p class="video-link"><a href={`https://www.youtube.com/watch?v=${youtubeId}`} target="_blank" rel="noopener noreferrer">Ver en YouTube ↗</a></p>
+      </section>
+    )}
+  </article>
+</Layout>
+<style>
+  .review-video { margin-top: 40px; padding-top: 12px; border-top: 1px solid #262a3b; }
+  .video-frame { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 16px; background: #000; }
+  .video-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+  .video-link { margin-top: 12px; font-size: 14px; }
+  .video-link a { color: #b5a1ff; text-decoration: underline; }
+</style>

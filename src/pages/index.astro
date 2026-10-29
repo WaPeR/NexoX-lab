@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { withBase } from '../lib/paths';
+import { getCollection } from 'astro:content';
+const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort((a,b) => b.data.date.valueOf() - a.data.date.valueOf());
+const formatDate = (date) => date.toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric', timeZone:'UTC' });
+---
+<Layout>
+  <section class="hero"><span class="eyebrow">Tu próximo mundo empieza aquí</span><h1>Conecta con tu<br />próximo juego.</h1><p class="lead">Un espacio para descubrir videojuegos, compartir historias y encontrar nuevas aventuras.</p></section>
+  <section aria-labelledby="latest"><h2 id="latest">Últimos artículos</h2><div class="grid">
+    {reviews.map(({id,data}) => <a class="card" href={withBase(`/reviews/${id}/`)}>
+      {data.image ? <img src={withBase(data.image)} alt="" loading="lazy" /> : <div class="placeholder" aria-hidden="true">NX</div>}
+      <div class="card-content"><time class="meta" datetime={data.date.toISOString()}>{formatDate(data.date)}</time><h3>{data.title}</h3><p>{data.description}</p><span class="eyebrow">Leer artículo →</span></div>
+    </a>)}
+  </div>{reviews.length === 0 && <p>Estamos preparando los primeros artículos. Vuelve pronto.</p>}</section>
+</Layout>

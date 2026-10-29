@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Administración | NexoX-lab</title></head>
+<body>
+<p id="status" role="status">Comprobando la configuración del editor...</p>
+<script type="module">
+const status = document.getElementById('status');
+try {
+  const response = await fetch(new URL('./config.yml', window.location.href), { cache: 'no-store' });
+  if (!response.ok) throw new Error('No se pudo cargar config.yml');
+  const config = await response.text();
+  if (config.includes('oauth-pendiente.invalid')) {
+    status.textContent = 'NexoX-lab: falta conectar Cloudflare Workers. El editor permanecerá desactivado hasta configurar OAuth.';
+  } else {
+    status.remove();
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
+    document.body.appendChild(script);
+  }
+} catch (error) {
+  status.textContent = 'No se pudo iniciar el editor. Revisa su configuración.';
+}
+</script>
+</body>
+</html>
