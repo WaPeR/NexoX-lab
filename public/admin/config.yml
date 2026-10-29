@@ -2,7 +2,7 @@ backend:
   name: github
   repo: WaPeR/NexoX-lab
   branch: main
-  base_url: https://oauth-pendiente.invalid
+  base_url: https://nexox-lab-oauth.nexox.workers.dev
   auth_endpoint: auth
 locale: es
 media_folder: public/images/uploads
