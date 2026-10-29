@@ -1,0 +1,68 @@
+name: Preparar y publicar NexoX-lab
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nexox-lab-pages
+  cancel-in-progress: false
+jobs:
+  prepare:
+    if: github.repository == 'WaPeR/NexoX-lab'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Importar una sola vez sin modificar el original
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f package.json ]; then
+            python3 scripts/bootstrap.py
+            npm install --package-lock-only --ignore-scripts
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add .gitignore package.json package-lock.json astro.config.mjs src public SOURCE.json
+            git commit -m 'Importar copia independiente de NexoX y adaptar a GitHub Pages'
+            git push origin HEAD:main
+          fi
+  build:
+    needs: prepare
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
