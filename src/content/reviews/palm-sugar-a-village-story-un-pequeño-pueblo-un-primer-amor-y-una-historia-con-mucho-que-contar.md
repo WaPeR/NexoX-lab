@@ -10,6 +10,7 @@ image: /NexoX-lab/images/uploads/pt_sc16__00091.png
 platforms:
   - PC
 genre: Aventura narrativa, RPG de acción
+youtube: https://www.youtube.com/watch?v=LJf1nUaYMeo
 draft: false
 ---
 Palm Sugar: A Village Story empieza con una preocupación bastante más cercana que salvar el mundo: un joven enamorado que quiere encontrarse con la chica que le gusta. Entre caminos rurales, animales que se interponen y pequeños detalles de la vida cotidiana, el pueblo de Bellampakam parece un escenario perfecto para una historia sencilla. Pero esa primera impresión solo muestra una parte de lo que ocurre.
