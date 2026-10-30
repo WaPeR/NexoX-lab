@@ -12,52 +12,24 @@ genre: Acción, FPS
 youtube: https://www.youtube.com/watch?v=RIAQaEMifxg
 draft: false
 ---
-Abrir una puerta, localizar una amenaza y disparar antes de que sea demasiado tarde. Better Than Dead concentra su propuesta en esos segundos en los que cualquier error puede terminar con el intento. No busca ofrecer una gran aventura de exploración ni una campaña repleta de conversaciones: quiere colocarte dentro de una secuencia de venganza y obligarte a encontrar la manera de salir con vida.
+Abrir una puerta, localizar una amenaza y disparar antes de que sea demasiado tarde. Better Than Dead concentra su propuesta en esos segundos en los que cualquier error puede acabar con el intento. Su objetivo no es ofrecer una gran aventura de exploración, sino colocarte dentro de una secuencia de venganza y obligarte a encontrar la salida.
 
-Desarrollado por MONTE GALLO, este shooter ambientado en Hong Kong combina una presentación de cámara corporal con movimientos agresivos, deslizamientos y cámara lenta. Su inspiración en el cine criminal hongkonés se reconoce enseguida, pero bajo ese envoltorio hay un juego de acción que también exige aprender recorridos, reconocer amenazas y repetir hasta encontrar el ritmo adecuado.
+El shooter de MONTE GALLO combina una perspectiva de cámara corporal con deslizamientos, cámara lenta y una ambientación inspirada en el cine criminal de Hong Kong. La apariencia sugiere realismo, pero la acción busca un ritmo más estilizado y agresivo.
 
-## Una cámara que transforma los enfrentamientos
+## Convertir el caos en una secuencia controlada
 
-Lo primero que distingue a Better Than Dead es su perspectiva bodycam. La imagen intenta reproducir la sensación de una cámara sujeta al cuerpo, con un campo de visión amplio y movimientos que se alejan de la estabilidad habitual de otros shooters.
+La perspectiva bodycam cambia la forma de interpretar los espacios. El campo de visión amplio y el movimiento de la imagen hacen que entrar en una habitación resulte menos familiar que en un shooter convencional.
 
-El efecto aporta una identidad inmediata. Los espacios parecen más incómodos, las distancias resultan menos familiares y cada entrada en una habitación tiene un punto de incertidumbre. La presentación no se limita a enseñar el escenario: también influye en cómo lo interpretas mientras buscas el siguiente objetivo.
+Bajo esa presentación hay un juego que recompensa aprender posiciones y recorridos. Las misiones relativamente breves permiten volver a intentarlo sin rehacer una enorme sección de campaña. La primera entrada puede estar dominada por la sorpresa; las siguientes dejan espacio para anticipar amenazas y ajustar movimientos.
 
-La ausencia de una interfaz tradicional refuerza esa intención. Hay menos elementos entre la acción y el jugador, aunque esa limpieza visual también exige acostumbrarse a una forma distinta de leer el combate. No todo está señalado y apuntar requiere adaptación.
+La cámara lenta es una herramienta importante en ese proceso. Ayuda a resolver situaciones comprometidas y aporta la espectacularidad que busca la propuesta. El atractivo está en transformar unos segundos aparentemente incontrolables en una sucesión de decisiones con sentido.
 
-## La mejor defensa no siempre es quedarse quieto
+La historia de venganza funciona principalmente como impulso. El peso recae en los encuentros, no en conversaciones extensas o personajes muy desarrollados. Es una elección coherente con el ritmo, aunque limita su interés para quien busque una trama elaborada.
 
-Aunque su apariencia pueda sugerir una experiencia de simulación, Better Than Dead apuesta por una acción más estilizada. Los deslizamientos y el bullet time permiten afrontar las situaciones con una agresividad que encaja mejor con una película de venganza que con un ejercicio militar.
-
-La cámara lenta es una de las piezas que conectan ambas facetas. Ayuda a manejar encuentros comprometidos y, al mismo tiempo, potencia la espectacularidad de los disparos. La gracia está en encontrar la oportunidad de utilizarla y convertir una entrada peligrosa en una secuencia controlada.
-
-Su atractivo nace de esa mezcla entre vulnerabilidad y capacidad de reacción. Puedes resolver una situación de forma contundente, pero eso no significa que puedas permitirte avanzar sin prestar atención. El margen para equivocarse es reducido.
-
-## Aprender el escenario forma parte del juego
-
-Las misiones relativamente breves favorecen una estructura de intentos y repetición. Una derrota no implica rehacer una enorme sección de campaña, pero sí volver a enfrentarse a un espacio que empieza a resultar más reconocible.
-
-Ese aprendizaje cambia la manera de jugar. La primera entrada puede estar dominada por la sorpresa; las siguientes permiten anticipar posiciones, ajustar movimientos y decidir dónde conviene asumir riesgos. El objetivo deja de ser simplemente llegar al final y pasa a incluir cómo resolver el recorrido.
-
-Para quien disfrute perfeccionando secuencias de acción, este planteamiento tiene un gancho evidente. La satisfacción está en convertir un encuentro que parecía caótico en una sucesión de decisiones con sentido.
-
-## Hong Kong como escenario de una venganza
-
-La ambientación sirve de marco para una historia que funciona principalmente como impulso para la acción. Better Than Dead no coloca el desarrollo narrativo por delante de los tiroteos: utiliza la venganza como una razón directa para seguir avanzando.
-
-Eso permite mantener el ritmo, aunque también limita su atractivo para quien espere personajes muy desarrollados o una trama especialmente elaborada. Aquí el peso recae en la tensión del siguiente encuentro y en la forma de presentarlo.
-
-Su personalidad está más cerca de una secuencia criminal áspera y urgente que de una superproducción militar. La perspectiva, los espacios y el tono trabajan en esa misma dirección.
-
-## Espectacular, pero no siempre cómodo
-
-La presentación bodycam es su mayor seña de identidad y también una de sus principales barreras. El movimiento acusado de la cámara y el campo de visión pueden resultar fatigantes, especialmente para quienes sean sensibles al balanceo o a las perspectivas muy abiertas.
-
-Tampoco conviene confundir dificultad con precisión absoluta. Los análisis de su etapa de acceso anticipado han señalado comportamientos irregulares de los enemigos y problemas de colisiones capaces de provocar muertes frustrantes. Son aspectos importantes en un juego donde perder un enfrentamiento puede depender de unos pocos instantes.
-
-Su formato compacto también merece tenerse en cuenta. La propuesta encuentra parte de su recorrido en repetir y dominar los niveles, no en ofrecer una campaña extensa. Si lo que buscas es variedad constante durante muchas horas, sus prioridades son otras.
+También hay reservas importantes. La cámara puede resultar fatigante si eres sensible al balanceo o a los campos de visión abiertos. Además, los análisis de su etapa de acceso anticipado señalaron irregularidades en enemigos y colisiones, problemas especialmente molestos cuando una derrota depende de pocos instantes.
 
 ## Veredicto
 
-Better Than Dead tiene una idea clara y sabe darle una imagen reconocible. Su combinación de perspectiva bodycam, cámara lenta y acción a corta distancia ofrece una alternativa atractiva para quienes disfrutan de los shooters intensos y de aprender cada escenario a base de intentos.
+Better Than Dead tiene una identidad clara y un buen argumento para quienes disfrutan perfeccionando secuencias de acción. Sus mejores ideas aparecen al combinar vulnerabilidad, movimiento agresivo y conocimiento del escenario.
 
-No es una recomendación sin matices: la comodidad visual, la exigencia y los aspectos por pulir pueden pesar tanto como sus virtudes. Pero si conectas con su propuesta, hay un atractivo difícil de ignorar en transformar unos segundos de caos en una secuencia de acción perfectamente encadenada.
+No es una recomendación sin condiciones: la comodidad visual y la respuesta de sus sistemas pesan mucho en una experiencia tan exigente. Pero si conectas con su estructura de intentos y aprendizaje, ofrece una fantasía atractiva: convertir una entrada desastrosa en una escena de venganza que parece calculada al milímetro.
