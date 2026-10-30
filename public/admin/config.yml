@@ -25,6 +25,11 @@ collections:
       - { label: Fecha, name: date, widget: datetime }
       - { label: Resumen, name: description, widget: text }
       - { label: Portada, name: image, widget: image, required: false }
+      - label: Descripción de la portada
+        name: imageAlt
+        widget: string
+        required: false
+        hint: 'Opcional. Describe brevemente lo que se ve en la imagen, sin repetir palabras clave. No es un pie de foto visible. Si lo dejas vacío se usará el texto alternativo automático.'
       - { label: Plataformas, name: platforms, widget: list, required: false, default: [] }
       - { label: Género, name: genre, widget: string, required: false }
       - label: Vídeo de YouTube

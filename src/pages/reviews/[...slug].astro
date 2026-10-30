@@ -7,18 +7,42 @@ export async function getStaticPaths() {
   const entries = await getCollection('reviews', ({ data }) => !data.draft);
   return entries.map(entry => ({ params: { slug: entry.id }, props: { entry } }));
 }
+function selectRelatedReviews(entries, current, limit = 3) {
+  const normalize = value => String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+  const genres = value => new Set(String(value ?? '').split(/[,;/|]+/).map(normalize).filter(Boolean));
+  const currentGenres = genres(current.data.genre);
+  const currentPlatforms = new Set(current.data.platforms.map(normalize).filter(Boolean));
+  return entries
+    .filter(candidate => candidate.id !== current.id && !candidate.data.draft)
+    .map(candidate => ({
+      entry: candidate,
+      genres: [...genres(candidate.data.genre)].filter(value => currentGenres.has(value)).length,
+      platforms: [...new Set(candidate.data.platforms.map(normalize).filter(Boolean))].filter(value => currentPlatforms.has(value)).length
+    }))
+    .filter(candidate => candidate.genres > 0 || candidate.platforms > 0)
+    .sort((a, b) => b.genres - a.genres || b.platforms - a.platforms || b.entry.data.date.valueOf() - a.entry.data.date.valueOf() || a.entry.id.localeCompare(b.entry.id))
+    .slice(0, limit)
+    .map(candidate => candidate.entry);
+}
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const { data } = entry;
 const youtubeId = getYouTubeId(data.youtube);
+const relatedReviews = selectRelatedReviews(await getCollection('reviews', ({ data }) => !data.draft), entry);
 ---
-<Layout title={data.title} description={data.description} image={data.image} type="article">
+<Layout title={data.title} description={data.description} image={data.image} imageAlt={data.imageAlt} type="article">
   <article class="article">
-    <a class="back" href={withBase('/')}>← Todos los artículos</a>
+    <nav class="breadcrumbs" aria-label="Ruta de navegación">
+      <ol>
+        <li><a href={withBase('/')}>Inicio</a></li>
+        <li><a href={withBase('/#latest')}>Reviews</a></li>
+        <li><span aria-current="page">{data.title}</span></li>
+      </ol>
+    </nav>
     <p class="eyebrow">{data.genre || 'NexoX'}</p><h1>{data.title}</h1><p class="lead">{data.description}</p>
     <time class="meta" datetime={data.date.toISOString()}>{data.date.toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})}</time>
     {data.platforms.length > 0 && <div class="tags">{data.platforms.map(platform => <span class="tag">{platform}</span>)}</div>}
-    {data.image && <img class="cover" src={withBase(data.image)} alt={`Portada de ${data.title}`} />}
+    {data.image && <img class="cover" src={withBase(data.image)} alt={data.imageAlt?.trim() || `Portada de ${data.title}`} />}
     <div class="prose"><Content /></div>
     {youtubeId && (
       <section class="review-video" aria-labelledby="review-video-title">
@@ -39,8 +63,32 @@ const youtubeId = getYouTubeId(data.youtube);
       </section>
     )}
   </article>
+  {relatedReviews.length > 0 && (
+    <section class="related-reviews" aria-labelledby="related-title">
+      <h2 id="related-title">También puedes leer</h2>
+      <p class="meta">Más reviews por género o plataforma.</p>
+      <div class="grid">
+        {relatedReviews.map(({ id, data: related }) => (
+          <a class="card" href={withBase(`/reviews/${id}/`)}>
+            {related.image && <img src={withBase(related.image)} alt={related.imageAlt?.trim() || ''} loading="lazy" />}
+            <div class="card-content">
+              {related.genre && <span class="eyebrow">{related.genre}</span>}
+              <h3>{related.title}</h3>
+              <p>{related.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 </Layout>
 <style>
+  .breadcrumbs { margin-bottom: 25px; font-size: 14px; overflow-wrap: anywhere; }
+  .breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 6px 10px; padding: 0; margin: 0; list-style: none; }
+  .breadcrumbs li + li::before { content: '›'; margin-right: 10px; color: #a5abc1; }
+  .breadcrumbs a { color: #b5a1ff; }
+  .breadcrumbs [aria-current] { color: #a5abc1; }
+  .related-reviews { margin-top: 48px; padding-top: 24px; border-top: 1px solid #262a3b; }
   .review-video { margin-top: 40px; padding-top: 12px; border-top: 1px solid #262a3b; }
   .video-frame { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 16px; background: #000; }
   .video-frame iframe { display: block; width: 100%; height: 100%; border: 0; }

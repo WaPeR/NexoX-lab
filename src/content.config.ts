@@ -39,6 +39,7 @@ const reviews = defineCollection({
     date: z.coerce.date(),
     description: z.string(),
     image: z.string().optional(),
+    imageAlt: z.string().nullish(),
     platforms: z.array(z.string()).default([]),
     genre: z.string().optional(),
     youtube: z.string().nullish(),
