@@ -14,6 +14,10 @@ platforms:
   - Switch 2
 genre: Survival horror, Aventura, Puzles
 youtube: https://www.youtube.com/watch?v=RGgBIPggFJE
+purchasePc: https://store.steampowered.com/app/2121510/Tenebris_Somnia/
+purchaseXbox: https://www.xbox.com/es-es/games/store/tenebris-somnia/9pk5kg7hprhz
+purchasePlaystation: https://store.playstation.com/es-es/concept/10019514
+purchaseSwitch: https://www.nintendo.com/es-es/Juegos/Programas-descargables-Nintendo-Switch/Tenebris-Somnia-3212085.html
 draft: false
 ---
 El pixel art deja espacio para imaginar. Una figura pequeña, un rostro poco definido o una sombra pueden resultar inquietantes precisamente por lo que no muestran. Tenebris Somnia aprovecha esa distancia y después la rompe con escenas de acción real que obligan a mirar la pesadilla de otra manera.
