@@ -4,9 +4,11 @@ backend:
   branch: main
   base_url: https://nexox-lab-oauth.nexox.workers.dev
   auth_endpoint: auth
+site_url: https://nexox.eu
+display_url: https://nexox.eu
 locale: es
 media_folder: public/images/uploads
-public_folder: /NexoX-lab/images/uploads
+public_folder: /images/uploads
 collections:
   - name: reviews
     label: Artículos y reviews

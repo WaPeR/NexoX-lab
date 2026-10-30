@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="es">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Administración | NexoX-lab</title></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Administración | NexoX</title></head>
 <body>
 <p id="status" role="status">Comprobando la configuración del editor...</p>
 <script type="module">
@@ -10,7 +10,7 @@ try {
   if (!response.ok) throw new Error('No se pudo cargar config.yml');
   const config = await response.text();
   if (config.includes('oauth-pendiente.invalid')) {
-    status.textContent = 'NexoX-lab: falta conectar Cloudflare Workers. El editor permanecerá desactivado hasta configurar OAuth.';
+    status.textContent = 'NexoX: falta configurar el servicio OAuth. El editor permanecerá desactivado hasta entonces.';
   } else {
     status.remove();
     const script = document.createElement('script');

@@ -1,34 +1,40 @@
-# NexoX-lab
+# NexoX
 
-Copia de prueba independiente de NexoX: Astro, GitHub Pages y Decap CMS.
+Blog de videojuegos con Astro, Decap CMS y GitHub Pages.
 
-## Inicialización
-
-El flujo `.github/workflows/pages.yml` importa una sola vez el código, las reviews y las imágenes de `WaPeR/NexoX`, fijado al commit `536c51873e50bf21c4ee9dc41d3fb2d33a0da481`. No copia el historial ni la configuración de Netlify, no escribe en el original y no mantiene sincronización posterior.
-
-La importación crea un commit exclusivamente en este repositorio, incluyendo las imágenes binarias y un package-lock.json. Las ejecuciones posteriores no vuelven a importar ni sobrescriben los artículos de la copia. El origen queda registrado en SOURCE.json.
+- Web: https://nexox.eu/
+- Editor: https://nexox.eu/admin/
+- RSS: https://nexox.eu/rss.xml
+- Repositorio activo: WaPeR/NexoX-lab, rama main. El nombre interno no cambia el nombre público del blog.
 
 ## Publicación
 
-En este repositorio: Settings > Pages > Build and deployment > Source > GitHub Actions. El flujo se ejecuta al guardar en main o manualmente desde Actions. Si la primera ejecución falla por no estar habilitado Pages, actívalo y vuelve a ejecutarla.
+Decap guarda los cambios en este repositorio y el flujo Publicar NexoX construye y publica la web. El flujo no importa contenido del original ni tiene permiso de escritura sobre los archivos del repositorio.
 
-Dirección prevista: https://waper.github.io/NexoX-lab/
-Editor previsto: https://waper.github.io/NexoX-lab/admin/
+Instalación local: npm ci. Desarrollo: npm run dev. Construcción: npm run build.
 
-No se considera publicado hasta comprobar que el flujo ha finalizado correctamente.
+En Settings > Pages deben estar seleccionados GitHub Actions y el dominio nexox.eu. Activar Enforce HTTPS cuando el certificado esté disponible. Los DNS y la verificación del dominio se gestionan aparte del código.
 
-## Decap y Cloudflare Workers
+## Rutas e imágenes
 
-El panel está desactivado mientras `public/admin/config.yml` contenga `https://oauth-pendiente.invalid`. No utiliza Netlify como autenticación alternativa.
+La web se publica en la raíz del dominio, sin base /NexoX-lab/. Las imágenes nuevas se guardan en public/images/uploads y se publican como /images/uploads.
 
-Cuando se configure el servicio OAuth, sustituir solo `backend.base_url` por la dirección HTTPS real del Worker. `backend.auth_endpoint: auth` requiere que el Worker implemente esa ruta. Configurar también la aplicación OAuth de GitHub y su URL de retorno según el Worker elegido. No guardar Client Secret, tokens ni otras credenciales en este repositorio o en Decap: los secretos van en Cloudflare.
+La función withBase normaliza las rutas antiguas de las portadas. Para conservar las imágenes referenciadas por artículos existentes y las previsualizaciones del editor sin reescribir los textos, el despliegue también publica una copia de dist/images bajo /NexoX-lab/images. Esta compatibilidad duplica los recursos gráficos en el artefacto publicado, no en el repositorio. No es una redirección de páginas antiguas.
 
-Decap apunta exclusivamente a `WaPeR/NexoX-lab`, rama main. Conserva los campos originales, incluido YouTube. Las imágenes nuevas usan `/NexoX-lab/images/uploads/`.
+## OAuth
 
-## Comprobaciones pendientes
+Decap conserva el Worker https://nexox-lab-oauth.nexox.workers.dev, con auth_endpoint: auth.
 
-- Construcción y despliegue correctos en Actions.
-- Portada, reviews, imágenes, favicon, vídeos y RSS bajo /NexoX-lab/.
-- Inicio de sesión, subida de imagen y publicación de una review desde Decap tras conectar OAuth.
+Redirect URI de la aplicación OAuth: https://nexox-lab-oauth.nexox.workers.dev/callback?provider=github
 
-El sitio incluye meta noindex para la prueba. No es control de acceso: el repositorio y la web son públicos, incluidos los archivos de borradores almacenados en GitHub.
+GITHUB_OAUTH_ID y GITHUB_OAUTH_SECRET se configuran en Cloudflare; nunca en el repositorio. Comprobar el inicio de sesión desde el dominio nuevo después de desplegar.
+
+## Conservación del original
+
+WaPeR/NexoX y Netlify no se modifican ni se sincronizan con este repositorio. SOURCE.json y scripts/bootstrap.py se conservan como referencia histórica de la importación inicial; el flujo de producción ya no ejecuta el importador.
+
+Las páginas públicas no incluyen el noindex de pruebas. El panel de administración mantiene noindex,nofollow. Esto no es control de acceso: los borradores almacenados en el repositorio público siguen siendo consultables en GitHub.
+
+## Validación del lanzamiento
+
+Comprobar Actions, HTTPS, portada, artículos, imágenes antiguas y nuevas, vídeos, favicon, RSS e inicio de sesión y publicación desde Decap. La presencia de estos archivos no confirma por sí sola un despliegue correcto.

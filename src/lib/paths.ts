@@ -1,6 +1,8 @@
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const legacyBase = '/NexoX-lab';
 export function withBase(value: string): string {
-  if (!value || /^(?:[a-z][a-z0-9+.-]*:|\/\/|#|\?)/i.test(value)) return value;
-  if (value === base || value.startsWith(base + '/')) return value;
-  return base + '/' + value.replace(/^\/+/, '');
+  if (!value) return value;
+  if (value === legacyBase) return '/';
+  if (value.startsWith(legacyBase + '/')) return value.slice(legacyBase.length);
+  if (/^(?:[a-z][a-z0-9+.-]*:|\/\/|#|\?)/i.test(value)) return value;
+  return '/' + value.replace(/^\/+/, '');
 }

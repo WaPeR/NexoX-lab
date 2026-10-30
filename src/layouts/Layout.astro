@@ -1,6 +1,7 @@
 ---
 import { withBase } from '../lib/paths';
 const { title = 'NexoX', description = 'Videojuegos, historias y mundos por descubrir.' } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 <!doctype html>
 <html lang="es">
@@ -9,7 +10,7 @@ const { title = 'NexoX', description = 'Videojuegos, historias y mundos por desc
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="color-scheme" content="dark" />
-    <meta name="robots" content="noindex,follow" />
+    <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/png" sizes="64x64" href={withBase('/favicon.png')} />
     <link rel="alternate" type="application/rss+xml" title="NexoX — RSS" href={new URL(withBase('/rss.xml'), Astro.site)} />
     <title>{title === 'NexoX' ? title : `${title} | NexoX`}</title>
