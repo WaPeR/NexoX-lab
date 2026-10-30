@@ -12,6 +12,9 @@ platforms:
   - PS5
 genre: Conducción arcade, Gestión de equipo
 youtube: https://www.youtube.com/watch?v=7TjdI1DQGUM
+purchasePc: https://store.steampowered.com/app/3226450/iRacing_Arcade/
+purchaseXbox: https://www.xbox.com/es-es/games/store/iracingarcade/9n1640580jgp
+purchasePlaystation: https://store.playstation.com/es-es/concept/10019049/
 draft: false
 ---
 El nombre iRacing suele asociarse a simuladores exigentes y muchas horas dedicadas a perfeccionar una vuelta. iRacing Arcade toma otra dirección: coches estilizados, circuitos compactos y una conducción pensada para disfrutar con mando. Eso no significa que frenar tarde y acelerar sin pensar sea una buena idea.
