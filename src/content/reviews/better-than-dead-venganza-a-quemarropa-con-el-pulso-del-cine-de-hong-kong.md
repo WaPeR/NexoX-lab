@@ -1,6 +1,6 @@
 ---
 title: "Better Than Dead: venganza a quemarropa con el pulso del cine de Hong Kong"
-date: 2026-10-28T14:45:00.000+01:00
+date: 2026-10-27T14:45:00.000+01:00
 description: Better Than Dead combina perspectiva bodycam, cámara lenta y
   tiroteos contundentes en una Hong Kong marcada por la violencia. Un shooter
   intenso y con mucha personalidad, cuya espectacularidad convive con una
@@ -9,6 +9,7 @@ image: /NexoX-lab/images/uploads/better-than-dead-04-16-26-1-772048310.jpg
 platforms:
   - PC
 genre: Acción, FPS
+youtube: https://www.youtube.com/watch?v=RIAQaEMifxg
 draft: false
 ---
 Abrir una puerta, localizar una amenaza y disparar antes de que sea demasiado tarde. Better Than Dead concentra su propuesta en esos segundos en los que cualquier error puede terminar con el intento. No busca ofrecer una gran aventura de exploración ni una campaña repleta de conversaciones: quiere colocarte dentro de una secuencia de venganza y obligarte a encontrar la manera de salir con vida.
