@@ -1,7 +1,7 @@
 ---
 title: "BrokenLore: DON’T LIE: una pesadilla íntima donde la realidad deja de
   ser un refugio"
-date: 2026-10-29T23:09:00.000+01:00
+date: 2026-10-24T23:09:00.000+02:00
 description: "BrokenLore: DON’T LIE combina exploración en primera persona,
   espacios imposibles y una historia marcada por la soledad y el engaño. Una
   experiencia de terror psicológico breve y sugerente que encuentra sus mejores
