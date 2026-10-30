@@ -1,6 +1,6 @@
 ---
 title: Bienvenido a Nexo X
-date: 2026-10-28
+date: 2026-10-02T00:00:00.000+02:00
 description: El punto de partida de un nuevo espacio dedicado a los videojuegos.
 platforms: []
 genre: El blog
