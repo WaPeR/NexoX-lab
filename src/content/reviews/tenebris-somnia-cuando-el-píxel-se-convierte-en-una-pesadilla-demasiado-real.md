@@ -1,6 +1,6 @@
 ---
 title: "Tenebris Somnia: cuando el píxel se convierte en una pesadilla demasiado real"
-date: 2026-10-29T14:41:00.000+01:00
+date: 2026-10-30T01:37:00.000+01:00
 description: Tenebris Somnia combina exploración, puzles y supervivencia con una
   inquietante mezcla de pixel art y escenas de acción real. Una aventura de
   terror con personalidad propia que recupera el espíritu de los clásicos sin
