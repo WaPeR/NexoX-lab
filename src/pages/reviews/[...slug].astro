@@ -61,7 +61,7 @@ const purchaseLinks = getPurchaseLinks(data);
       </ol>
     </nav>
     <p class="eyebrow">{data.genre || 'NexoX'}</p><h1>{data.title}</h1><p class="lead">{data.description}</p>
-    <time class="meta" datetime={data.date.toISOString()}>{data.date.toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})}</time>
+    <p class="meta"><span>Por José Ángel &quot;WaPeR&quot;</span> <span aria-hidden="true">·</span> <time datetime={data.date.toISOString()}>{data.date.toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})}</time></p>
     {data.platforms.length > 0 && <div class="tags">{data.platforms.map(platform => <span class="tag">{platform}</span>)}</div>}
     {data.image && <img class="cover" src={withBase(data.image)} alt={data.imageAlt?.trim() || `Portada de ${data.title}`} />}
     <div class="prose"><Content /></div>
