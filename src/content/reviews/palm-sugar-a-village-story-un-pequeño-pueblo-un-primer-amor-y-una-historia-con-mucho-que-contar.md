@@ -1,7 +1,7 @@
 ---
 title: "Palm Sugar: A Village Story: un pequeño pueblo, un primer amor y una
   historia con mucho que contar"
-date: 2026-10-29T23:12:00.000+01:00
+date: 2026-10-20T23:12:00.000+02:00
 description: "Palm Sugar: A Village Story nos lleva a un pueblo del sur de la
   India donde un romance juvenil convive con la amenaza de un cártel. Una
   aventura breve que destaca por su identidad cultural y su historia, aunque el
