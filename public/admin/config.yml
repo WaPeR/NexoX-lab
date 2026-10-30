@@ -7,6 +7,10 @@ backend:
 site_url: https://nexox.eu
 display_url: https://nexox.eu
 locale: es
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: '-'
 media_folder: public/images/uploads
 public_folder: /images/uploads
 collections:
