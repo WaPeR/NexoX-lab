@@ -1,6 +1,6 @@
 ---
 title: "BULK: cartas, máquinas y el peligro de querer una mejora más"
-date: 2026-10-14T00:21:00.000+02:00
+date: 2026-10-15T00:21:00.000+02:00
 description: BULK convierte una fábrica de cartas en un ciclo de fusiones,
   ventas y mejoras. Un incremental de fantasía oscura pensado para disfrutar
   optimizando la producción.
