@@ -13,6 +13,7 @@ platforms:
   - Switch
   - Switch 2
 genre: Survival horror, Aventura, Puzles
+youtube: https://www.youtube.com/watch?v=RGgBIPggFJE
 draft: false
 ---
 Hay juegos de terror que buscan impresionarte con lo que muestran y otros que prefieren dejar que tu imaginación haga el trabajo. Tenebris Somnia juega con las dos posibilidades. Primero te presenta un mundo de personajes pequeños y escenarios pixelados; después rompe esa distancia con imágenes de acción real que convierten lo sugerido en algo mucho más incómodo.
