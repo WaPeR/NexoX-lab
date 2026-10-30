@@ -16,4 +16,5 @@ NexoX empieza aquí: un espacio para hablar de videojuegos y descubrir nuevas av
 Las primeras reviews llegarán poco a poco.
 
 Venimos de aquí: https://t.me/NexoXbox
+
 El canal de YouTube: https://www.youtube.com/@NexoX32
