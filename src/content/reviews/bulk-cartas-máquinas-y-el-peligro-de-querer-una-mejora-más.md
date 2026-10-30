@@ -9,6 +9,7 @@ platforms:
   - PC
 genre: Incremental, Gestión, Automatización
 youtube: https://www.youtube.com/watch?v=1OcTZkpCnnQ
+purchasePc: https://store.steampowered.com/app/4122620/BULK/
 draft: false
 ---
 Una carta más. Una combinación más. Una mejora antes de cerrar. BULK construye su propuesta alrededor de esa tentación tan reconocible de los juegos incrementales: tener siempre un pequeño objetivo al alcance y otro esperando justo después.
