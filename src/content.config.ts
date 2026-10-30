@@ -1,7 +1,39 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+
+const entriesById = new Map<string, string>();
+
+function generateReviewId({ entry }: { entry: string }): string {
+  const id = entry
+    .replace(/\\/g, '/')
+    .replace(/\.md$/i, '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/['’]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9/]+/g, '-')
+    .replace(/-+/g, '-')
+    .split('/')
+    .map(part => part.replace(/^-+|-+$/g, ''))
+    .join('/');
+
+  if (!id || id.split('/').some(part => !part)) {
+    throw new Error(`No se puede generar una URL válida para ${entry}.`);
+  }
+  const previous = entriesById.get(id);
+  if (previous && previous !== entry) {
+    throw new Error(`URL duplicada: ${previous} y ${entry} generarían /reviews/${id}/.`);
+  }
+  entriesById.set(id, entry);
+  return id;
+}
+
 const reviews = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/reviews' }),
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/reviews',
+    generateId: generateReviewId
+  }),
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
