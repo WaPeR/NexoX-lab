@@ -1,6 +1,6 @@
 ---
 title: "BULK: cartas, máquinas y el peligro de querer una mejora más"
-date: 2026-10-29T00:21:00.000+01:00
+date: 2026-10-14T00:21:00.000+02:00
 description: BULK convierte una fábrica de cartas en un ciclo de fusiones,
   ventas y mejoras. Un incremental de fantasía oscura pensado para disfrutar
   optimizando la producción.
@@ -8,6 +8,7 @@ image: /NexoX-lab/images/uploads/img_0034.jpeg
 platforms:
   - PC
 genre: Cartas, Incremental
+youtube: https://www.youtube.com/watch?v=1OcTZkpCnnQ
 draft: false
 ---
 Una carta más. Una combinación más. Una mejora antes de cerrar. BULK construye su propuesta alrededor de esa tentación tan reconocible de los juegos incrementales: convertir una tarea sencilla en una cadena de objetivos cada vez más ambiciosos. Aquí no se trata de conquistar un reino ni de salvar el mundo, sino de poner a trabajar una fábrica donde las cartas son materia prima y cada venta abre la puerta a seguir creciendo.
