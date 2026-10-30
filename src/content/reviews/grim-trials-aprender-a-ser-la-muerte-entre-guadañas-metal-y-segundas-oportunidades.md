@@ -11,10 +11,13 @@ platforms:
   - PC
   - Xbox Series X|S
   - PS5
-  - Switch
   - Switch 2
 genre: Roguelite, Hack and slash, RPG de acción
 youtube: https://www.youtube.com/watch?v=RPz4MWA0mm8
+purchasePc: https://store.steampowered.com/app/2621930/Grim_Trials/
+purchaseXbox: https://www.xbox.com/es-ES/games/store/grim-trials/9NP25GB92DP5
+purchasePlaystation: https://store.playstation.com/es-es/concept/10016444
+purchaseSwitch: https://www.nintendo.com/es-es/Juegos/Juegos-de-Nintendo-Switch-2/Grim-Trials-3128637.html
 draft: false
 ---
 Morir suele ser el final de una historia. Para Avelin es el comienzo de una formación profesional bastante peculiar. Tras llegar al más allá, acaba convertida en aprendiz de segadora, con mentores, pruebas y suficientes enemigos como para descubrir que trabajar para la Muerte requiere práctica.
