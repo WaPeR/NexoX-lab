@@ -6,6 +6,7 @@ description: Moonlighter 2 recupera su mezcla de mazmorras y gestión de tienda
   con una nueva presentación en 3D y más posibilidades para convertir el botín
   en beneficios. Una secuela que conecta combate, exploración y comercio en un
   ciclo del que cuesta querer salir.
+image: /NexoX-lab/images/uploads/moonlighter-2.jpg
 platforms:
   - PC
   - Xbox Series X|S
