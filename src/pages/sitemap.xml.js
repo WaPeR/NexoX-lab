@@ -13,6 +13,7 @@ export async function GET({ site }) {
   const reviews = await getCollection('reviews', ({ data }) => !data.draft);
   const urls = [...new Set([
     new URL('/', site).href,
+    new URL('/sobre-nexox/', site).href,
     ...reviews.map(({ id }) => new URL(`/reviews/${id}/`, site).href)
   ])].sort();
   const xml = [

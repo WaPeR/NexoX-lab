@@ -1,0 +1,43 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Sobre NexoX" description="NexoX es un espacio dedicado a los videojuegos: un lugar para descubrir nuevas propuestas, conocer qué las hace interesantes y encontrar tu próxima aventura.">
+  <article class="article about-page">
+    <h1>Sobre NexoX</h1>
+    <div class="prose">
+      <p>NexoX es un espacio dedicado a los videojuegos: un lugar para descubrir nuevas propuestas, conocer qué las hace interesantes y encontrar tu próxima aventura.</p>
+      <p>Aquí encontrarás reviews y artículos sobre juegos de distintos géneros y disponibles en una o varias plataformas, con un enfoque cercano, sin spoilers importantes y poniendo el foco en lo que ofrece cada título. Desde pequeños proyectos independientes hasta lanzamientos más conocidos, la idea es dar espacio a juegos que merecen una mirada.</p>
+      <section aria-labelledby="follow-title">
+        <h2 id="follow-title">Sigue NexoX</h2>
+        <p>La conversación no tiene por qué terminar al acabar un artículo. También puedes seguir el proyecto y compartir tu afición por los videojuegos en estos espacios:</p>
+        <ul class="community-links">
+          <li>
+            <a href="https://www.youtube.com/@NexoX32" target="_blank" rel="noopener noreferrer" aria-label="YouTube — Visita el canal de NexoX (se abre en otra pestaña)">
+              <span class="community-label">YouTube — Visita el canal de NexoX.</span>
+              <span class="community-url">https://www.youtube.com/@NexoX32</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://t.me/NexoXbox" target="_blank" rel="noopener noreferrer" aria-label="Telegram — Únete al grupo de NexoX (se abre en otra pestaña)">
+              <span class="community-label">Telegram — Únete al grupo de NexoX.</span>
+              <span class="community-url">https://t.me/NexoXbox</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+      <section aria-labelledby="contact-title">
+        <h2 id="contact-title">Contacto</h2>
+        <p>¿Quieres hacer una sugerencia, comentar algo o enviar tu juego para revisarlo? Puedes escribir a:</p>
+        <p><a href="mailto:nexoxblog@gmail.com">nexoxblog@gmail.com</a></p>
+      </section>
+    </div>
+  </article>
+</Layout>
+<style>
+  .community-links { display: grid; gap: 16px; padding: 0; margin: 24px 0 0; list-style: none; }
+  .community-links li { margin: 0; min-width: 0; }
+  .community-links a { display: block; padding: 20px; border: 1px solid #292d40; border-radius: 16px; background: #131722; color: #edf0fa; text-decoration: none; overflow-wrap: anywhere; }
+  .community-links a:hover { border-color: #a68aff; }
+  .community-label { display: block; font-weight: 650; }
+  .community-url { display: block; margin-top: 6px; font-size: 15px; color: #b5a1ff; }
+</style>
