@@ -1,7 +1,9 @@
 ---
 import { withBase } from '../lib/paths';
-const { title = 'NexoX', description = 'Videojuegos, historias y mundos por descubrir.' } = Astro.props;
+const { title = 'NexoX', description = 'Videojuegos, historias y mundos por descubrir.', image, type = 'website' } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const imageURL = image ? new URL(withBase(image), Astro.site) : undefined;
+const pageTitle = title === 'NexoX' ? title : `${title} | NexoX`;
 ---
 <!doctype html>
 <html lang="es">
@@ -11,9 +13,26 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     <meta name="color-scheme" content="dark" />
     <link rel="canonical" href={canonicalURL} />
+    <meta property="og:site_name" content="NexoX" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL.href} />
+    {imageURL && <>
+      <meta property="og:image" content={imageURL.href} />
+      <meta property="og:image:alt" content={`Portada de ${title}`} />
+    </>}
+    <meta name="twitter:card" content={imageURL ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {imageURL && <>
+      <meta name="twitter:image" content={imageURL.href} />
+      <meta name="twitter:image:alt" content={`Portada de ${title}`} />
+    </>}
     <link rel="icon" type="image/png" sizes="64x64" href={withBase('/favicon.png')} />
     <link rel="alternate" type="application/rss+xml" title="NexoX — RSS" href={new URL(withBase('/rss.xml'), Astro.site)} />
-    <title>{title === 'NexoX' ? title : `${title} | NexoX`}</title>
+    <title>{pageTitle}</title>
   </head>
   <body>
     <header class="site-header"><a class="logo" href={withBase('/')} aria-label="NexoX, inicio">Nexo<span>X</span></a><nav aria-label="Principal"><a href={withBase('/')}>Inicio y artículos</a></nav></header>

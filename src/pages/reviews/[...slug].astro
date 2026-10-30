@@ -12,7 +12,7 @@ const { Content } = await render(entry);
 const { data } = entry;
 const youtubeId = getYouTubeId(data.youtube);
 ---
-<Layout title={data.title} description={data.description}>
+<Layout title={data.title} description={data.description} image={data.image} type="article">
   <article class="article">
     <a class="back" href={withBase('/')}>← Todos los artículos</a>
     <p class="eyebrow">{data.genre || 'NexoX'}</p><h1>{data.title}</h1><p class="lead">{data.description}</p>
