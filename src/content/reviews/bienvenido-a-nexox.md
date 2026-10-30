@@ -1,17 +1,19 @@
 ---
-title: Bienvenido a Nexo X
-date: 2026-10-02T00:00:00.000+02:00
+title: Bienvenidos a NexoX
+date: 2026-09-28T00:00:00.000+02:00
 description: El punto de partida de un nuevo espacio dedicado a los videojuegos.
+image: /NexoX-lab/images/uploads/img_0068.jpg
 platforms: []
 genre: El blog
 draft: false
 ---
 ## Un nuevo punto de encuentro
 
-Nexo X empieza aquí: un espacio para hablar de videojuegos y descubrir nuevas aventuras.
-
-Esta es una entrada de bienvenida para comprobar el diseño y la publicación del blog. No es un análisis de un videojuego.
+NexoX empieza aquí: un espacio para hablar de videojuegos y descubrir nuevas aventuras.
 
 ## Próximamente
 
-Las primeras reviews llegarán cuando estén preparadas y revisadas. Cada artículo podrá incluir su portada, las plataformas y el género del juego.
+Las primeras reviews llegarán poco a poco.
+
+Venimos de aquí: https://t.me/NexoXbox
+El canal de YouTube: https://www.youtube.com/@NexoX32
