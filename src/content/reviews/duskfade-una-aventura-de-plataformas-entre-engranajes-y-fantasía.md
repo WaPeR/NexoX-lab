@@ -13,6 +13,9 @@ platforms:
 genre: Acción, Aventura, Plataformas 3D
 youtube: https://www.youtube.com/watch?v=RWNd4oqMsXw
 purchasePc: https://store.steampowered.com/app/2542020/Duskfade/
+purchaseXbox: https://www.xbox.com/es-ES/games/store/duskfade/9pj6lffjzd2m
+purchasePlaystation: https://store.playstation.com/es-es/concept/10014600/
+purchaseSwitch: https://www.nintendo.com/es-es/Juegos/Juegos-de-Nintendo-Switch-2/Duskfade-3127139.html
 draft: false
 ---
 Hay aventuras que no necesitan un mapa interminable para despertar las ganas de seguir jugando. Les basta con un personaje que se mueva bien, un escenario atractivo y una plataforma que parezca estar un poco demasiado lejos. Duskfade apuesta por esa forma de entender el videojuego, con una mezcla de acción y exploración que recuerda a los plataformas tridimensionales de la época de PlayStation 2.
