@@ -1,6 +1,6 @@
 ---
 title: "Duskfade: una aventura de plataformas entre engranajes y fantasía"
-date: 2026-10-29T00:05:00.000+01:00
+date: 2026-10-07T00:05:00.000+02:00
 description: Duskfade recupera el encanto de los plataformas de acción clásicos
   con un mundo de fantasía mecánica, movimiento ágil y una aventura que brilla
   especialmente al explorar.
@@ -10,7 +10,8 @@ platforms:
   - Xbox Series X|S
   - PS5
   - Switch 2
-genre: Acción, aventura y plataformas en 3D
+genre: Acción, Aventura, Plataformas 3D
+youtube: https://www.youtube.com/watch?v=RWNd4oqMsXw
 draft: false
 ---
 Hay una clase de aventura que no necesita un mapa interminable ni una lista de tareas pendientes para resultar atractiva. Le basta con un protagonista que se mueva bien, escenarios que despierten curiosidad y una nueva plataforma al otro lado del precipicio. Duskfade recupera esa forma de entender el videojuego y la convierte en una propuesta de acción y plataformas con una personalidad visual muy especial.
