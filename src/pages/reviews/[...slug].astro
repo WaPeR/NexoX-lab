@@ -24,11 +24,32 @@ function selectRelatedReviews(entries, current, limit = 3) {
     .slice(0, limit)
     .map(candidate => candidate.entry);
 }
+function toPurchaseUrl(value) {
+  if (typeof value !== 'string') return undefined;
+  const input = value.trim();
+  if (!/^https?:\/\//i.test(input)) return undefined;
+  try {
+    const url = new URL(input);
+    if (!['http:', 'https:'].includes(url.protocol) || !url.hostname || url.username || url.password) return undefined;
+    return url.href;
+  } catch {
+    return undefined;
+  }
+}
+function getPurchaseLinks(data) {
+  return [
+    { label: 'PC', href: toPurchaseUrl(data.purchasePc) },
+    { label: 'Xbox', href: toPurchaseUrl(data.purchaseXbox) },
+    { label: 'PlayStation', href: toPurchaseUrl(data.purchasePlaystation) },
+    { label: 'Nintendo Switch', href: toPurchaseUrl(data.purchaseSwitch) }
+  ].filter(link => Boolean(link.href));
+}
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const { data } = entry;
 const youtubeId = getYouTubeId(data.youtube);
 const relatedReviews = selectRelatedReviews(await getCollection('reviews', ({ data }) => !data.draft), entry);
+const purchaseLinks = getPurchaseLinks(data);
 ---
 <Layout title={data.title} description={data.description} image={data.image} imageAlt={data.imageAlt} type="article">
   <article class="article">
@@ -60,6 +81,16 @@ const relatedReviews = selectRelatedReviews(await getCollection('reviews', ({ da
           ></iframe>
         </div>
         <p class="video-link"><a href={`https://www.youtube.com/watch?v=${youtubeId}`} target="_blank" rel="noopener noreferrer">Ver en YouTube ↗</a></p>
+      </section>
+    )}
+    {purchaseLinks.length > 0 && (
+      <section class="purchase-section" aria-labelledby="purchase-title">
+        <h2 id="purchase-title">Enlaces de compra</h2>
+        <ul class="purchase-links">
+          {purchaseLinks.map(link => (
+            <li><a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={`Ver enlace de compra para ${link.label} (se abre en otra pestaña)`}>{link.label} ↗</a></li>
+          ))}
+        </ul>
       </section>
     )}
   </article>
@@ -94,4 +125,8 @@ const relatedReviews = selectRelatedReviews(await getCollection('reviews', ({ da
   .video-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
   .video-link { margin-top: 12px; font-size: 14px; }
   .video-link a { color: #b5a1ff; text-decoration: underline; }
+  .purchase-section { margin-top: 40px; padding-top: 12px; border-top: 1px solid #262a3b; }
+  .purchase-links { display: flex; flex-wrap: wrap; gap: 12px; list-style: none; padding: 0; margin: 20px 0 0; }
+  .purchase-links a { display: inline-block; padding: 10px 18px; border: 1px solid #64518e; border-radius: 12px; background: #232338; color: #d4c8ff; font-weight: 650; }
+  .purchase-links a:hover { border-color: #b5a1ff; background: #302744; color: #fff; }
 </style>

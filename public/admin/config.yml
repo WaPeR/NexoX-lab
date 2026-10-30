@@ -37,5 +37,25 @@ collections:
         widget: string
         required: false
         hint: 'Opcional. Pega el enlace completo de YouTube o youtu.be. El vídeo aparecerá al final de la review; si dejas este campo vacío, no se mostrará. Los enlaces no reconocidos no generan reproductor.'
+      - label: Enlace de compra — PC
+        name: purchasePc
+        widget: string
+        required: false
+        hint: 'Opcional. URL completa de compra para PC, comenzando por https:// o http://. Si lo dejas vacío no aparecerá este enlace.'
+      - label: Enlace de compra — Xbox
+        name: purchaseXbox
+        widget: string
+        required: false
+        hint: 'Opcional. URL completa de compra para Xbox, comenzando por https:// o http://. Si lo dejas vacío no aparecerá este enlace.'
+      - label: Enlace de compra — PlayStation
+        name: purchasePlaystation
+        widget: string
+        required: false
+        hint: 'Opcional. URL completa de compra para PlayStation, comenzando por https:// o http://. Si lo dejas vacío no aparecerá este enlace.'
+      - label: Enlace de compra — Nintendo Switch
+        name: purchaseSwitch
+        widget: string
+        required: false
+        hint: 'Opcional. URL completa de compra para Nintendo Switch, comenzando por https:// o http://. Si lo dejas vacío no aparecerá este enlace.'
       - { label: Borrador, name: draft, widget: boolean, default: true }
       - { label: Contenido, name: body, widget: markdown }

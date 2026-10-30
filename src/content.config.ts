@@ -43,6 +43,10 @@ const reviews = defineCollection({
     platforms: z.array(z.string()).default([]),
     genre: z.string().optional(),
     youtube: z.string().nullish(),
+    purchasePc: z.string().nullish(),
+    purchaseXbox: z.string().nullish(),
+    purchasePlaystation: z.string().nullish(),
+    purchaseSwitch: z.string().nullish(),
     draft: z.boolean().default(false)
   })
 });
