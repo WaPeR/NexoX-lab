@@ -1,6 +1,6 @@
 ---
 title: Bienvenidos a NexoX
-date: 2026-09-28T00:00:00.000+02:00
+date: 2026-09-23T00:00:00.000+02:00
 description: El punto de partida de un nuevo espacio dedicado a los videojuegos.
 image: /NexoX-lab/images/uploads/img_0068.jpg
 platforms: []
