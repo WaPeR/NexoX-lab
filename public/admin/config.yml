@@ -30,7 +30,23 @@ collections:
         widget: string
         required: false
         hint: 'Opcional. Describe brevemente lo que se ve en la imagen, sin repetir palabras clave. No es un pie de foto visible. Si lo dejas vacío se usará el texto alternativo automático.'
-      - { label: Plataformas, name: platforms, widget: list, required: false, default: [] }
+      - label: Plataformas
+        name: platforms
+        widget: select
+        multiple: true
+        required: false
+        default: []
+        options:
+          - PC
+          - PlayStation 5
+          - PlayStation 4
+          - Xbox Series X|S
+          - Xbox One
+          - Nintendo Switch
+          - Nintendo Switch 2
+          - Android
+          - iOS
+        hint: 'Opcional. Selecciona una o varias plataformas. En los artículos antiguos, revisa y sustituye manualmente los nombres que no coincidan con esta lista antes de guardar.'
       - { label: Género, name: genre, widget: string, required: false }
       - label: Vídeo de YouTube
         name: youtube
@@ -59,3 +75,31 @@ collections:
         hint: 'Opcional. URL completa de compra para Nintendo Switch, comenzando por https:// o http://. Si lo dejas vacío no aparecerá este enlace.'
       - { label: Borrador, name: draft, widget: boolean, default: true }
       - { label: Contenido, name: body, widget: markdown }
+  - name: pages
+    label: Páginas
+    files:
+      - name: about
+        label: Sobre NexoX
+        file: src/data/about.json
+        fields:
+          - { label: Título de la página, name: title, widget: string }
+          - { label: Primer párrafo, name: intro, widget: text }
+          - { label: Segundo párrafo, name: description, widget: text }
+          - { label: Título de la sección de comunidad, name: followTitle, widget: string }
+          - { label: Texto de la sección de comunidad, name: followText, widget: text }
+          - { label: Texto del enlace de YouTube, name: youtubeLabel, widget: string }
+          - label: Enlace de YouTube
+            name: youtubeUrl
+            widget: string
+            pattern: ['^https?://\S+$', 'Introduce una URL completa que empiece por https:// o http://.']
+          - { label: Texto del enlace de Telegram, name: telegramLabel, widget: string }
+          - label: Enlace de Telegram
+            name: telegramUrl
+            widget: string
+            pattern: ['^https?://\S+$', 'Introduce una URL completa que empiece por https:// o http://.']
+          - { label: Título de la sección de contacto, name: contactTitle, widget: string }
+          - { label: Texto de contacto, name: contactText, widget: text }
+          - label: Correo de contacto
+            name: email
+            widget: string
+            pattern: ['^[^\s@]+@[^\s@]+\.[^\s@]+$', 'Introduce un correo válido, sin mailto: delante.']
