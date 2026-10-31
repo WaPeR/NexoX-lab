@@ -14,6 +14,10 @@ platforms:
   - Switch 2
 genre: RPG de acción, Roguelite, Gestión
 youtube: https://www.youtube.com/watch?v=vE0FQQa07JQ
+purchasePc: https://store.steampowered.com/app/2350790/Moonlighter_2_The_Endless_Vault/
+purchaseXbox: https://www.xbox.com/es-ES/games/store/moonlighter-2-the-endless-vault/9ndjx252q5bw
+purchasePlaystation: https://store.playstation.com/es-es/concept/10008133/
+purchaseSwitch: https://www.nintendo.com/es-es/Juegos/Juegos-de-Nintendo-Switch-2/Moonlighter-2-The-Endless-Vault-3155792.html
 draft: false
 ---
 En muchos juegos, volver de una mazmorra significa vender lo que sobra. En Moonlighter 2: The Endless Vault, ese regreso es la otra mitad de la aventura. El botín termina en una estantería y las ganancias financian la siguiente expedición, conectando dos actividades que se necesitan constantemente.
