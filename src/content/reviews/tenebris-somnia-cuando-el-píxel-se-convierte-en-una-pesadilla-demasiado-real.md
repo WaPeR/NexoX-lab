@@ -9,9 +9,8 @@ image: /NexoX-lab/images/uploads/image_oapqszoapqszoapq_ggpu-147271329.webp
 platforms:
   - PC
   - Xbox Series X|S
-  - PS5
-  - Switch
-  - Switch 2
+  - PlayStation 5
+  - Nintendo Switch 2
 genre: Survival horror, Aventura, Puzles
 youtube: https://www.youtube.com/watch?v=RGgBIPggFJE
 purchasePc: https://store.steampowered.com/app/2121510/Tenebris_Somnia/
