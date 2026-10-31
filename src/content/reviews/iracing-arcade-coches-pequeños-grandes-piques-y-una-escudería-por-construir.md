@@ -9,7 +9,7 @@ image: /NexoX-lab/images/uploads/iracing-arcade-featured.jpg
 platforms:
   - PC
   - Xbox Series X|S
-  - PS5
+  - PlayStation 5
 genre: Conducción arcade, Gestión de equipo
 youtube: https://www.youtube.com/watch?v=7TjdI1DQGUM
 purchasePc: https://store.steampowered.com/app/3226450/iRacing_Arcade/
