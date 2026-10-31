@@ -8,8 +8,8 @@ image: /NexoX-lab/images/uploads/img_2614.jpeg
 platforms:
   - PC
   - Xbox Series X|S
-  - PS5
-  - Switch 2
+  - PlayStation 5
+  - Nintendo Switch 2
 genre: Acción, Aventura, Plataformas 3D
 youtube: https://www.youtube.com/watch?v=RWNd4oqMsXw
 purchasePc: https://store.steampowered.com/app/2542020/Duskfade/
