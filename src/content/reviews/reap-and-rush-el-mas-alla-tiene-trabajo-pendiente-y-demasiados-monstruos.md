@@ -9,6 +9,7 @@ image: /images/uploads/rar_keyart_1920x1080.png
 platforms:
   - PC
 genre: Roguelite, Supervivencia contra hordas
+youtube: https://youtu.be/MfRj40T70n4?is=UXtXmnQVLK40EOST
 purchasePc: https://store.steampowered.com/app/3116700/Reap_and_Rush/
 draft: false
 ---
