@@ -10,6 +10,7 @@ platforms:
   - PC
 genre: Acción, FPS
 youtube: https://www.youtube.com/watch?v=RIAQaEMifxg
+purchasePc: https://store.steampowered.com/app/2599690/Better_Than_Dead/
 draft: false
 ---
 Abrir una puerta, localizar una amenaza y disparar antes de que sea demasiado tarde. Better Than Dead concentra su propuesta en esos segundos en los que cualquier error puede acabar con el intento. Su objetivo no es ofrecer una gran aventura de exploración, sino colocarte dentro de una secuencia de venganza y obligarte a encontrar la salida.
