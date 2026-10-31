@@ -10,8 +10,8 @@ image: /NexoX-lab/images/uploads/16x9_grimtrials.jpg
 platforms:
   - PC
   - Xbox Series X|S
-  - PS5
-  - Switch 2
+  - PlayStation 5
+  - Nintendo Switch 2
 genre: Roguelite, Hack and slash, RPG de acción
 youtube: https://www.youtube.com/watch?v=RPz4MWA0mm8
 purchasePc: https://store.steampowered.com/app/2621930/Grim_Trials/
