@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+import ReviewArchive from '../../components/ReviewArchive.astro';
+import { PAGE_SIZE } from '../../lib/review-pagination.js';
+export async function getStaticPaths() {
+  const reviews = await getCollection('reviews', ({ data }) => !data.draft);
+  const totalPages = Math.ceil(reviews.length / PAGE_SIZE);
+  return Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => ({
+    params: { page: String(index + 2) },
+    props: { pageNumber: index + 2 }
+  }));
+}
+const { pageNumber } = Astro.props;
+---
+<ReviewArchive pageNumber={pageNumber} />

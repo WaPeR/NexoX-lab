@@ -1,0 +1,173 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { withBase } from '../lib/paths';
+import { getCollection } from 'astro:content';
+import { getPage, pagePath } from '../lib/review-pagination.js';
+const { pageNumber = 1 } = Astro.props;
+const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort((a,b) => b.data.date.valueOf() - a.data.date.valueOf());
+const entries = reviews.map(({ id, data }) => ({
+  title: data.title,
+  description: data.description,
+  href: withBase(`/reviews/${id}/`),
+  date: data.date.toISOString(),
+  dateLabel: data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }),
+  image: data.image ? withBase(data.image) : '',
+  imageAlt: data.imageAlt?.trim() || '',
+  platforms: data.platforms
+}));
+const state = getPage(entries, pageNumber);
+const platforms = ['PC', 'PlayStation 5', 'PlayStation 4', 'Xbox Series X|S', 'Xbox One', 'Nintendo Switch', 'Nintendo Switch 2', 'Android', 'iOS'];
+const title = state.page === 1 ? 'NexoX' : `Artículos — Página ${state.page}`;
+const description = 'Descubre reviews y análisis de videojuegos en NexoX. Explora juegos de acción, aventuras, terror e indies, con información sobre plataformas y géneros.';
+const indexJson = JSON.stringify(entries).replace(/</g, '\u003c');
+---
+<Layout title={title} description={description}>
+  <section class="hero"><span class="eyebrow">Tu próximo mundo empieza aquí</span><h1>Conecta con tu<br />próximo juego.</h1><p class="lead">Reviews y análisis para descubrir videojuegos, conocer sus propuestas y encontrar tu próxima aventura.</p></section>
+  <section aria-labelledby="latest" data-review-archive data-page={state.page}>
+    <h2 id="latest">{state.page === 1 ? 'Últimos artículos' : `Artículos — Página ${state.page}`}</h2>
+    {entries.length > 0 && (
+      <form class="review-filters" data-filters role="search" aria-label="Buscar artículos" hidden>
+        <div class="filter-field">
+          <label for="review-search">Buscar un juego</label>
+          <input id="review-search" data-search type="search" placeholder="Buscar por título o resumen…" autocomplete="off" aria-controls="article-list" />
+        </div>
+        <div class="filter-field">
+          <label for="review-platform">Plataforma</label>
+          <select id="review-platform" data-platform aria-controls="article-list">
+            <option value="">Todas las plataformas</option>
+            {platforms.map(platform => <option value={platform}>{platform}</option>)}
+          </select>
+        </div>
+        <button data-clear type="button">Limpiar filtros</button>
+      </form>
+    )}
+    <p class="meta" data-count role="status" aria-live="polite">{state.total} {state.total === 1 ? 'artículo' : 'artículos'}{state.total > 0 ? ` · Página ${state.page} de ${state.totalPages}` : ''}</p>
+    <div id="article-list" class="grid" data-list>
+      {state.items.map(entry => <a class="card" href={entry.href}>
+        {entry.image ? <img src={entry.image} alt={entry.imageAlt} loading="lazy" /> : <div class="placeholder" aria-hidden="true">NX</div>}
+        <div class="card-content"><time class="meta" datetime={entry.date}>{entry.dateLabel}</time><h3>{entry.title}</h3><p>{entry.description}</p><span class="eyebrow">Leer artículo →</span></div>
+      </a>)}
+    </div>
+    <p class="empty-results" data-empty hidden>No hay artículos que coincidan. Prueba otra búsqueda o limpia los filtros.</p>
+    {entries.length === 0 && <p>Estamos preparando los primeros artículos. Vuelve pronto.</p>}
+    <nav class="archive-pagination" data-pagination aria-label="Paginación de artículos" hidden={state.totalPages <= 1}>
+      {state.page > 1 && <a href={`${withBase(pagePath(state.page - 1))}#latest`} rel="prev">← Anterior</a>}
+      {Array.from({ length: state.totalPages }, (_, index) => index + 1).map(number => number === state.page ? <span aria-current="page">{number}</span> : <a href={`${withBase(pagePath(number))}#latest`} aria-label={`Ir a la página ${number}`}>{number}</a>)}
+      {state.page < state.totalPages && <a href={`${withBase(pagePath(state.page + 1))}#latest`} rel="next">Siguiente →</a>}
+    </nav>
+    <script is:inline type="application/json" data-archive-index set:html={indexJson}></script>
+  </section>
+</Layout>
+<script>
+  import { filterEntries, getPage, pagePath } from '../lib/review-pagination.js';
+  for (const archive of document.querySelectorAll('[data-review-archive]')) {
+    if (!(archive instanceof HTMLElement)) continue;
+    const form = archive.querySelector('[data-filters]');
+    const search = archive.querySelector('[data-search]');
+    const platform = archive.querySelector('[data-platform]');
+    const clear = archive.querySelector('[data-clear]');
+    const count = archive.querySelector('[data-count]');
+    const list = archive.querySelector('[data-list]');
+    const empty = archive.querySelector('[data-empty]');
+    const pagination = archive.querySelector('[data-pagination]');
+    const index = archive.querySelector('[data-archive-index]');
+    if (!(form instanceof HTMLFormElement) || !(search instanceof HTMLInputElement) || !(platform instanceof HTMLSelectElement) || !(clear instanceof HTMLButtonElement) || !(count instanceof HTMLElement) || !(list instanceof HTMLElement) || !(empty instanceof HTMLElement) || !(pagination instanceof HTMLElement) || !index) continue;
+    const entries = JSON.parse(index.textContent || '[]');
+    const parameters = new URL(window.location.href).searchParams;
+    search.value = parameters.get('q') || '';
+    const selectedPlatform = parameters.get('plataforma') || '';
+    platform.value = Array.from(platform.options).some(option => option.value === selectedPlatform) ? selectedPlatform : '';
+    const pageUrl = (number, anchor = true) => {
+      const params = new URLSearchParams();
+      if (search.value.trim()) params.set('q', search.value.trim());
+      if (platform.value) params.set('plataforma', platform.value);
+      const query = params.toString();
+      return `${pagePath(number)}${query ? '?' + query : ''}${anchor ? '#latest' : ''}`;
+    };
+    const createCard = entry => {
+      const link = document.createElement('a');
+      link.className = 'card';
+      link.href = entry.href;
+      if (entry.image) {
+        const image = document.createElement('img');
+        image.src = entry.image;
+        image.alt = entry.imageAlt;
+        image.loading = 'lazy';
+        link.append(image);
+      } else {
+        const placeholder = document.createElement('div');
+        placeholder.className = 'placeholder';
+        placeholder.setAttribute('aria-hidden', 'true');
+        placeholder.textContent = 'NX';
+        link.append(placeholder);
+      }
+      const content = document.createElement('div');
+      content.className = 'card-content';
+      const time = document.createElement('time');
+      time.className = 'meta';
+      time.dateTime = entry.date;
+      time.textContent = entry.dateLabel;
+      const heading = document.createElement('h3');
+      heading.textContent = entry.title;
+      const summary = document.createElement('p');
+      summary.textContent = entry.description;
+      const prompt = document.createElement('span');
+      prompt.className = 'eyebrow';
+      prompt.textContent = 'Leer artículo →';
+      content.append(time, heading, summary, prompt);
+      link.append(content);
+      return link;
+    };
+    const pageLink = (label, number, relation = '') => {
+      const link = document.createElement('a');
+      link.href = pageUrl(number);
+      link.textContent = label;
+      link.setAttribute('aria-label', relation ? label : `Ir a la página ${number}`);
+      if (relation) link.rel = relation;
+      return link;
+    };
+    const update = (requestedPage, writeUrl = false) => {
+      const state = getPage(filterEntries(entries, search.value, platform.value), requestedPage);
+      list.replaceChildren(...state.items.map(createCard));
+      count.textContent = `${state.total} ${state.total === 1 ? 'artículo' : 'artículos'}${state.total > 0 ? ` · Página ${state.page} de ${state.totalPages}` : ''}`;
+      empty.hidden = state.total !== 0;
+      pagination.replaceChildren();
+      if (state.page > 1) pagination.append(pageLink('← Anterior', state.page - 1, 'prev'));
+      for (let number = 1; number <= state.totalPages; number++) {
+        if (number === state.page) {
+          const current = document.createElement('span');
+          current.textContent = String(number);
+          current.setAttribute('aria-current', 'page');
+          pagination.append(current);
+        } else {
+          pagination.append(pageLink(String(number), number));
+        }
+      }
+      if (state.page < state.totalPages) pagination.append(pageLink('Siguiente →', state.page + 1, 'next'));
+      pagination.hidden = state.totalPages <= 1;
+      if (writeUrl || state.page !== requestedPage) window.history.replaceState(null, '', pageUrl(state.page, false) + window.location.hash);
+    };
+    form.addEventListener('submit', event => event.preventDefault());
+    search.addEventListener('input', () => update(1, true));
+    platform.addEventListener('change', () => update(1, true));
+    clear.addEventListener('click', () => { search.value = ''; platform.value = ''; update(1, true); });
+    update(Number(archive.dataset.page) || 1);
+    form.hidden = false;
+  }
+</script>
+<style>
+  .review-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 16px; margin: 24px 0 16px; }
+  .filter-field { flex: 1 1 220px; min-width: 0; }
+  label { display: block; margin-bottom: 6px; color: #bcc1d4; font-size: 14px; }
+  input, select, button { font: inherit; color: #edf0fa; background: #131722; border: 1px solid #64518e; border-radius: 10px; padding: 12px; }
+  input, select { width: 100%; min-width: 0; }
+  button { cursor: pointer; }
+  button:hover { border-color: #b5a1ff; }
+  input:focus-visible, select:focus-visible, button:focus-visible { outline: 3px solid #b5a1ff; outline-offset: 3px; }
+  .empty-results { margin-top: 24px; color: #b8bed1; }
+  .archive-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 32px; }
+  .archive-pagination :global(a), .archive-pagination :global(span) { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 8px 14px; border: 1px solid #64518e; border-radius: 10px; color: #d4c8ff; background: #131722; }
+  .archive-pagination :global([aria-current="page"]) { background: #302744; border-color: #b5a1ff; color: #fff; font-weight: 750; }
+  .archive-pagination :global(a:hover) { border-color: #b5a1ff; }
+  [hidden] { display: none !important; }
+</style>

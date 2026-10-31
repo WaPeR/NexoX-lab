@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { PAGE_SIZE, pagePath } from '../lib/review-pagination.js';
 
 export const prerender = true;
 
@@ -11,9 +12,11 @@ function escapeXml(value) {
 export async function GET({ site }) {
   if (!site) throw new Error('Configura site en astro.config.mjs para generar el sitemap.');
   const reviews = await getCollection('reviews', ({ data }) => !data.draft);
+  const totalPages = Math.ceil(reviews.length / PAGE_SIZE);
   const urls = [...new Set([
     new URL('/', site).href,
     new URL('/sobre-nexox/', site).href,
+    ...Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => new URL(pagePath(index + 2), site).href),
     ...reviews.map(({ id }) => new URL(`/reviews/${id}/`, site).href)
   ])].sort();
   const xml = [
