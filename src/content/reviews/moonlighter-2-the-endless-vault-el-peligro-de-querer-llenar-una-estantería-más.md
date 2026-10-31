@@ -10,8 +10,8 @@ image: /NexoX-lab/images/uploads/moonlighter-2.jpg
 platforms:
   - PC
   - Xbox Series X|S
-  - PS5
-  - Switch 2
+  - PlayStation 5
+  - Nintendo Switch 2
 genre: RPG de acción, Roguelite, Gestión
 youtube: https://www.youtube.com/watch?v=vE0FQQa07JQ
 purchasePc: https://store.steampowered.com/app/2350790/Moonlighter_2_The_Endless_Vault/
