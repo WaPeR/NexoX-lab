@@ -1,0 +1,97 @@
+---
+const { title, url } = Astro.props;
+const links = [
+  {
+    label: 'WhatsApp',
+    href: `https://wa.me/?text=${encodeURIComponent(`${title}\n${url}`)}`,
+    icon: 'M21 11.5a8.5 8.5 0 0 1-12.7 7.4L3 21l2-5.3A8.5 8.5 0 1 1 21 11.5Z M8 7.5c0 4.5 4 8.5 8.5 8.5l1-2.5-3-1-1 1a8 8 0 0 1-3.5-3.5l1-1-1-3-2.5 1Z'
+  },
+  {
+    label: 'Telegram',
+    href: `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
+    icon: 'M21 3 3 10l7 3 3 7 8-17Z M10 13 21 3'
+  },
+  {
+    label: 'X',
+    href: `https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
+    icon: 'M4 3h4l12 18h-4L4 3Z M20 3 4 21'
+  }
+];
+---
+<section class="share-section" data-article-share data-title={title} data-url={url} aria-labelledby="share-title">
+  <h2 id="share-title">Compartir artículo</h2>
+  <div class="share-links">
+    {links.map(link => (
+      <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={`Compartir en ${link.label} (se abre en otra pestaña)`}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d={link.icon} /></svg>
+        <span>{link.label}</span>
+        <span aria-hidden="true">↗</span>
+      </a>
+    ))}
+    <button type="button" data-copy-link hidden>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="8" y="8" width="12" height="13" rx="2" /><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" /></svg>
+      <span>Copiar enlace</span>
+    </button>
+    <button type="button" data-native-share aria-label="Más opciones para compartir: abrir el menú del dispositivo" hidden>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 10.5 6.8-4 M8.6 13.5l6.8 4" /></svg>
+      <span>Más opciones…</span>
+    </button>
+  </div>
+  <p class="meta" data-share-status role="status" aria-live="polite"></p>
+  <input class="share-url" data-share-url type="text" aria-label="Enlace del artículo para copiar manualmente" value={url} readonly hidden />
+</section>
+<script>
+  for (const section of document.querySelectorAll('[data-article-share]')) {
+    if (!(section instanceof HTMLElement)) continue;
+    const url = section.dataset.url || '';
+    const title = section.dataset.title || '';
+    const copyButton = section.querySelector('[data-copy-link]');
+    const nativeButton = section.querySelector('[data-native-share]');
+    const status = section.querySelector('[data-share-status]');
+    const input = section.querySelector('[data-share-url]');
+    if (!(status instanceof HTMLElement) || !(input instanceof HTMLInputElement)) continue;
+    if (copyButton instanceof HTMLButtonElement) {
+      copyButton.hidden = false;
+      copyButton.addEventListener('click', async () => {
+        try {
+          if (!navigator.clipboard?.writeText) throw new Error('Portapapeles no disponible');
+          await navigator.clipboard.writeText(url);
+          status.textContent = 'Enlace copiado.';
+          input.hidden = true;
+        } catch {
+          input.hidden = false;
+          input.focus();
+          input.select();
+          status.textContent = 'No se ha podido copiar automáticamente. Puedes copiar el enlace seleccionado.';
+        }
+      });
+    }
+    if (nativeButton instanceof HTMLButtonElement && typeof navigator.share === 'function') {
+      nativeButton.hidden = false;
+      nativeButton.addEventListener('click', async () => {
+        nativeButton.disabled = true;
+        status.textContent = '';
+        try {
+          await navigator.share({ title, url });
+        } catch (error) {
+          if (!(error instanceof Error && error.name === 'AbortError')) {
+            status.textContent = 'No se ha podido abrir el menú de compartir. Usa los botones de las aplicaciones o copia el enlace.';
+          }
+        } finally {
+          nativeButton.disabled = false;
+        }
+      });
+    }
+  }
+</script>
+<style>
+  .share-section { margin-top: 40px; padding-top: 12px; border-top: 1px solid #262a3b; }
+  .share-links { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0 12px; }
+  .share-links a, .share-links button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; max-width: 100%; padding: 10px 18px; border: 1px solid #64518e; border-radius: 12px; background: #232338; color: #d4c8ff; font: inherit; font-weight: 650; cursor: pointer; }
+  .share-links svg { flex: 0 0 20px; }
+  .share-links a:hover, .share-links button:hover { border-color: #b5a1ff; background: #302744; color: #fff; }
+  .share-links button:disabled { opacity: .65; cursor: wait; }
+  .share-links button:focus-visible, .share-url:focus-visible { outline: 3px solid #b5a1ff; outline-offset: 4px; }
+  .share-url { width: 100%; padding: 12px; border: 1px solid #64518e; border-radius: 10px; background: #131722; color: #edf0fa; font: inherit; }
+  [hidden] { display: none !important; }
+</style>

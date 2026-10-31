@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import ArticleShare from '../../components/ArticleShare.astro';
 import { withBase } from '../../lib/paths';
 import { getYouTubeId } from '../../lib/youtube';
 export async function getStaticPaths() {
@@ -51,8 +52,6 @@ const youtubeId = getYouTubeId(data.youtube);
 const relatedReviews = selectRelatedReviews(await getCollection('reviews', ({ data }) => !data.draft), entry);
 const purchaseLinks = getPurchaseLinks(data);
 const shareUrl = new URL(Astro.url.pathname, Astro.site).href;
-const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${data.title}\n${shareUrl}`)}`;
-const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(data.title)}`;
 ---
 <Layout title={data.title} description={data.description} image={data.image} imageAlt={data.imageAlt} type="article">
   <article class="article">
@@ -96,16 +95,7 @@ const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&
         </ul>
       </section>
     )}
-    <section class="share-section" aria-labelledby="share-title">
-      <h2 id="share-title">Compartir artículo</h2>
-      <div class="share-links">
-        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Compartir en WhatsApp (se abre en otra pestaña)">WhatsApp</a>
-        <a href={telegramUrl} target="_blank" rel="noopener noreferrer" aria-label="Compartir en Telegram (se abre en otra pestaña)">Telegram</a>
-        <button id="copy-review-link" type="button" data-url={shareUrl} hidden>Copiar enlace</button>
-      </div>
-      <p id="share-status" class="meta" role="status" aria-live="polite"></p>
-      <input id="share-url" class="share-url" type="text" aria-label="Enlace del artículo para copiar manualmente" value={shareUrl} readonly hidden />
-    </section>
+    <ArticleShare title={data.title} url={shareUrl} />
   </article>
   {relatedReviews.length > 0 && (
     <section class="related-reviews" aria-labelledby="related-title">
@@ -126,28 +116,6 @@ const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&
     </section>
   )}
 </Layout>
-<script>
-  const copyButton = document.querySelector('#copy-review-link');
-  const shareStatus = document.querySelector('#share-status');
-  const shareInput = document.querySelector('#share-url');
-  if (copyButton instanceof HTMLButtonElement && shareStatus instanceof HTMLElement && shareInput instanceof HTMLInputElement) {
-    copyButton.hidden = false;
-    copyButton.addEventListener('click', async () => {
-      const url = copyButton.dataset.url || shareInput.value;
-      try {
-        if (!navigator.clipboard?.writeText) throw new Error('Portapapeles no disponible');
-        await navigator.clipboard.writeText(url);
-        shareStatus.textContent = 'Enlace copiado.';
-        shareInput.hidden = true;
-      } catch {
-        shareInput.hidden = false;
-        shareInput.focus();
-        shareInput.select();
-        shareStatus.textContent = 'No se ha podido copiar automáticamente. Puedes copiar el enlace seleccionado.';
-      }
-    });
-  }
-</script>
 <style>
   .breadcrumbs { margin-bottom: 25px; font-size: 14px; overflow-wrap: anywhere; }
   .breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 6px 10px; padding: 0; margin: 0; list-style: none; }
@@ -164,11 +132,4 @@ const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&
   .purchase-links { display: flex; flex-wrap: wrap; gap: 12px; list-style: none; padding: 0; margin: 20px 0 0; }
   .purchase-links a { display: inline-block; padding: 10px 18px; border: 1px solid #64518e; border-radius: 12px; background: #232338; color: #d4c8ff; font-weight: 650; }
   .purchase-links a:hover { border-color: #b5a1ff; background: #302744; color: #fff; }
-  .share-section { margin-top: 40px; padding-top: 12px; border-top: 1px solid #262a3b; }
-  .share-links { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0 12px; }
-  .share-links a, .share-links button { display: inline-block; padding: 10px 18px; border: 1px solid #64518e; border-radius: 12px; background: #232338; color: #d4c8ff; font: inherit; cursor: pointer; }
-  .share-links a:hover, .share-links button:hover { border-color: #b5a1ff; background: #302744; color: #fff; }
-  .share-links button:focus-visible, .share-url:focus-visible { outline: 3px solid #b5a1ff; outline-offset: 4px; }
-  .share-url { width: 100%; padding: 12px; border: 1px solid #64518e; border-radius: 10px; background: #131722; color: #edf0fa; font: inherit; }
-  .share-section [hidden] { display: none !important; }
 </style>
