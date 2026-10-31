@@ -10,9 +10,12 @@ image: /NexoX-lab/images/uploads/36850-brokenlore-dont-lie-teaser-3932565526.jpg
 platforms:
   - PC
   - Xbox Series X|S
-  - PS5
+  - PlayStation 5
 genre: Terror psicológico, Aventura narrativa, Exploración en primera persona
 youtube: https://www.youtube.com/watch?v=sBWpKBxIDUA
+purchasePc: https://store.steampowered.com/app/3886200/BrokenLore_DONT_LIE/
+purchaseXbox: https://www.xbox.com/es-ES/games/store/brokenlore-dont-lie/9nn0tcqrqmk6
+purchasePlaystation: https://store.playstation.com/es-es/concept/10016255
 draft: false
 ---
 Un apartamento debería ser un lugar seguro. En BrokenLore: DON’T LIE, esa familiaridad empieza a deshacerse hasta que cuesta distinguir entre recuerdo, mentira y pesadilla. El terror no depende únicamente de encontrar una amenaza, sino de perder la confianza en el espacio que recorres.
