@@ -11,6 +11,7 @@ platforms:
   - PC
 genre: Aventura narrativa, RPG de acción
 youtube: https://www.youtube.com/watch?v=LJf1nUaYMeo
+purchasePc: https://store.steampowered.com/app/2778220/Palm_Sugar_A_Village_Story/
 draft: false
 ---
 Palm Sugar: A Village Story comienza con una preocupación más cercana que salvar el mundo: un joven enamorado que quiere encontrarse con la chica que le gusta. Los caminos rurales y los pequeños detalles de Bellampakam parecen preparar una historia sencilla, pero esa primera impresión solo muestra parte de lo que ocurre.
