@@ -17,6 +17,7 @@ export async function GET({ site }) {
   const urls = [...new Set([
     new URL('/', site).href,
     new URL('/sobre-nexox/', site).href,
+    new URL('/privacidad/', site).href,
     ...Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => new URL(pagePath(index + 2), site).href),
     ...reviews.map(({ id }) => new URL(`/reviews/${id}/`, site).href)
   ])].sort();

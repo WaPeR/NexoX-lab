@@ -130,3 +130,11 @@ collections:
             name: body
             widget: markdown
             hint: 'Edita aquí toda la página: presentación, títulos, enlaces y contacto. El título principal también forma parte del contenido.'
+      - name: privacy
+        label: Política de privacidad
+        file: src/content/pages/privacidad.md
+        fields:
+          - label: Contenido
+            name: body
+            widget: markdown
+            hint: 'Edita aquí toda la política de privacidad: título principal, apartados y texto. Todo forma parte del mismo contenido.'

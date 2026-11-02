@@ -1,0 +1,12 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getEntry, render } from 'astro:content';
+const page = await getEntry('pages', 'privacidad');
+if (!page) throw new Error('No se ha encontrado el contenido de la política de privacidad.');
+const { Content } = await render(page);
+---
+<Layout title="Política de privacidad" description="Información sobre privacidad, estadísticas de navegación, servicios externos y derechos en NexoX.">
+  <article class="article privacy-page">
+    <div class="prose"><Content /></div>
+  </article>
+</Layout>
