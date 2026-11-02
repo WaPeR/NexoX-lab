@@ -2,7 +2,7 @@
 
 NexoX es un espacio dedicado a los videojuegos: un lugar para descubrir nuevas propuestas, conocer qué las hace interesantes y encontrar tu próxima aventura.
 
-Aquí encontrarás reviews y artículos sobre juegos de distintos géneros, con un enfoque cercano, sin spoilers importantes y poniendo el foco en lo que ofrece cada título. Desde pequeños proyectos independientes (por los que sentimos predilección) hasta lanzamientos más conocidos, la idea es dar espacio a juegos que merecen una mirada.
+Aquí encontrarás reviews y artículos sobre juegos de distintos géneros, con un enfoque cercano, sin spoilers y poniendo el foco en lo que nos ofrece cada título. Desde pequeños juegos indie (por los que sentimos predilección) hasta los títulos de mas renombre, queremos darles a todos su espacio.
 
 ## Sigue NexoX
 
