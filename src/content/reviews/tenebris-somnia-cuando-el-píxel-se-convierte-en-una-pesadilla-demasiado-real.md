@@ -12,6 +12,10 @@ platforms:
   - PlayStation 5
   - Nintendo Switch 2
 genre: Survival horror, Aventura, Puzles
+developer: Andrés Borghi, Saibot Studios
+publisher: New Blood Interactive
+releaseDate: 2026-10-16
+gameStatus: Disponible
 youtube: https://www.youtube.com/watch?v=RGgBIPggFJE
 purchasePc: https://store.steampowered.com/app/2121510/Tenebris_Somnia/
 purchaseXbox: https://www.xbox.com/es-es/games/store/tenebris-somnia/9pk5kg7hprhz
