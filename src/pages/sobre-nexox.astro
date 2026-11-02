@@ -7,6 +7,22 @@ const { Content } = await render(page);
 ---
 <Layout title="Sobre NexoX" description="NexoX es un espacio dedicado a los videojuegos: un lugar para descubrir nuevas propuestas, conocer qué las hace interesantes y encontrar tu próxima aventura.">
   <article class="article about-page">
-    <div class="prose"><Content /></div>
+    <div class="prose about-content"><Content /></div>
   </article>
 </Layout>
+<script>
+  for (const link of document.querySelectorAll('.about-content :is(li > a:only-child, li > p:only-child > a:only-child)[href^="https://"]')) {
+    if (!(link instanceof HTMLAnchorElement)) continue;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.setAttribute('aria-label', `${link.textContent?.trim() || 'Abrir enlace'} (se abre en otra pestaña)`);
+  }
+</script>
+<style>
+  .about-content :global(ul:has(> li > a:only-child[href^="https://"], > li > p:only-child > a:only-child[href^="https://"])) { display: grid; gap: 16px; padding: 0; margin: 24px 0 0; list-style: none; }
+  .about-content :global(ul:has(> li > a:only-child[href^="https://"], > li > p:only-child > a:only-child[href^="https://"]) > li) { margin: 0; min-width: 0; }
+  .about-content :global(li > p:only-child:has(> a:only-child[href^="https://"])) { margin: 0; }
+  .about-content :global(:is(li > a:only-child, li > p:only-child > a:only-child)[href^="https://"]) { display: block; padding: 20px; border: 1px solid #292d40; border-radius: 16px; background: #131722; color: #edf0fa; text-decoration: none; font-weight: 650; overflow-wrap: anywhere; }
+  .about-content :global(:is(li > a:only-child, li > p:only-child > a:only-child)[href^="https://"]::after) { content: attr(href); display: block; margin-top: 6px; font-size: 15px; font-weight: 400; color: #b5a1ff; }
+  .about-content :global(:is(li > a:only-child, li > p:only-child > a:only-child)[href^="https://"]:hover) { border-color: #a68aff; color: #edf0fa; }
+</style>
