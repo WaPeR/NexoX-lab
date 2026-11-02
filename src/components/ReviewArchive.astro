@@ -42,11 +42,7 @@ const indexJson = JSON.stringify(entries).replace(/</g, '\u003c');
     )}
     <h2 id="latest">{state.page === 1 ? 'Últimos artículos' : `Artículos — Página ${state.page}`}</h2>
     {entries.length > 0 && (
-      <form class="review-filters" data-filters role="search" aria-label="Buscar artículos" hidden>
-        <div class="filter-field">
-          <label for="review-search">Buscar un juego</label>
-          <input id="review-search" data-search type="search" placeholder="Buscar por título o resumen…" autocomplete="off" aria-controls="article-list" />
-        </div>
+      <form class="review-filters" data-filters aria-label="Filtrar artículos" hidden>
         <div class="filter-field">
           <label for="review-platform">Plataforma</label>
           <select id="review-platform" data-platform aria-controls="article-list">
@@ -79,7 +75,9 @@ const indexJson = JSON.stringify(entries).replace(/</g, '\u003c');
   for (const archive of document.querySelectorAll('[data-review-archive]')) {
     if (!(archive instanceof HTMLElement)) continue;
     const form = archive.querySelector('[data-filters]');
-    const search = archive.querySelector('[data-search]');
+    const search = document.querySelector('#site-search-input');
+    const searchForm = document.querySelector('#site-search-form');
+    const disclosure = document.querySelector('#site-search');
     const platform = archive.querySelector('[data-platform]');
     const clear = archive.querySelector('[data-clear]');
     const count = archive.querySelector('[data-count]');
@@ -171,6 +169,16 @@ const indexJson = JSON.stringify(entries).replace(/</g, '\u003c');
     search.addEventListener('input', () => update(1, true));
     platform.addEventListener('change', () => update(1, true));
     clear.addEventListener('click', () => { search.value = ''; platform.value = ''; update(1, true); });
+    if (searchForm instanceof HTMLFormElement) searchForm.addEventListener('submit', event => {
+      event.preventDefault();
+      update(1, true);
+      if (disclosure instanceof HTMLDetailsElement) disclosure.open = false;
+      if (heading instanceof HTMLElement) {
+        heading.tabIndex = -1;
+        heading.focus({ preventScroll: true });
+        heading.scrollIntoView({ block: 'start' });
+      }
+    });
     update(Number(archive.dataset.page) || 1);
     form.hidden = false;
   }

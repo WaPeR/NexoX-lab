@@ -1,0 +1,58 @@
+---
+import { withBase } from '../lib/paths';
+---
+<details class="site-search" id="site-search">
+  <summary id="site-search-toggle" aria-label="Mostrar u ocultar el buscador" title="Buscar artículos">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="7" /><path d="m16 16 5 5" /></svg>
+  </summary>
+  <form id="site-search-form" class="search-panel" role="search" aria-label="Buscar artículos" action={withBase('/#latest')} method="get">
+    <label for="site-search-input">Buscar un juego</label>
+    <div class="search-controls">
+      <input id="site-search-input" name="q" type="search" placeholder="Buscar por título o resumen…" autocomplete="off" />
+      <button type="submit">Buscar</button>
+    </div>
+    <input type="hidden" name="plataforma" data-header-platform disabled />
+    <noscript><p>La búsqueda de artículos necesita JavaScript activado.</p></noscript>
+  </form>
+</details>
+<script>
+  const disclosure = document.querySelector('#site-search');
+  const form = document.querySelector('#site-search-form');
+  const input = document.querySelector('#site-search-input');
+  const summary = document.querySelector('#site-search-toggle');
+  const platform = document.querySelector('[data-header-platform]');
+  if (disclosure instanceof HTMLDetailsElement && form instanceof HTMLFormElement && input instanceof HTMLInputElement && summary instanceof HTMLElement && platform instanceof HTMLInputElement) {
+    input.value = new URL(window.location.href).searchParams.get('q') || '';
+    form.addEventListener('submit', () => {
+      const selectedPlatform = new URL(window.location.href).searchParams.get('plataforma') || '';
+      platform.value = selectedPlatform;
+      platform.disabled = !selectedPlatform;
+    });
+    disclosure.addEventListener('toggle', () => { if (disclosure.open) input.focus(); });
+    disclosure.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && disclosure.open) {
+        event.preventDefault();
+        disclosure.open = false;
+        summary.focus();
+      }
+    });
+  }
+</script>
+<style>
+  .site-search { width: 44px; min-height: 44px; }
+  .site-search[open] { width: 100%; flex-basis: 100%; }
+  summary { position: absolute; top: 25px; right: 0; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 10px; border: 1px solid transparent; border-radius: 12px; background: transparent; color: #bcc1d4; cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary::marker { content: ''; }
+  summary:hover { color: #b5a1ff; border-color: #64518e; }
+  summary svg { display: block; flex-shrink: 0; }
+  .search-panel { width: 100%; margin: 0; padding: 20px; border: 1px solid #64518e; border-radius: 16px; background: #131722; }
+  label { display: block; margin-bottom: 8px; font-size: 14px; color: #bcc1d4; }
+  .search-controls { display: flex; flex-wrap: wrap; gap: 12px; }
+  input[type='search'], button { font: inherit; color: #edf0fa; border: 1px solid #64518e; border-radius: 10px; padding: 12px; }
+  input[type='search'] { flex: 1 1 220px; min-width: 0; background: #0b0d14; }
+  button { flex: 0 0 auto; background: #232338; cursor: pointer; }
+  button:hover { border-color: #b5a1ff; }
+  summary:focus-visible, input:focus-visible, button:focus-visible { outline: 3px solid #b5a1ff; outline-offset: 3px; }
+  noscript p { margin: 12px 0 0; font-size: 14px; color: #b8bed1; }
+</style>
