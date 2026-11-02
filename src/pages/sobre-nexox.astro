@@ -1,55 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import about from '../data/about.json';
-function externalUrl(value) {
-  try {
-    const url = new URL(value);
-    return ['https:', 'http:'].includes(url.protocol) && !url.username && !url.password ? url.href : undefined;
-  } catch {
-    return undefined;
-  }
-}
-const youtubeUrl = externalUrl(about.youtubeUrl);
-const telegramUrl = externalUrl(about.telegramUrl);
+import { getEntry, render } from 'astro:content';
+const page = await getEntry('pages', 'sobre-nexox');
+if (!page) throw new Error('No se ha encontrado el contenido de Sobre NexoX.');
+const { Content } = await render(page);
 ---
-<Layout title={about.title} description={about.intro}>
+<Layout title="Sobre NexoX" description="NexoX es un espacio dedicado a los videojuegos: un lugar para descubrir nuevas propuestas, conocer qué las hace interesantes y encontrar tu próxima aventura.">
   <article class="article about-page">
-    <h1>{about.title}</h1>
-    <div class="prose">
-      <p class="about-text">{about.intro}</p>
-      <p class="about-text">{about.description}</p>
-      <section aria-labelledby="follow-title">
-        <h2 id="follow-title">{about.followTitle}</h2>
-        <p class="about-text">{about.followText}</p>
-        <ul class="community-links">
-          {youtubeUrl && <li>
-            <a href={youtubeUrl} target="_blank" rel="noopener noreferrer" aria-label={`${about.youtubeLabel} (se abre en otra pestaña)`}>
-              <span class="community-label">{about.youtubeLabel}</span>
-              <span class="community-url">{about.youtubeUrl}</span>
-            </a>
-          </li>}
-          {telegramUrl && <li>
-            <a href={telegramUrl} target="_blank" rel="noopener noreferrer" aria-label={`${about.telegramLabel} (se abre en otra pestaña)`}>
-              <span class="community-label">{about.telegramLabel}</span>
-              <span class="community-url">{about.telegramUrl}</span>
-            </a>
-          </li>}
-        </ul>
-      </section>
-      <section aria-labelledby="contact-title">
-        <h2 id="contact-title">{about.contactTitle}</h2>
-        <p class="about-text">{about.contactText}</p>
-        <p><a href={`mailto:${about.email}`}>{about.email}</a></p>
-      </section>
-    </div>
+    <div class="prose"><Content /></div>
   </article>
 </Layout>
-<style>
-  .about-text { white-space: pre-line; }
-  .community-links { display: grid; gap: 16px; padding: 0; margin: 24px 0 0; list-style: none; }
-  .community-links li { margin: 0; min-width: 0; }
-  .community-links a { display: block; padding: 20px; border: 1px solid #292d40; border-radius: 16px; background: #131722; color: #edf0fa; text-decoration: none; overflow-wrap: anywhere; }
-  .community-links a:hover { border-color: #a68aff; }
-  .community-label { display: block; font-weight: 650; }
-  .community-url { display: block; margin-top: 6px; font-size: 15px; color: #b5a1ff; }
-</style>

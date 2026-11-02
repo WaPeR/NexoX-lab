@@ -57,4 +57,10 @@ const reviews = defineCollection({
     draft: z.boolean().default(false)
   })
 });
-export const collections = { reviews };
+
+const pages = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/pages' }),
+  schema: z.object({})
+});
+
+export const collections = { reviews, pages };

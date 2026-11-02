@@ -124,26 +124,9 @@ collections:
     files:
       - name: about
         label: Sobre NexoX
-        file: src/data/about.json
+        file: src/content/pages/sobre-nexox.md
         fields:
-          - { label: Título de la página, name: title, widget: string }
-          - { label: Primer párrafo, name: intro, widget: text }
-          - { label: Segundo párrafo, name: description, widget: text }
-          - { label: Título de la sección de comunidad, name: followTitle, widget: string }
-          - { label: Texto de la sección de comunidad, name: followText, widget: text }
-          - { label: Texto del enlace de YouTube, name: youtubeLabel, widget: string }
-          - label: Enlace de YouTube
-            name: youtubeUrl
-            widget: string
-            pattern: ['^https?://\S+$', 'Introduce una URL completa que empiece por https:// o http://.']
-          - { label: Texto del enlace de Telegram, name: telegramLabel, widget: string }
-          - label: Enlace de Telegram
-            name: telegramUrl
-            widget: string
-            pattern: ['^https?://\S+$', 'Introduce una URL completa que empiece por https:// o http://.']
-          - { label: Título de la sección de contacto, name: contactTitle, widget: string }
-          - { label: Texto de contacto, name: contactText, widget: text }
-          - label: Correo de contacto
-            name: email
-            widget: string
-            pattern: ['^[^\s@]+@[^\s@]+\.[^\s@]+$', 'Introduce un correo válido, sin mailto: delante.']
+          - label: Contenido
+            name: body
+            widget: markdown
+            hint: 'Edita aquí toda la página: presentación, títulos, enlaces y contacto. El título principal también forma parte del contenido.'
