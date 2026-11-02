@@ -6,7 +6,7 @@ description: "Palm Sugar: A Village Story nos lleva a un pueblo del sur de la
   India donde un romance juvenil convive con la amenaza de un cártel. Una
   aventura breve que destaca por su identidad cultural y su historia, aunque el
   combate no esté a la altura de sus mejores momentos."
-image: /NexoX-lab/images/uploads/pt_sc16__00091.png
+image: /images/uploads/palm-sugar.webp
 platforms:
   - PC
 genre: Aventura narrativa, RPG de acción
