@@ -23,6 +23,12 @@ collections:
     fields:
       - { label: Título, name: title, widget: string }
       - { label: Fecha, name: date, widget: datetime }
+      - label: Destacar en portada
+        name: featured
+        widget: boolean
+        default: false
+        required: false
+        hint: 'Opcional. Muestra el artículo en la tarjeta destacada de la portada. Si marcas varios, se elegirá el de publicación más reciente. Los borradores no aparecen. No cambia la fecha del artículo.'
       - { label: Resumen, name: description, widget: text }
       - { label: Portada, name: image, widget: image, required: false }
       - label: Descripción de la portada

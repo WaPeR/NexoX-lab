@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { withBase } from '../lib/paths';
 import { getCollection } from 'astro:content';
-import { getPage, pagePath } from '../lib/review-pagination.js';
+import { getArchiveState, pagePath } from '../lib/review-pagination.js';
 const { pageNumber = 1 } = Astro.props;
 const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort((a,b) => b.data.date.valueOf() - a.data.date.valueOf());
 const entries = reviews.map(({ id, data }) => ({
@@ -13,9 +13,11 @@ const entries = reviews.map(({ id, data }) => ({
   dateLabel: data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }),
   image: data.image ? withBase(data.image) : '',
   imageAlt: data.imageAlt?.trim() || '',
-  platforms: data.platforms
+  platforms: data.platforms,
+  featured: data.featured === true
 }));
-const state = getPage(entries, pageNumber);
+const state = getArchiveState(entries, pageNumber);
+const featured = state.featured;
 const platforms = ['PC', 'PlayStation 5', 'PlayStation 4', 'Xbox Series X|S', 'Xbox One', 'Nintendo Switch', 'Nintendo Switch 2', 'Android', 'iOS'];
 const title = state.page === 1 ? 'NexoX' : `Artículos — Página ${state.page}`;
 const description = 'Descubre reviews y análisis de videojuegos en NexoX. Explora juegos de acción, aventuras, terror e indies, con información sobre plataformas y géneros.';
@@ -23,7 +25,21 @@ const indexJson = JSON.stringify(entries).replace(/</g, '\u003c');
 ---
 <Layout title={title} description={description}>
   <section class="hero"><span class="eyebrow">Tu próximo mundo empieza aquí</span><h1>Conecta con tu<br />próximo juego.</h1><p class="lead">Reviews y análisis para descubrir videojuegos, conocer sus propuestas y encontrar tu próxima aventura.</p></section>
-  <section aria-labelledby="latest" data-review-archive data-page={state.page}>
+  <section aria-labelledby="latest" data-review-archive data-page={pageNumber}>
+    {featured && (
+      <section class="featured-block" data-featured-block aria-labelledby="featured-label" hidden={!state.showFeatured}>
+        <p id="featured-label" class="eyebrow">Destacado</p>
+        <a class="featured-card" href={featured.href}>
+          {featured.image ? <img src={featured.image} alt={featured.imageAlt} loading="lazy" /> : <div class="featured-placeholder" aria-hidden="true">NX</div>}
+          <div class="featured-content">
+            <time class="meta" datetime={featured.date}>{featured.dateLabel}</time>
+            <h2>{featured.title}</h2>
+            <p>{featured.description}</p>
+            <span class="eyebrow">Leer artículo →</span>
+          </div>
+        </a>
+      </section>
+    )}
     <h2 id="latest">{state.page === 1 ? 'Últimos artículos' : `Artículos — Página ${state.page}`}</h2>
     {entries.length > 0 && (
       <form class="review-filters" data-filters role="search" aria-label="Buscar artículos" hidden>
@@ -41,7 +57,7 @@ const indexJson = JSON.stringify(entries).replace(/</g, '\u003c');
         <button data-clear type="button">Limpiar filtros</button>
       </form>
     )}
-    <p class="meta" data-count role="status" aria-live="polite">{state.total} {state.total === 1 ? 'artículo' : 'artículos'}{state.total > 0 ? ` · Página ${state.page} de ${state.totalPages}` : ''}</p>
+    <p class="meta" data-count role="status" aria-live="polite">{state.total} {state.total === 1 ? 'artículo' : 'artículos'}{state.total > 0 ? ` · Página ${state.page} de ${state.totalPages}` : ''}{state.showFeatured ? ' · 1 destacado' : ''}</p>
     <div id="article-list" class="grid" data-list>
       {state.items.map(entry => <a class="card" href={entry.href}>
         {entry.image ? <img src={entry.image} alt={entry.imageAlt} loading="lazy" /> : <div class="placeholder" aria-hidden="true">NX</div>}
@@ -59,7 +75,7 @@ const indexJson = JSON.stringify(entries).replace(/</g, '\u003c');
   </section>
 </Layout>
 <script>
-  import { filterEntries, getPage, pagePath } from '../lib/review-pagination.js';
+  import { getArchiveState, pagePath } from '../lib/review-pagination.js';
   for (const archive of document.querySelectorAll('[data-review-archive]')) {
     if (!(archive instanceof HTMLElement)) continue;
     const form = archive.querySelector('[data-filters]');
@@ -71,6 +87,8 @@ const indexJson = JSON.stringify(entries).replace(/</g, '\u003c');
     const empty = archive.querySelector('[data-empty]');
     const pagination = archive.querySelector('[data-pagination]');
     const index = archive.querySelector('[data-archive-index]');
+    const featuredBlock = archive.querySelector('[data-featured-block]');
+    const heading = archive.querySelector('#latest');
     if (!(form instanceof HTMLFormElement) || !(search instanceof HTMLInputElement) || !(platform instanceof HTMLSelectElement) || !(clear instanceof HTMLButtonElement) || !(count instanceof HTMLElement) || !(list instanceof HTMLElement) || !(empty instanceof HTMLElement) || !(pagination instanceof HTMLElement) || !index) continue;
     const entries = JSON.parse(index.textContent || '[]');
     const parameters = new URL(window.location.href).searchParams;
@@ -107,14 +125,14 @@ const indexJson = JSON.stringify(entries).replace(/</g, '\u003c');
       time.className = 'meta';
       time.dateTime = entry.date;
       time.textContent = entry.dateLabel;
-      const heading = document.createElement('h3');
-      heading.textContent = entry.title;
+      const cardHeading = document.createElement('h3');
+      cardHeading.textContent = entry.title;
       const summary = document.createElement('p');
       summary.textContent = entry.description;
       const prompt = document.createElement('span');
       prompt.className = 'eyebrow';
       prompt.textContent = 'Leer artículo →';
-      content.append(time, heading, summary, prompt);
+      content.append(time, cardHeading, summary, prompt);
       link.append(content);
       return link;
     };
@@ -127,10 +145,12 @@ const indexJson = JSON.stringify(entries).replace(/</g, '\u003c');
       return link;
     };
     const update = (requestedPage, writeUrl = false) => {
-      const state = getPage(filterEntries(entries, search.value, platform.value), requestedPage);
+      const state = getArchiveState(entries, requestedPage, search.value, platform.value);
       list.replaceChildren(...state.items.map(createCard));
-      count.textContent = `${state.total} ${state.total === 1 ? 'artículo' : 'artículos'}${state.total > 0 ? ` · Página ${state.page} de ${state.totalPages}` : ''}`;
-      empty.hidden = state.total !== 0;
+      count.textContent = `${state.total} ${state.total === 1 ? 'artículo' : 'artículos'}${state.total > 0 ? ` · Página ${state.page} de ${state.totalPages}` : ''}${state.showFeatured ? ' · 1 destacado' : ''}`;
+      if (featuredBlock instanceof HTMLElement) featuredBlock.hidden = !state.showFeatured;
+      if (heading instanceof HTMLElement) heading.textContent = state.filtered ? 'Resultados' : state.page === 1 ? 'Últimos artículos' : `Artículos — Página ${state.page}`;
+      empty.hidden = state.total !== 0 || state.showFeatured;
       pagination.replaceChildren();
       if (state.page > 1) pagination.append(pageLink('← Anterior', state.page - 1, 'prev'));
       for (let number = 1; number <= state.totalPages; number++) {
@@ -156,6 +176,15 @@ const indexJson = JSON.stringify(entries).replace(/</g, '\u003c');
   }
 </script>
 <style>
+  .featured-block { margin: 0 0 40px; }
+  .featured-card { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); border: 1px solid #64518e; border-radius: 18px; background: #131722; overflow: hidden; color: #edf0fa; }
+  .featured-card:hover { border-color: #b5a1ff; color: #edf0fa; }
+  .featured-card img { display: block; width: 100%; height: 100%; min-height: 220px; object-fit: cover; }
+  .featured-content { min-width: 0; padding: 28px; overflow-wrap: anywhere; }
+  .featured-content h2 { margin: 12px 0 16px; font-size: clamp(25px, 3vw, 34px); }
+  .featured-content p { color: #b8bed1; }
+  .featured-placeholder { min-height: 220px; display: grid; place-items: center; background: linear-gradient(135deg, #30234e, #162e43); font-size: 64px; font-weight: 900; color: #c7b6ff; }
+  @media (max-width: 700px) { .featured-card { grid-template-columns: minmax(0, 1fr); } .featured-card img { height: auto; min-height: 0; aspect-ratio: 16 / 9; } }
   .review-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 16px; margin: 24px 0 16px; }
   .filter-field { flex: 1 1 220px; min-width: 0; }
   label { display: block; margin-bottom: 6px; color: #bcc1d4; font-size: 14px; }

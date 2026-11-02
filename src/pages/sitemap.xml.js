@@ -12,7 +12,8 @@ function escapeXml(value) {
 export async function GET({ site }) {
   if (!site) throw new Error('Configura site en astro.config.mjs para generar el sitemap.');
   const reviews = await getCollection('reviews', ({ data }) => !data.draft);
-  const totalPages = Math.ceil(reviews.length / PAGE_SIZE);
+  const listedCount = reviews.length - (reviews.some(({ data }) => data.featured === true) ? 1 : 0);
+  const totalPages = Math.ceil(listedCount / PAGE_SIZE);
   const urls = [...new Set([
     new URL('/', site).href,
     new URL('/sobre-nexox/', site).href,

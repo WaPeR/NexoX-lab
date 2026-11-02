@@ -37,6 +37,7 @@ const reviews = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
+    featured: z.boolean().default(false),
     description: z.string(),
     image: z.string().optional(),
     imageAlt: z.string().nullish(),
