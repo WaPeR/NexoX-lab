@@ -1,4 +1,4 @@
-export const PAGE_SIZE = 5;
+export const PAGE_SIZE = 6;
 export function pagePath(page) { return page <= 1 ? '/' : `/pagina/${page}/`; }
 export function filterEntries(entries, query = '', platform = '') {
   const normalize = value => String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
