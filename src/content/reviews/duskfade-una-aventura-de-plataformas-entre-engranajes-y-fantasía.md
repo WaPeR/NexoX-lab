@@ -1,6 +1,7 @@
 ---
 title: "Duskfade: una aventura de plataformas entre engranajes y fantasía"
 date: 2026-10-07T00:05:00.000+02:00
+featured: true
 description: Duskfade recupera el encanto de los plataformas de acción clásicos
   con un mundo de fantasía mecánica, movimiento ágil y una aventura que brilla
   especialmente al explorar.
