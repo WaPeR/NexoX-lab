@@ -37,7 +37,7 @@ const socialTitle = title === 'NexoX' ? pageTitle : title;
     <title>{pageTitle}</title>
   </head>
   <body>
-    <header class="site-header"><a class="logo" href={withBase('/')} aria-label="NexoX, inicio">Nexo<span>X</span></a><nav aria-label="Principal"><a href={withBase('/')}>Inicio y artículos</a></nav></header>
+    <header class="site-header"><a class="logo" href={withBase('/')} aria-label="NexoX, inicio">Nexo<span>X</span></a></header>
     <main><slot /></main>
     <footer>© 2026 NexoX · <a href={withBase('/sobre-nexox/')}>Sobre NexoX</a> · <a href={withBase('/rss.xml')}>RSS</a></footer>
     <!-- Cloudflare Web Analytics -->
