@@ -48,6 +48,44 @@ collections:
           - iOS
         hint: 'Opcional. Selecciona una o varias plataformas. En los artículos antiguos, revisa y sustituye manualmente los nombres que no coincidan con esta lista antes de guardar.'
       - { label: Género, name: genre, widget: string, required: false }
+      - label: Desarrolladora
+        name: developer
+        widget: string
+        required: false
+        hint: 'Opcional. Estudio o estudios que desarrollan el juego. Aparecerá en la ficha debajo de la portada.'
+      - label: Distribuidora
+        name: publisher
+        widget: string
+        required: false
+        hint: 'Opcional. Compañía o compañías que publican el juego.'
+      - label: Fecha de lanzamiento del juego
+        name: releaseDate
+        widget: datetime
+        required: false
+        default: ''
+        date_format: 'YYYY-MM-DD'
+        time_format: false
+        picker_utc: true
+        hint: 'Opcional. Fecha pasada o futura del lanzamiento. No es la fecha de publicación del artículo. Si no conoces el día exacto, déjala vacía y utiliza el campo siguiente.'
+      - label: Lanzamiento aproximado o nota
+        name: releaseNote
+        widget: string
+        required: false
+        hint: 'Opcional. Por ejemplo, Previsto para 2027, Por anunciar o Fecha correspondiente a PC. Si hay una fecha exacta, la nota aparecerá junto a ella.'
+      - label: Estado del juego
+        name: gameStatus
+        widget: select
+        required: false
+        options:
+          - Disponible
+          - Acceso anticipado
+          - Próximamente
+        hint: 'Opcional. Selección manual; no cambiará automáticamente cuando pase la fecha de lanzamiento.'
+      - label: Idiomas
+        name: languages
+        widget: string
+        required: false
+        hint: 'Opcional. Puedes aclarar textos y voces; por ejemplo, Español (textos), inglés (voces).'
       - label: Vídeo de YouTube
         name: youtube
         widget: string

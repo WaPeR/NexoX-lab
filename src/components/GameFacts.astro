@@ -1,0 +1,43 @@
+---
+function cleanText(value) {
+  return typeof value === 'string' ? value.trim() : '';
+}
+function formatReleaseDate(value) {
+  if (value instanceof Date && !Number.isFinite(value.getTime())) return '';
+  const source = value instanceof Date ? value.toISOString().slice(0, 10) : cleanText(value);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(source)) return '';
+  const date = new Date(`${source}T00:00:00Z`);
+  if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== source) return '';
+  return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+}
+function getGameFacts(data = {}) {
+  const release = [formatReleaseDate(data.releaseDate), cleanText(data.releaseNote)].filter(Boolean).join(' · ');
+  return [
+    { label: 'Desarrolladora', value: cleanText(data.developer) },
+    { label: 'Distribuidora', value: cleanText(data.publisher) },
+    { label: 'Lanzamiento', value: release },
+    { label: 'Estado', value: cleanText(data.gameStatus) },
+    { label: 'Idiomas', value: cleanText(data.languages) }
+  ].filter(row => Boolean(row.value));
+}
+const { data } = Astro.props;
+const rows = getGameFacts(data);
+---
+{rows.length > 0 && (
+  <section class="game-facts" aria-labelledby="game-facts-title">
+    <h2 id="game-facts-title">Ficha del juego</h2>
+    <dl>
+      {rows.map(row => <div class="facts-row"><dt>{row.label}</dt><dd>{row.value}</dd></div>)}
+    </dl>
+  </section>
+)}
+<style>
+  .game-facts { margin: 28px 0; padding: 24px; border: 1px solid #292d40; border-radius: 16px; background: #131722; }
+  .game-facts h2 { margin: 0 0 18px; font-size: 24px; }
+  dl { margin: 0; }
+  .facts-row { display: grid; grid-template-columns: minmax(120px, .8fr) minmax(0, 2fr); gap: 8px 16px; padding: 12px 0; }
+  .facts-row + .facts-row { border-top: 1px solid #262a3b; }
+  dt { color: #a5abc1; font-size: 14px; font-weight: 650; }
+  dd { margin: 0; color: #edf0fa; font-size: 17px; overflow-wrap: anywhere; white-space: pre-line; }
+  @media (max-width: 480px) { .facts-row { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+</style>
