@@ -2,6 +2,7 @@
 title: "Moonlighter 2: The Endless Vault: el peligro de querer llenar una
   estantería más"
 date: 2026-10-18T02:03:00.000+02:00
+featured: true
 description: Moonlighter 2 recupera su mezcla de mazmorras y gestión de tienda
   con una nueva presentación en 3D y más posibilidades para convertir el botín
   en beneficios. Una secuela que conecta combate, exploración y comercio en un
@@ -13,6 +14,10 @@ platforms:
   - PlayStation 5
   - Nintendo Switch 2
 genre: RPG de acción, Roguelite, Gestión
+developer: Digital Sun
+publisher: " 11 bit studios"
+releaseDate: 2026-09-02
+gameStatus: Disponible
 youtube: https://www.youtube.com/watch?v=vE0FQQa07JQ
 purchasePc: https://store.steampowered.com/app/2350790/Moonlighter_2_The_Endless_Vault/
 purchaseXbox: https://www.xbox.com/es-ES/games/store/moonlighter-2-the-endless-vault/9ndjx252q5bw
