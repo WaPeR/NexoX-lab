@@ -10,6 +10,10 @@ image: /images/uploads/palm-sugar.webp
 platforms:
   - PC
 genre: Aventura narrativa, RPG de acción
+developer: " Mono Tusk Studios"
+publisher: " 1312 Interactive"
+releaseDate: 2026-08-12
+gameStatus: Disponible
 youtube: https://www.youtube.com/watch?v=LJf1nUaYMeo
 purchasePc: https://store.steampowered.com/app/2778220/Palm_Sugar_A_Village_Story/
 draft: false
