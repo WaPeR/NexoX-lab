@@ -4,10 +4,14 @@ date: 2026-10-15T00:21:00.000+02:00
 description: BULK convierte una fábrica de cartas en un ciclo de fusiones,
   ventas y mejoras. Un incremental de fantasía oscura pensado para disfrutar
   optimizando la producción.
-image: /NexoX-lab/images/uploads/img_0034.jpeg
+image: /images/uploads/bulk.webp
 platforms:
   - PC
 genre: Incremental, Gestión, Automatización
+developer: " Carlos 'Monty' Montamarta"
+publisher: " Carlos 'Monty' Montamarta"
+releaseDate: 2026-09-09
+gameStatus: Disponible
 youtube: https://www.youtube.com/watch?v=1OcTZkpCnnQ
 purchasePc: https://store.steampowered.com/app/4122620/BULK/
 draft: false
