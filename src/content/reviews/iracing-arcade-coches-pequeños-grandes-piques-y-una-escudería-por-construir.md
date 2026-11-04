@@ -5,12 +5,16 @@ description: iRacing Arcade combina carreras accesibles con gestión de equipo,
   coches oficiales y circuitos de aspecto caricaturesco. Una propuesta que
   permite disfrutar desde la primera vuelta sin renunciar a las trazadas, la
   estrategia y la satisfacción de hacer crecer tu propia escudería.
-image: /NexoX-lab/images/uploads/iracing-arcade-featured.jpg
+image: /images/uploads/iracing-arcade.webp
 platforms:
   - PC
   - Xbox Series X|S
   - PlayStation 5
 genre: Conducción arcade, Gestión de equipo
+developer: " Original Fire Games"
+publisher: " iRacing"
+releaseDate: 2026-03-03
+gameStatus: Disponible
 youtube: https://www.youtube.com/watch?v=7TjdI1DQGUM
 purchasePc: https://store.steampowered.com/app/3226450/iRacing_Arcade/
 purchaseXbox: https://www.xbox.com/es-es/games/store/iracingarcade/9n1640580jgp
