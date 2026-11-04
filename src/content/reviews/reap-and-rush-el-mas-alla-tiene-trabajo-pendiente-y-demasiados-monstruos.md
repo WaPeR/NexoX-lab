@@ -5,10 +5,14 @@ description: Reap and Rush mezcla combates contra hordas, combinaciones de
   habilidades y humor sobrenatural en un inframundo inspirado en la mitología
   china. Un roguelite cuyo atractivo está en experimentar con poderes mientras
   intentas poner orden en un más allá desbordado.
-image: /images/uploads/rar_keyart_1920x1080.png
+image: /images/uploads/reap-and-rush.webp
 platforms:
   - PC
 genre: Roguelite, Supervivencia contra hordas
+developer: " Beijing Pacifier Technology"
+publisher: " Mecrew Games"
+releaseDate: 2026-07-22
+gameStatus: Disponible
 youtube: https://youtu.be/MfRj40T70n4?is=UXtXmnQVLK40EOST
 purchasePc: https://store.steampowered.com/app/3116700/Reap_and_Rush/
 draft: false
