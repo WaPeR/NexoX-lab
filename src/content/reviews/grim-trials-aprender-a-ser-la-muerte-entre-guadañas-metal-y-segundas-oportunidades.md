@@ -6,13 +6,17 @@ description: Grim Trials combina combates por arenas, fabricación de equipo y
   una academia para aspirantes a segador con estética gótica y heavy metal. Un
   roguelite accesible que destaca por su personalidad artística y su progresión,
   aunque no reinvente la fórmula.
-image: /NexoX-lab/images/uploads/16x9_grimtrials.jpg
+image: /images/uploads/grim-trials.webp
 platforms:
   - PC
   - Xbox Series X|S
   - PlayStation 5
   - Nintendo Switch 2
 genre: Roguelite, Hack and slash, RPG de acción
+developer: " Glory Jam"
+publisher: " Soft Source"
+releaseDate: 2026-08-20
+gameStatus: Disponible
 youtube: https://www.youtube.com/watch?v=RPz4MWA0mm8
 purchasePc: https://store.steampowered.com/app/2621930/Grim_Trials/
 purchaseXbox: https://www.xbox.com/es-ES/games/store/grim-trials/9NP25GB92DP5
