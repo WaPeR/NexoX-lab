@@ -6,12 +6,16 @@ description: "BrokenLore: DON’T LIE combina exploración en primera persona,
   espacios imposibles y una historia marcada por la soledad y el engaño. Una
   experiencia de terror psicológico breve y sugerente que encuentra sus mejores
   momentos cuando nos hace desconfiar de lo que estamos viendo."
-image: /NexoX-lab/images/uploads/36850-brokenlore-dont-lie-teaser-3932565526.jpg
+image: /images/uploads/brokenlore-dont-die.webp
 platforms:
   - PC
   - Xbox Series X|S
   - PlayStation 5
 genre: Terror psicológico, Aventura narrativa, Exploración en primera persona
+developer: " Serafini Productions"
+publisher: " Wired Productions"
+releaseDate: 2026-09-10
+gameStatus: Disponible
 youtube: https://www.youtube.com/watch?v=sBWpKBxIDUA
 purchasePc: https://store.steampowered.com/app/3886200/BrokenLore_DONT_LIE/
 purchaseXbox: https://www.xbox.com/es-ES/games/store/brokenlore-dont-lie/9nn0tcqrqmk6
