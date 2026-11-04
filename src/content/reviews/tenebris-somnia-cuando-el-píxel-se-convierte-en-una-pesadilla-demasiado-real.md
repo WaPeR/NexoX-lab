@@ -5,7 +5,7 @@ description: Tenebris Somnia combina exploración, puzles y supervivencia con un
   inquietante mezcla de pixel art y escenas de acción real. Una aventura de
   terror con personalidad propia que recupera el espíritu de los clásicos sin
   limitarse a vivir de la nostalgia.
-image: /NexoX-lab/images/uploads/image_oapqszoapqszoapq_ggpu-147271329.webp
+image: /images/uploads/tenebris-somnia.webp
 platforms:
   - PC
   - Xbox Series X|S
