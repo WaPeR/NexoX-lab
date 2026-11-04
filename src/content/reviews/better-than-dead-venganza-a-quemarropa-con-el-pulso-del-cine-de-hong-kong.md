@@ -5,10 +5,14 @@ description: Better Than Dead combina perspectiva bodycam, cámara lenta y
   tiroteos contundentes en una Hong Kong marcada por la violencia. Un shooter
   intenso y con mucha personalidad, cuya espectacularidad convive con una
   dificultad exigente y aspectos todavía por pulir.
-image: /NexoX-lab/images/uploads/better-than-dead-04-16-26-1-772048310.jpg
+image: /images/uploads/better-than-dead.webp
 platforms:
   - PC
 genre: Acción, FPS
+developer: " MONTE GALLO"
+publisher: " MicroProse Software"
+releaseDate: 2026-05-12
+gameStatus: Acceso anticipado
 youtube: https://www.youtube.com/watch?v=RIAQaEMifxg
 purchasePc: https://store.steampowered.com/app/2599690/Better_Than_Dead/
 draft: false
