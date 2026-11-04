@@ -5,13 +5,17 @@ featured: true
 description: Duskfade recupera el encanto de los plataformas de acción clásicos
   con un mundo de fantasía mecánica, movimiento ágil y una aventura que brilla
   especialmente al explorar.
-image: /NexoX-lab/images/uploads/img_2614.jpeg
+image: /images/uploads/duskfade.webp
 platforms:
   - PC
   - Xbox Series X|S
   - PlayStation 5
   - Nintendo Switch 2
 genre: Acción, Aventura, Plataformas 3D
+developer: " Weird Beluga"
+publisher: " Fireshine Games"
+releaseDate: 2026-08-24
+gameStatus: Disponible
 youtube: https://www.youtube.com/watch?v=RWNd4oqMsXw
 purchasePc: https://store.steampowered.com/app/2542020/Duskfade/
 purchaseXbox: https://www.xbox.com/es-ES/games/store/duskfade/9pj6lffjzd2m
