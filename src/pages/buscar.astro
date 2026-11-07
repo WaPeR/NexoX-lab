@@ -1,0 +1,149 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { withBase } from '../lib/paths';
+const [reviews, news] = await Promise.all([
+  getCollection('reviews', ({ data }) => !data.draft),
+  getCollection('news', ({ data }) => !data.draft)
+]);
+const entries = [
+  ...reviews.map(entry => ({ entry, type: 'reviews' })),
+  ...news.map(entry => ({ entry, type: 'noticias' }))
+].map(({ entry: { id, data }, type }) => ({
+  title: data.title,
+  description: data.description,
+  type,
+  href: withBase(`/${type}/${id}/`),
+  date: data.date.toISOString(),
+  dateLabel: data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }),
+  image: data.image ? withBase(data.image) : '',
+  imageAlt: data.imageAlt?.trim() || '',
+  platforms: data.platforms
+})).sort((a, b) => Date.parse(b.date) - Date.parse(a.date) || a.href.localeCompare(b.href));
+const indexJson = JSON.stringify(entries).replace(/</g, '\\u003c');
+---
+<Layout title="Buscar" description="Busca reviews y noticias de NexoX por título, resumen, plataforma y tipo de contenido.">
+  <h1>Buscar en NexoX</h1>
+  <p class="lead">Encuentra reviews y noticias. Abre la lupa para escribir o ajustar los filtros.</p>
+  <section data-search-results aria-labelledby="search-results">
+    <h2 id="search-results">Resultados</h2>
+    <p class="meta" data-search-count role="status" aria-live="polite">Preparando resultados…</p>
+    <div class="grid" data-search-list></div>
+    <p data-search-empty hidden>No hay resultados que coincidan. Prueba otra búsqueda o limpia los filtros.</p>
+    <nav class="search-pagination" data-search-pagination aria-label="Paginación de resultados" hidden></nav>
+    <script is:inline type="application/json" data-search-index set:html={indexJson}></script>
+    <noscript><p>Activa JavaScript para consultar los resultados o visita las secciones <a href={withBase('/#latest')}>Reviews</a> y <a href={withBase('/noticias/')}>Noticias</a>.</p></noscript>
+  </section>
+</Layout>
+<script>
+  import { getSearchState } from '../lib/site-search.js';
+  const root = document.querySelector('[data-search-results]');
+  const form = document.querySelector('#global-search-form');
+  const search = document.querySelector('#global-search-query');
+  const platform = document.querySelector('#global-search-platform');
+  const type = document.querySelector('#global-search-type');
+  const clear = document.querySelector('[data-global-clear]');
+  const disclosure = document.querySelector('#global-search');
+  if (root instanceof HTMLElement && form instanceof HTMLFormElement && search instanceof HTMLInputElement && platform instanceof HTMLSelectElement && type instanceof HTMLSelectElement && clear instanceof HTMLButtonElement) {
+    const list = root.querySelector('[data-search-list]');
+    const count = root.querySelector('[data-search-count]');
+    const empty = root.querySelector('[data-search-empty]');
+    const pagination = root.querySelector('[data-search-pagination]');
+    const index = root.querySelector('[data-search-index]');
+    const heading = root.querySelector('#search-results');
+    if (list instanceof HTMLElement && count instanceof HTMLElement && empty instanceof HTMLElement && pagination instanceof HTMLElement && index) {
+      const entries = JSON.parse(index.textContent || '[]');
+      const syncFromUrl = () => {
+        const params = new URL(window.location.href).searchParams;
+        search.value = params.get('q') || '';
+        for (const [select, name] of [[platform, 'plataforma'], [type, 'tipo']] as const) {
+          const value = params.get(name) || '';
+          select.value = Array.from(select.options).some(option => option.value === value) ? value : '';
+        }
+        return Number(params.get('pagina') || 1);
+      };
+      const resultUrl = (page: number) => {
+        const url = new URL(form.action);
+        if (search.value.trim()) url.searchParams.set('q', search.value.trim());
+        if (platform.value) url.searchParams.set('plataforma', platform.value);
+        if (type.value) url.searchParams.set('tipo', type.value);
+        if (page > 1) url.searchParams.set('pagina', String(page));
+        url.hash = 'search-results';
+        return url;
+      };
+      const createCard = (entry: { href: string; title: string; description: string; type: string; image: string; imageAlt: string; date: string; dateLabel: string }) => {
+        const link = document.createElement('a');
+        link.className = 'card';
+        link.href = entry.href;
+        if (entry.image) {
+          const image = document.createElement('img');
+          image.src = entry.image; image.alt = entry.imageAlt; image.loading = 'lazy';
+          link.append(image);
+        } else {
+          const placeholder = document.createElement('div');
+          placeholder.className = 'placeholder'; placeholder.textContent = 'NX'; placeholder.setAttribute('aria-hidden', 'true');
+          link.append(placeholder);
+        }
+        const content = document.createElement('div'); content.className = 'card-content';
+        const category = document.createElement('span'); category.className = 'eyebrow'; category.textContent = entry.type === 'noticias' ? 'Noticia' : 'Review';
+        const date = document.createElement('p'); date.className = 'meta';
+        const time = document.createElement('time'); time.dateTime = entry.date; time.textContent = entry.dateLabel; date.append(time);
+        const title = document.createElement('h3'); title.textContent = entry.title;
+        const description = document.createElement('p'); description.textContent = entry.description;
+        const prompt = document.createElement('span'); prompt.className = 'eyebrow'; prompt.textContent = entry.type === 'noticias' ? 'Leer noticia →' : 'Leer review →';
+        content.append(category, date, title, description, prompt); link.append(content);
+        return link;
+      };
+      const focusResults = () => {
+        if (heading instanceof HTMLElement) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); heading.scrollIntoView({ block: 'start' }); }
+      };
+      const pageLink = (label: string, page: number, relation = '') => {
+        const link = document.createElement('a'); link.href = resultUrl(page).href; link.textContent = label; link.dataset.searchPage = String(page);
+        link.setAttribute('aria-label', relation ? label : `Ir a la página ${page}`);
+        if (relation) link.rel = relation;
+        return link;
+      };
+      const update = (page: number, historyMode: 'none' | 'replace' | 'push' = 'none') => {
+        const state = getSearchState(entries, page, search.value, platform.value, type.value);
+        list.replaceChildren(...state.items.map(createCard));
+        count.textContent = `${state.total} ${state.total === 1 ? 'resultado' : 'resultados'}${state.total ? ` · Página ${state.page} de ${state.totalPages}` : ''}`;
+        empty.hidden = state.total !== 0;
+        pagination.replaceChildren();
+        if (state.page > 1) pagination.append(pageLink('← Anterior', state.page - 1, 'prev'));
+        for (let number = 1; number <= state.totalPages; number++) {
+          if (number === state.page) {
+            const current = document.createElement('span'); current.textContent = String(number); current.setAttribute('aria-current', 'page'); pagination.append(current);
+          } else pagination.append(pageLink(String(number), number));
+        }
+        if (state.page < state.totalPages) pagination.append(pageLink('Siguiente →', state.page + 1, 'next'));
+        pagination.hidden = state.totalPages <= 1;
+        if (historyMode === 'push') window.history.pushState(null, '', resultUrl(state.page));
+        if (historyMode === 'replace') window.history.replaceState(null, '', resultUrl(state.page));
+      };
+      search.addEventListener('input', () => update(1, 'replace'));
+      platform.addEventListener('change', () => update(1, 'replace'));
+      type.addEventListener('change', () => update(1, 'replace'));
+      clear.addEventListener('click', () => { search.value = ''; platform.value = ''; type.value = ''; update(1, 'replace'); search.focus(); });
+      form.addEventListener('submit', event => {
+        event.preventDefault(); update(1, 'replace');
+        if (disclosure instanceof HTMLDetailsElement) disclosure.open = false;
+        focusResults();
+      });
+      pagination.addEventListener('click', event => {
+        if (!(event instanceof MouseEvent) || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        const link = event.target instanceof Element ? event.target.closest('a[data-search-page]') : null;
+        if (!(link instanceof HTMLAnchorElement)) return;
+        event.preventDefault(); update(Number(link.dataset.searchPage), 'push'); focusResults();
+      });
+      window.addEventListener('popstate', () => update(syncFromUrl()));
+      update(syncFromUrl());
+      if (disclosure instanceof HTMLDetailsElement && !search.value && !platform.value && !type.value) disclosure.open = true;
+    }
+  }
+</script>
+<style>
+  .search-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 32px; }
+  .search-pagination :global(a), .search-pagination :global(span) { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 8px 14px; border: 1px solid #64518e; border-radius: 10px; color: #d4c8ff; background: #131722; }
+  .search-pagination :global([aria-current]) { background: #302744; border-color: #b5a1ff; color: #fff; font-weight: 750; }
+  [hidden] { display: none !important; }
+</style>
