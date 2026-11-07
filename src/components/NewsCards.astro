@@ -1,0 +1,20 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { withBase } from '../lib/paths';
+interface Props { entries: CollectionEntry<'news'>[]; }
+const { entries } = Astro.props;
+---
+<div class="grid">
+  {entries.map(({ id, data }) => (
+    <a class="card" href={withBase(`/noticias/${id}/`)}>
+      {data.image ? <img src={withBase(data.image)} alt={data.imageAlt?.trim() || ''} loading="lazy" /> : <div class="placeholder" aria-hidden="true">NX</div>}
+      <div class="card-content">
+        <span class="eyebrow">Noticia</span>
+        <p class="meta"><time datetime={data.date.toISOString()}>{data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })}</time></p>
+        <h3>{data.title}</h3>
+        <p>{data.description}</p>
+        <span class="eyebrow">Leer noticia →</span>
+      </div>
+    </a>
+  ))}
+</div>

@@ -58,9 +58,25 @@ const reviews = defineCollection({
   })
 });
 
+const news = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/news' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    date: z.coerce.date(),
+    image: z.string().nullish(),
+    imageAlt: z.string().nullish(),
+    platforms: z.array(z.string()).nullish().transform(value => value ?? []),
+    sourceName: z.string().nullish(),
+    sourceUrl: z.string().nullish(),
+    youtube: z.string().nullish(),
+    draft: z.boolean().default(true)
+  })
+});
+
 const pages = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/pages' }),
   schema: z.object({})
 });
 
-export const collections = { reviews, pages };
+export const collections = { reviews, news, pages };
