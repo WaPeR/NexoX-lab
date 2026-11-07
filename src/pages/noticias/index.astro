@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { withBase } from '../../lib/paths';
+const news = (await getCollection('news', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.id.localeCompare(b.id));
+---
+<Layout title="Noticias" description="Noticias de videojuegos en NexoX: anuncios, novedades, teasers y tráileres.">
+  <section aria-labelledby="news-title">
+    <a class="back" href={withBase('/')}>← Inicio</a>
+    <p class="eyebrow">Actualidad</p>
+    <h1 id="news-title">Noticias</h1>
+    <p class="lead">Anuncios, novedades y próximos mundos por descubrir.</p>
+    {news.length === 0 ? <p>Todavía no hay noticias publicadas. Vuelve pronto.</p> : (
+      <div class="grid">
+        {news.map(({ id, data }) => (
+          <a class="card" href={withBase(`/noticias/${id}/`)}>
+            {data.image ? <img src={withBase(data.image)} alt={data.imageAlt?.trim() || ''} loading="lazy" /> : <div class="placeholder" aria-hidden="true">NX</div>}
+            <div class="card-content">
+              <span class="eyebrow">Noticia</span>
+              <p class="meta"><time datetime={data.date.toISOString()}>{data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })}</time></p>
+              <h3>{data.title}</h3>
+              <p>{data.description}</p>
+              <span class="eyebrow">Leer noticia →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </section>
+</Layout>

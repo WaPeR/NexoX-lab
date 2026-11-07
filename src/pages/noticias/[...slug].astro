@@ -1,0 +1,72 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import ArticleShare from '../../components/ArticleShare.astro';
+import { withBase } from '../../lib/paths';
+import { getYouTubeId } from '../../lib/youtube';
+export async function getStaticPaths() {
+  const entries = await getCollection('news', ({ data }) => !data.draft);
+  return entries.map(entry => ({ params: { slug: entry.id }, props: { entry } }));
+}
+function toSourceUrl(value?: string | null): string | null {
+  if (!value?.trim()) return null;
+  try {
+    const url = new URL(value.trim());
+    return ['https:', 'http:'].includes(url.protocol) && !url.username && !url.password ? url.href : null;
+  } catch {
+    return null;
+  }
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { data } = entry;
+const youtubeId = getYouTubeId(data.youtube);
+const sourceUrl = toSourceUrl(data.sourceUrl);
+const sourceName = data.sourceName?.trim();
+const shareUrl = new URL(Astro.url.pathname, Astro.site).href;
+---
+<Layout title={data.title} description={data.description} image={data.image} imageAlt={data.imageAlt} type="article">
+  <article class="article">
+    <nav class="breadcrumbs" aria-label="Ruta de navegación">
+      <ol>
+        <li><a href={withBase('/')}>Inicio</a></li>
+        <li><a href={withBase('/noticias/')}>Noticias</a></li>
+        <li><span aria-current="page">{data.title}</span></li>
+      </ol>
+    </nav>
+    <p class="eyebrow">Noticia</p>
+    <h1>{data.title}</h1>
+    <p class="lead">{data.description}</p>
+    <p class="meta"><span>Por José Ángel &quot;WaPeR&quot;</span> <span aria-hidden="true">·</span> <time datetime={data.date.toISOString()}>{data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })}</time></p>
+    {data.platforms.length > 0 && <div class="tags">{data.platforms.map(platform => <span class="tag">{platform}</span>)}</div>}
+    {data.image && <img class="cover" src={withBase(data.image)} alt={data.imageAlt?.trim() || `Portada de ${data.title}`} />}
+    <div class="prose"><Content /></div>
+    {youtubeId && (
+      <section class="news-video" aria-labelledby="news-video-title">
+        <h2 id="news-video-title">Vídeo</h2>
+        <div class="video-frame">
+          <iframe src={`https://www.youtube-nocookie.com/embed/${youtubeId}`} title={`Vídeo de YouTube: ${data.title}`} width="560" height="315" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+        <p class="video-link"><a href={`https://www.youtube.com/watch?v=${youtubeId}`} target="_blank" rel="noopener noreferrer">Ver en YouTube ↗</a></p>
+      </section>
+    )}
+    {(sourceName || sourceUrl) && (
+      <section class="news-source" aria-labelledby="news-source-title">
+        <h2 id="news-source-title">Fuente</h2>
+        {sourceUrl ? <a href={sourceUrl} target="_blank" rel="noopener noreferrer" aria-label={`${sourceName || 'Consultar fuente original'} (se abre en otra pestaña)`}>{sourceName || 'Consultar fuente original'} ↗</a> : <p>{sourceName}</p>}
+      </section>
+    )}
+    <ArticleShare title={data.title} url={shareUrl} />
+  </article>
+</Layout>
+<style>
+  .breadcrumbs { margin-bottom: 25px; font-size: 14px; overflow-wrap: anywhere; }
+  .breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 6px 10px; padding: 0; margin: 0; list-style: none; }
+  .breadcrumbs li + li::before { content: '›'; margin-right: 10px; color: #a5abc1; }
+  .breadcrumbs a, .news-source a, .video-link a { color: #b5a1ff; }
+  .breadcrumbs [aria-current] { color: #a5abc1; }
+  .news-video, .news-source { margin-top: 40px; padding-top: 12px; border-top: 1px solid #262a3b; }
+  .video-frame { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 16px; background: #000; }
+  .video-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+  .video-link { margin-top: 12px; }
+</style>
