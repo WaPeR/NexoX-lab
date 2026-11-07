@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import NewsCards from './NewsCards.astro';
+import { withBase } from '../lib/paths';
+import { getNewsPage, newsPagePath } from '../lib/news-pagination.js';
+interface Props { pageNumber?: number; }
+const { pageNumber = 1 } = Astro.props;
+const entries = (await getCollection('news', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.id.localeCompare(b.id));
+const state = getNewsPage(entries, pageNumber);
+const title = state.page === 1 ? 'Noticias' : `Noticias — Página ${state.page}`;
+---
+<Layout title={title} description="Noticias de videojuegos en NexoX: anuncios, novedades, teasers y tráileres.">
+  <section aria-labelledby="news-title">
+    <a class="back" href={withBase('/')}>← Inicio</a>
+    <p class="eyebrow">Actualidad</p>
+    <h1 id="news-title">{title}</h1>
+    <p class="lead">Anuncios, novedades y próximos mundos por descubrir.</p>
+    <h2 id="news-list">{state.page === 1 ? 'Últimas noticias' : 'Más noticias'}</h2>
+    <p class="meta">{state.total} {state.total === 1 ? 'noticia' : 'noticias'}{state.total > 0 ? ` · Página ${state.page} de ${state.totalPages}` : ''}</p>
+    {state.total === 0 ? <p>Todavía no hay noticias publicadas. Vuelve pronto.</p> : <NewsCards entries={state.items} />}
+    {state.totalPages > 1 && (
+      <nav class="news-pagination" aria-label="Paginación de noticias">
+        {state.page > 1 && <a href={`${withBase(newsPagePath(state.page - 1))}#news-list`} rel="prev">← Anterior</a>}
+        {Array.from({ length: state.totalPages }, (_, index) => index + 1).map(number => number === state.page
+          ? <span aria-current="page">{number}</span>
+          : <a href={`${withBase(newsPagePath(number))}#news-list`} aria-label={`Ir a la página ${number}`}>{number}</a>)}
+        {state.page < state.totalPages && <a href={`${withBase(newsPagePath(state.page + 1))}#news-list`} rel="next">Siguiente →</a>}
+      </nav>
+    )}
+  </section>
+</Layout>
+<style>
+  .news-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 32px; }
+  .news-pagination a, .news-pagination span { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 8px 14px; border: 1px solid #64518e; border-radius: 10px; color: #d4c8ff; background: #131722; }
+  .news-pagination [aria-current] { background: #302744; border-color: #b5a1ff; color: #fff; font-weight: 750; }
+  .news-pagination a:hover { border-color: #b5a1ff; }
+</style>
