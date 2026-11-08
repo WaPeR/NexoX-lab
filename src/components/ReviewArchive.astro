@@ -2,185 +2,64 @@
 import Layout from '../layouts/Layout.astro';
 import { withBase } from '../lib/paths';
 import { getCollection } from 'astro:content';
-import { getArchiveState, pagePath } from '../lib/review-pagination.js';
+import { getHomeFeed, HOME_PAGE_SIZE } from '../lib/home-feed.js';
 const { pageNumber = 1 } = Astro.props;
-const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort((a,b) => b.data.date.valueOf() - a.data.date.valueOf());
-const entries = reviews.map(({ id, data }) => ({
-  title: data.title,
-  description: data.description,
-  href: withBase(`/reviews/${id}/`),
-  date: data.date.toISOString(),
-  dateLabel: data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }),
-  image: data.image ? withBase(data.image) : '',
-  imageAlt: data.imageAlt?.trim() || '',
-  platforms: data.platforms,
-  featured: data.featured === true
-}));
-const state = getArchiveState(entries, pageNumber);
-const featured = state.featured;
-const title = state.page === 1 ? 'NexoX' : `Artículos — Página ${state.page}`;
-const description = 'Descubre reviews y análisis de videojuegos en NexoX. Explora juegos de acción, aventuras, terror e indies, con información sobre plataformas y géneros.';
-const indexJson = JSON.stringify(entries).replace(/</g, '\\u003c');
+const [reviews, news] = await Promise.all([getCollection('reviews'), getCollection('news')]);
+const feed = getHomeFeed([...reviews.map(entry => ({ entry, type: 'reviews' })), ...news.map(entry => ({ entry, type: 'noticias' }))]);
+const page = Math.min(feed.totalPages, Math.max(1, Math.floor(Number(pageNumber)) || 1));
+const items = feed.items.slice((page - 1) * HOME_PAGE_SIZE, page * HOME_PAGE_SIZE);
+const featured = page === 1 ? feed.featured : undefined;
+const pagePath = (number: number) => number <= 1 ? '/' : `/pagina/${number}/`;
+const title = page === 1 ? 'NexoX' : `Publicaciones — Página ${page}`;
 ---
-<Layout title={title} description={description}>
-  <section class="hero"><span class="eyebrow">Tu próximo mundo empieza aquí</span><h1>Conecta con tu<br />próximo juego.</h1><p class="lead">Reviews y análisis para descubrir videojuegos, conocer sus propuestas y encontrar tu próxima aventura.</p></section>
-  <section aria-labelledby="latest" data-review-archive data-page={pageNumber}>
-    {featured && (
-      <section class="featured-block" data-featured-block aria-labelledby="featured-label" hidden={!state.showFeatured}>
-        <p id="featured-label" class="eyebrow">Destacado</p>
-        <a class="featured-card" href={featured.href}>
-          {featured.image ? <img src={featured.image} alt={featured.imageAlt} loading="lazy" /> : <div class="featured-placeholder" aria-hidden="true">NX</div>}
-          <div class="featured-content">
-            <time class="meta" datetime={featured.date}>{featured.dateLabel}</time>
-            <h2>{featured.title}</h2>
-            <p>{featured.description}</p>
-            <span class="eyebrow">Leer artículo →</span>
-          </div>
-        </a>
-      </section>
-    )}
-    <h2 id="latest">{state.page === 1 ? 'Últimos artículos' : `Artículos — Página ${state.page}`}</h2>
-    <p class="meta" data-count role="status" aria-live="polite">{state.total} {state.total === 1 ? 'artículo' : 'artículos'}{state.total > 0 ? ` · Página ${state.page} de ${state.totalPages}` : ''}{state.showFeatured ? ' · 1 destacado' : ''}</p>
-    <div id="article-list" class="grid" data-list>
-      {state.items.map(entry => <a class="card" href={entry.href}>
-        {entry.image ? <img src={entry.image} alt={entry.imageAlt} loading="lazy" /> : <div class="placeholder" aria-hidden="true">NX</div>}
-        <div class="card-content"><time class="meta" datetime={entry.date}>{entry.dateLabel}</time><h3>{entry.title}</h3><p>{entry.description}</p><span class="eyebrow">Leer artículo →</span></div>
+<Layout title={title} description="Reviews y noticias de videojuegos en NexoX, ordenadas de la más reciente a la más antigua.">
+  <section class="hero"><span class="eyebrow">Tu próximo mundo empieza aquí</span><h1>Conecta con tu<br />próximo juego.</h1><p class="lead">Reviews y noticias para descubrir videojuegos, conocer sus propuestas y encontrar tu próxima aventura.</p></section>
+  {featured && <section class="featured-block" aria-labelledby="featured-label">
+    <h2 id="featured-label" class="eyebrow">Destacado</h2>
+    <a class="featured-card" href={withBase(`/${featured.type}/${featured.entry.id}/`)}>
+      {featured.entry.data.image ? <img src={withBase(featured.entry.data.image)} alt={featured.entry.data.imageAlt?.trim() || ''} loading="lazy" /> : <div class="featured-placeholder" aria-hidden="true">NX</div>}
+      <div class="featured-content">
+        <span class="eyebrow">{featured.type === 'noticias' ? 'Noticia' : 'Review'}</span>
+        <p class="meta"><time datetime={featured.entry.data.date.toISOString()}>{featured.entry.data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })}</time></p>
+        <h3>{featured.entry.data.title}</h3><p>{featured.entry.data.description}</p>
+        <span class="eyebrow">{featured.type === 'noticias' ? 'Leer noticia →' : 'Leer review →'}</span>
+      </div>
+    </a>
+  </section>}
+  <section aria-labelledby="latest">
+    <h2 id="latest">{page === 1 ? 'Últimas publicaciones' : `Publicaciones — Página ${page}`}</h2>
+    <p class="meta">{feed.total} {feed.total === 1 ? 'publicación' : 'publicaciones'}{feed.total > 0 ? ` · Página ${page} de ${feed.totalPages}` : ''}{featured ? ' · 1 destacado' : ''}</p>
+    <div class="grid">
+      {items.map(({ entry: { id, data }, type }) => <a class="card" href={withBase(`/${type}/${id}/`)}>
+        {data.image ? <img src={withBase(data.image)} alt={data.imageAlt?.trim() || ''} loading="lazy" /> : <div class="placeholder" aria-hidden="true">NX</div>}
+        <div class="card-content">
+          <span class="eyebrow">{type === 'noticias' ? 'Noticia' : 'Review'}</span>
+          <p class="meta"><time datetime={data.date.toISOString()}>{data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })}</time></p>
+          <h3>{data.title}</h3><p>{data.description}</p>
+          <span class="eyebrow">{type === 'noticias' ? 'Leer noticia →' : 'Leer review →'}</span>
+        </div>
       </a>)}
     </div>
-    <p class="empty-results" data-empty hidden>No hay artículos que coincidan. Prueba otra búsqueda o limpia los filtros.</p>
-    {entries.length === 0 && <p>Estamos preparando los primeros artículos. Vuelve pronto.</p>}
-    <nav class="archive-pagination" data-pagination aria-label="Paginación de artículos" hidden={state.totalPages <= 1}>
-      {state.page > 1 && <a href={`${withBase(pagePath(state.page - 1))}#latest`} rel="prev">← Anterior</a>}
-      {Array.from({ length: state.totalPages }, (_, index) => index + 1).map(number => number === state.page ? <span aria-current="page">{number}</span> : <a href={`${withBase(pagePath(number))}#latest`} aria-label={`Ir a la página ${number}`}>{number}</a>)}
-      {state.page < state.totalPages && <a href={`${withBase(pagePath(state.page + 1))}#latest`} rel="next">Siguiente →</a>}
-    </nav>
-    <script is:inline type="application/json" data-archive-index set:html={indexJson}></script>
+    {feed.total === 0 && <p>Estamos preparando las primeras publicaciones. Vuelve pronto.</p>}
+    {feed.totalPages > 1 && <nav class="archive-pagination" aria-label="Paginación de publicaciones">
+      {page > 1 && <a href={`${withBase(pagePath(page - 1))}#latest`} rel="prev">← Anterior</a>}
+      {Array.from({ length: feed.totalPages }, (_, index) => index + 1).map(number => number === page ? <span aria-current="page">{number}</span> : <a href={`${withBase(pagePath(number))}#latest`} aria-label={`Ir a la página ${number}`}>{number}</a>)}
+      {page < feed.totalPages && <a href={`${withBase(pagePath(page + 1))}#latest`} rel="next">Siguiente →</a>}
+    </nav>}
   </section>
 </Layout>
-<script>
-  import { getArchiveState, pagePath } from '../lib/review-pagination.js';
-  for (const archive of document.querySelectorAll('[data-review-archive]')) {
-    if (!(archive instanceof HTMLElement)) continue;
-    const search = document.querySelector('#site-search-input');
-    const searchForm = document.querySelector('#site-search-form');
-    const disclosure = document.querySelector('#site-search');
-    const platform = document.querySelector('#site-search-platform');
-    const clear = document.querySelector('[data-clear]');
-    const count = archive.querySelector('[data-count]');
-    const list = archive.querySelector('[data-list]');
-    const empty = archive.querySelector('[data-empty]');
-    const pagination = archive.querySelector('[data-pagination]');
-    const index = archive.querySelector('[data-archive-index]');
-    const featuredBlock = archive.querySelector('[data-featured-block]');
-    const heading = archive.querySelector('#latest');
-    if (!(searchForm instanceof HTMLFormElement) || !(search instanceof HTMLInputElement) || !(platform instanceof HTMLSelectElement) || !(clear instanceof HTMLButtonElement) || !(count instanceof HTMLElement) || !(list instanceof HTMLElement) || !(empty instanceof HTMLElement) || !(pagination instanceof HTMLElement) || !index) continue;
-    const entries = JSON.parse(index.textContent || '[]');
-    const parameters = new URL(window.location.href).searchParams;
-    search.value = parameters.get('q') || '';
-    const selectedPlatform = parameters.get('plataforma') || '';
-    platform.value = Array.from(platform.options).some(option => option.value === selectedPlatform) ? selectedPlatform : '';
-    const pageUrl = (number, anchor = true) => {
-      const params = new URLSearchParams();
-      if (search.value.trim()) params.set('q', search.value.trim());
-      if (platform.value) params.set('plataforma', platform.value);
-      const query = params.toString();
-      return `${pagePath(number)}${query ? '?' + query : ''}${anchor ? '#latest' : ''}`;
-    };
-    const createCard = entry => {
-      const link = document.createElement('a');
-      link.className = 'card';
-      link.href = entry.href;
-      if (entry.image) {
-        const image = document.createElement('img');
-        image.src = entry.image;
-        image.alt = entry.imageAlt;
-        image.loading = 'lazy';
-        link.append(image);
-      } else {
-        const placeholder = document.createElement('div');
-        placeholder.className = 'placeholder';
-        placeholder.setAttribute('aria-hidden', 'true');
-        placeholder.textContent = 'NX';
-        link.append(placeholder);
-      }
-      const content = document.createElement('div');
-      content.className = 'card-content';
-      const time = document.createElement('time');
-      time.className = 'meta';
-      time.dateTime = entry.date;
-      time.textContent = entry.dateLabel;
-      const cardHeading = document.createElement('h3');
-      cardHeading.textContent = entry.title;
-      const summary = document.createElement('p');
-      summary.textContent = entry.description;
-      const prompt = document.createElement('span');
-      prompt.className = 'eyebrow';
-      prompt.textContent = 'Leer artículo →';
-      content.append(time, cardHeading, summary, prompt);
-      link.append(content);
-      return link;
-    };
-    const pageLink = (label, number, relation = '') => {
-      const link = document.createElement('a');
-      link.href = pageUrl(number);
-      link.textContent = label;
-      link.setAttribute('aria-label', relation ? label : `Ir a la página ${number}`);
-      if (relation) link.rel = relation;
-      return link;
-    };
-    const update = (requestedPage, writeUrl = false) => {
-      const state = getArchiveState(entries, requestedPage, search.value, platform.value);
-      list.replaceChildren(...state.items.map(createCard));
-      count.textContent = `${state.total} ${state.total === 1 ? 'artículo' : 'artículos'}${state.total > 0 ? ` · Página ${state.page} de ${state.totalPages}` : ''}${state.showFeatured ? ' · 1 destacado' : ''}`;
-      if (featuredBlock instanceof HTMLElement) featuredBlock.hidden = !state.showFeatured;
-      if (heading instanceof HTMLElement) heading.textContent = state.filtered ? 'Resultados' : state.page === 1 ? 'Últimos artículos' : `Artículos — Página ${state.page}`;
-      empty.hidden = entries.length === 0 || state.total !== 0 || state.showFeatured;
-      pagination.replaceChildren();
-      if (state.page > 1) pagination.append(pageLink('← Anterior', state.page - 1, 'prev'));
-      for (let number = 1; number <= state.totalPages; number++) {
-        if (number === state.page) {
-          const current = document.createElement('span');
-          current.textContent = String(number);
-          current.setAttribute('aria-current', 'page');
-          pagination.append(current);
-        } else {
-          pagination.append(pageLink(String(number), number));
-        }
-      }
-      if (state.page < state.totalPages) pagination.append(pageLink('Siguiente →', state.page + 1, 'next'));
-      pagination.hidden = state.totalPages <= 1;
-      if (writeUrl || state.page !== requestedPage) window.history.replaceState(null, '', pageUrl(state.page, false) + window.location.hash);
-    };
-    search.addEventListener('input', () => update(1, true));
-    platform.addEventListener('change', () => update(1, true));
-    clear.addEventListener('click', () => { search.value = ''; platform.value = ''; update(1, true); });
-    searchForm.addEventListener('submit', event => {
-      event.preventDefault();
-      update(1, true);
-      if (disclosure instanceof HTMLDetailsElement) disclosure.open = false;
-      if (heading instanceof HTMLElement) {
-        heading.tabIndex = -1;
-        heading.focus({ preventScroll: true });
-        heading.scrollIntoView({ block: 'start' });
-      }
-    });
-    update(Number(archive.dataset.page) || 1);
-  }
-</script>
 <style>
   .featured-block { margin: 0 0 40px; }
   .featured-card { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); border: 1px solid #64518e; border-radius: 18px; background: #131722; overflow: hidden; color: #edf0fa; }
-  .featured-card:hover { border-color: #b5a1ff; color: #edf0fa; }
+  .featured-card:hover { border-color: #b5a1ff; }
   .featured-card img { display: block; width: 100%; height: 100%; min-height: 220px; object-fit: cover; }
   .featured-content { min-width: 0; padding: 28px; overflow-wrap: anywhere; }
-  .featured-content h2 { margin: 12px 0 16px; font-size: clamp(25px, 3vw, 34px); }
+  .featured-content h3 { margin: 12px 0 16px; font-size: clamp(25px, 3vw, 34px); }
   .featured-content p { color: #b8bed1; }
   .featured-placeholder { min-height: 220px; display: grid; place-items: center; background: linear-gradient(135deg, #30234e, #162e43); font-size: 64px; font-weight: 900; color: #c7b6ff; }
   @media (max-width: 700px) { .featured-card { grid-template-columns: minmax(0, 1fr); } .featured-card img { height: auto; min-height: 0; aspect-ratio: 16 / 9; } }
-  .empty-results { margin-top: 24px; color: #b8bed1; }
   .archive-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 32px; }
-  .archive-pagination :global(a), .archive-pagination :global(span) { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 8px 14px; border: 1px solid #64518e; border-radius: 10px; color: #d4c8ff; background: #131722; }
-  .archive-pagination :global([aria-current="page"]) { background: #302744; border-color: #b5a1ff; color: #fff; font-weight: 750; }
-  .archive-pagination :global(a:hover) { border-color: #b5a1ff; }
-  [hidden] { display: none !important; }
+  .archive-pagination a, .archive-pagination span { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 8px 14px; border: 1px solid #64518e; border-radius: 10px; color: #d4c8ff; background: #131722; }
+  .archive-pagination [aria-current] { background: #302744; border-color: #b5a1ff; color: #fff; font-weight: 750; }
+  .archive-pagination a:hover { border-color: #b5a1ff; }
 </style>

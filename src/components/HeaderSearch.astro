@@ -2,48 +2,69 @@
 import { withBase } from '../lib/paths';
 const platforms = ['PC', 'PlayStation 5', 'PlayStation 4', 'Xbox Series X|S', 'Xbox One', 'Nintendo Switch', 'Nintendo Switch 2', 'Android', 'iOS'];
 ---
-<details class="site-search" id="site-search">
-  <summary id="site-search-toggle" aria-label="Mostrar u ocultar el buscador" title="Buscar artículos">
+<details class="site-search" id="global-search">
+  <summary id="global-search-toggle" aria-label="Mostrar u ocultar el buscador" title="Buscar reviews y noticias">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="7" /><path d="m16 16 5 5" /></svg>
   </summary>
-  <form id="site-search-form" class="search-panel" role="search" aria-label="Buscar y filtrar artículos" action={withBase('/#latest')} method="get">
+  <form id="global-search-form" class="search-panel" role="search" aria-label="Buscar reviews y noticias" action={withBase('/buscar/')} method="get">
     <div class="search-controls">
       <div class="search-field">
-        <label for="site-search-input">Buscar un juego</label>
-        <input id="site-search-input" name="q" type="search" placeholder="Buscar por título o resumen…" autocomplete="off" />
+        <label for="global-search-query">Buscar</label>
+        <input id="global-search-query" name="q" type="search" placeholder="Buscar por título o resumen…" autocomplete="off" />
       </div>
       <div class="search-field">
-        <label for="site-search-platform">Plataforma</label>
-        <select id="site-search-platform" name="plataforma">
+        <label for="global-search-type">Contenido</label>
+        <select id="global-search-type" name="tipo">
+          <option value="">Todo</option>
+          <option value="reviews">Reviews</option>
+          <option value="noticias">Noticias</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label for="global-search-platform">Plataforma</label>
+        <select id="global-search-platform" name="plataforma">
           <option value="">Todas las plataformas</option>
           {platforms.map(platform => <option value={platform}>{platform}</option>)}
         </select>
       </div>
       <div class="search-actions">
         <button type="submit">Buscar</button>
-        <button data-clear class="clear-filters" type="button">Limpiar filtros</button>
+        <button data-global-clear class="clear-filters" type="button">Limpiar filtros</button>
       </div>
     </div>
-    <noscript><p>La búsqueda de artículos necesita JavaScript activado.</p></noscript>
+    <noscript><p>Los resultados del buscador necesitan JavaScript. Puedes navegar por Reviews y Noticias sin usar la búsqueda.</p></noscript>
   </form>
 </details>
 <script>
-  const disclosure = document.querySelector('#site-search');
-  const form = document.querySelector('#site-search-form');
-  const input = document.querySelector('#site-search-input');
-  const summary = document.querySelector('#site-search-toggle');
-  const platform = document.querySelector('#site-search-platform');
-  const clear = document.querySelector('[data-clear]');
-  if (disclosure instanceof HTMLDetailsElement && form instanceof HTMLFormElement && input instanceof HTMLInputElement && summary instanceof HTMLElement && platform instanceof HTMLSelectElement && clear instanceof HTMLButtonElement) {
+  const disclosure = document.querySelector('#global-search');
+  const form = document.querySelector('#global-search-form');
+  const input = document.querySelector('#global-search-query');
+  const summary = document.querySelector('#global-search-toggle');
+  const platform = document.querySelector('#global-search-platform');
+  const type = document.querySelector('#global-search-type');
+  const clear = document.querySelector('[data-global-clear]');
+  if (disclosure instanceof HTMLDetailsElement && form instanceof HTMLFormElement && input instanceof HTMLInputElement && summary instanceof HTMLElement && platform instanceof HTMLSelectElement && type instanceof HTMLSelectElement && clear instanceof HTMLButtonElement) {
     const parameters = new URL(window.location.href).searchParams;
+    const setOption = (select: HTMLSelectElement, value: string) => {
+      select.value = Array.from(select.options).some(option => option.value === value) ? value : '';
+    };
     input.value = parameters.get('q') || '';
-    const selectedPlatform = parameters.get('plataforma') || '';
-    platform.value = Array.from(platform.options).some(option => option.value === selectedPlatform) ? selectedPlatform : '';
+    setOption(platform, parameters.get('plataforma') || '');
+    setOption(type, parameters.get('tipo') || '');
+    if (document.querySelector('[data-review-archive]') && (input.value.trim() || platform.value || type.value)) {
+      const target = new URL(form.action);
+      if (input.value.trim()) target.searchParams.set('q', input.value.trim());
+      if (platform.value) target.searchParams.set('plataforma', platform.value);
+      if (type.value) target.searchParams.set('tipo', type.value);
+      target.hash = 'search-results';
+      window.location.replace(target.href);
+    }
     clear.addEventListener('click', () => {
-      if (document.querySelector('[data-review-archive]')) return;
+      if (document.querySelector('[data-search-results]')) return;
       input.value = '';
       platform.value = '';
-      window.location.assign(form.action);
+      type.value = '';
+      input.focus();
     });
     disclosure.addEventListener('toggle', () => { if (disclosure.open) input.focus(); });
     disclosure.addEventListener('keydown', event => {
@@ -58,18 +79,19 @@ const platforms = ['PC', 'PlayStation 5', 'PlayStation 4', 'Xbox Series X|S', 'X
 <style>
   .site-search { width: 44px; min-height: 44px; }
   .site-search[open] { width: 100%; flex-basis: 100%; }
-  summary { position: absolute; top: 25px; right: 0; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 10px; border: 1px solid transparent; border-radius: 12px; background: transparent; color: #bcc1d4; cursor: pointer; list-style: none; }
+  summary { position: absolute; top: 0; right: 0; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 10px; border: 1px solid transparent; border-radius: 12px; background: transparent; color: #bcc1d4; cursor: pointer; list-style: none; }
+  .site-search[open] summary { top: 25px; }
   summary::-webkit-details-marker { display: none; }
   summary::marker { content: ''; }
   summary:hover { color: #b5a1ff; border-color: #64518e; }
   summary svg { display: block; flex-shrink: 0; }
   .search-panel { width: 100%; margin: 0; padding: 20px; border: 1px solid #64518e; border-radius: 16px; background: #131722; }
-  .search-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(180px, 220px) auto; align-items: end; gap: 16px; }
+  .search-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(120px, 150px) minmax(170px, 210px); align-items: end; gap: 16px; }
   .search-field { min-width: 0; }
   label { display: block; margin-bottom: 8px; font-size: 14px; color: #bcc1d4; }
   input[type='search'], select, button { font: inherit; color: #edf0fa; border: 1px solid #64518e; border-radius: 10px; padding: 12px; }
   input[type='search'], select { width: 100%; min-width: 0; background: #0b0d14; }
-  .search-actions { display: flex; gap: 12px; }
+  .search-actions { display: flex; gap: 12px; grid-column: 1 / -1; }
   button { min-height: 44px; background: #232338; cursor: pointer; white-space: nowrap; }
   .clear-filters { background: transparent; }
   button:hover { border-color: #b5a1ff; }

@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import NewsCards from './NewsCards.astro';
+import { withBase } from '../lib/paths';
+const entries = (await getCollection('news', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.id.localeCompare(b.id))
+  .slice(0, 6);
+---
+<section class="news-preview" aria-labelledby="latest-news">
+  <h2 id="latest-news">Últimas noticias</h2>
+  <p class="meta">Anuncios, novedades y próximos mundos por descubrir.</p>
+  {entries.length > 0 ? <NewsCards entries={entries} /> : <p>Todavía no hay noticias publicadas. Vuelve pronto.</p>}
+  <a class="all-news" href={withBase('/noticias/')}>Ver todas las noticias →</a>
+</section>
+<style>
+  .news-preview { margin-top: 48px; padding-top: 24px; border-top: 1px solid #262a3b; }
+  .all-news { display: inline-flex; align-items: center; min-height: 44px; margin-top: 24px; padding: 10px 18px; border: 1px solid #64518e; border-radius: 12px; background: #232338; color: #d4c8ff; }
+  .all-news:hover { border-color: #b5a1ff; }
+</style>

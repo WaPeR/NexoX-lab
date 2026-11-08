@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+import NewsArchive from '../../../components/NewsArchive.astro';
+import { NEWS_PAGE_SIZE } from '../../../lib/news-pagination.js';
+export async function getStaticPaths() {
+  const entries = await getCollection('news', ({ data }) => !data.draft);
+  const totalPages = Math.max(1, Math.ceil(entries.length / NEWS_PAGE_SIZE));
+  return Array.from({ length: totalPages - 1 }, (_, index) => {
+    const page = index + 2;
+    return { params: { page: String(page) }, props: { pageNumber: page } };
+  });
+}
+const { pageNumber } = Astro.props;
+---
+<NewsArchive pageNumber={pageNumber} />

@@ -15,8 +15,8 @@ media_folder: public/images/uploads
 public_folder: /images/uploads
 collections:
   - name: reviews
-    label: Artículos y reviews
-    label_singular: Artículo
+    label: Reviews
+    label_singular: Review
     folder: src/content/reviews
     create: true
     slug: '{{slug}}'
@@ -28,7 +28,7 @@ collections:
         widget: boolean
         default: false
         required: false
-        hint: 'Opcional. Muestra el artículo en la tarjeta destacada de la portada. Si marcas varios, se elegirá el de publicación más reciente. Los borradores no aparecen. No cambia la fecha del artículo.'
+        hint: 'Opcional. Entre Reviews y Noticias marcadas se mostrará una sola: la de publicación más reciente. Los borradores no aparecen. No cambia la fecha del artículo.'
       - { label: Resumen, name: description, widget: text }
       - { label: Portada, name: image, widget: image, required: false }
       - label: Descripción de la portada
@@ -119,6 +119,54 @@ collections:
         hint: 'Opcional. URL completa de compra para Nintendo Switch, comenzando por https:// o http://. Si lo dejas vacío no aparecerá este enlace.'
       - { label: Borrador, name: draft, widget: boolean, default: true }
       - { label: Contenido, name: body, widget: markdown }
+  - name: news
+    label: Noticias
+    label_singular: Noticia
+    folder: src/content/news
+    create: true
+    slug: '{{slug}}'
+    preview_path: 'noticias/{{slug}}/'
+    fields:
+      - { label: Título, name: title, widget: string }
+      - { label: Resumen, name: description, widget: text }
+      - { label: Fecha de publicación, name: date, widget: datetime }
+      - label: Destacar en portada
+        name: featured
+        widget: boolean
+        default: false
+        required: false
+        hint: 'Opcional. Entre Reviews y Noticias marcadas se mostrará una sola: la de publicación más reciente. Los borradores no aparecen. No cambia la fecha del artículo.'
+      - { label: Imagen de portada, name: image, widget: image, required: false }
+      - { label: Texto alternativo de la imagen, name: imageAlt, widget: string, required: false }
+      - label: Plataformas
+        name: platforms
+        widget: select
+        multiple: true
+        required: false
+        default: []
+        options:
+          - PC
+          - PlayStation 5
+          - PlayStation 4
+          - Xbox Series X|S
+          - Xbox One
+          - Nintendo Switch
+          - Nintendo Switch 2
+          - Android
+          - iOS
+      - { label: Fuente, name: sourceName, widget: string, required: false }
+      - label: Enlace de la fuente
+        name: sourceUrl
+        widget: string
+        required: false
+        hint: 'Opcional. Enlace completo al anuncio o información original, comenzando por https:// o http://.'
+      - label: Enlace de vídeo de YouTube
+        name: youtube
+        widget: string
+        required: false
+        hint: 'Opcional. Pega el enlace de YouTube o youtu.be del teaser, tráiler o vídeo. Aparecerá después del texto. Si lo dejas vacío o no se reconoce el enlace, no se mostrará ningún reproductor.'
+      - { label: Borrador, name: draft, widget: boolean, default: true }
+      - { label: Cuerpo de la noticia, name: body, widget: markdown }
   - name: pages
     label: Páginas
     files:
