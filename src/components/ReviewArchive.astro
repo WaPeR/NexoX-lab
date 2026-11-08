@@ -13,7 +13,7 @@ const pagePath = (number: number) => number <= 1 ? '/' : `/pagina/${number}/`;
 const title = page === 1 ? 'NexoX' : `Publicaciones — Página ${page}`;
 ---
 <Layout title={title} description="Reviews y noticias de videojuegos en NexoX, ordenadas de la más reciente a la más antigua.">
-  <section class="hero"><span class="eyebrow">Tu próximo mundo empieza aquí</span><h1>Conecta con tu<br />próximo juego.</h1><p class="lead">Reviews y noticias para descubrir videojuegos, conocer sus propuestas y encontrar tu próxima aventura.</p></section>
+  <section class="hero"><span class="eyebrow">NexoX · Tu punto de encuentro</span><h1>Tú pones las ganas. Aquí encuentras el juego.</h1><p class="lead">Un nexo entre jugadores y mundos por descubrir. Reviews y noticias para encontrar esas aventuras que se quedan contigo.</p></section>
   {featured && <section class="featured-block" aria-labelledby="featured-label">
     <h2 id="featured-label" class="eyebrow">Destacado</h2>
     <a class="featured-card" href={withBase(`/${featured.type}/${featured.entry.id}/`)}>
