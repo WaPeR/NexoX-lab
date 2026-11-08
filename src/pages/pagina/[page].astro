@@ -1,17 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 import ReviewArchive from '../../components/ReviewArchive.astro';
-import { NEWS_PAGE_SIZE } from '../../lib/news-pagination.js';
+import { getHomeFeed } from '../../lib/home-feed.js';
 export async function getStaticPaths() {
-  const [reviews, news] = await Promise.all([
-    getCollection('reviews', ({ data }) => !data.draft),
-    getCollection('news', ({ data }) => !data.draft)
-  ]);
-  const totalPages = Math.ceil((reviews.length + news.length) / NEWS_PAGE_SIZE);
-  return Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => ({
-    params: { page: String(index + 2) },
-    props: { pageNumber: index + 2 }
-  }));
+  const [reviews, news] = await Promise.all([getCollection('reviews'), getCollection('news')]);
+  const { totalPages } = getHomeFeed([...reviews.map(entry => ({ entry, type: 'reviews' })), ...news.map(entry => ({ entry, type: 'noticias' }))]);
+  return Array.from({ length: totalPages - 1 }, (_, index) => ({ params: { page: String(index + 2) }, props: { pageNumber: index + 2 } }));
 }
 const { pageNumber } = Astro.props;
 ---

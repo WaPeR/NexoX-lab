@@ -2,27 +2,35 @@
 import Layout from '../layouts/Layout.astro';
 import { withBase } from '../lib/paths';
 import { getCollection } from 'astro:content';
-import { getNewsPage } from '../lib/news-pagination.js';
+import { getHomeFeed, HOME_PAGE_SIZE } from '../lib/home-feed.js';
 const { pageNumber = 1 } = Astro.props;
-const [reviews, news] = await Promise.all([
-  getCollection('reviews', ({ data }) => !data.draft),
-  getCollection('news', ({ data }) => !data.draft)
-]);
-const entries = [
-  ...reviews.map(entry => ({ entry, type: 'reviews' })),
-  ...news.map(entry => ({ entry, type: 'noticias' }))
-].sort((a, b) => b.entry.data.date.valueOf() - a.entry.data.date.valueOf() || `${a.type}/${a.entry.id}`.localeCompare(`${b.type}/${b.entry.id}`));
-const state = getNewsPage(entries, pageNumber);
-const pagePath = (page: number) => page <= 1 ? '/' : `/pagina/${page}/`;
-const title = state.page === 1 ? 'NexoX' : `Publicaciones — Página ${state.page}`;
+const [reviews, news] = await Promise.all([getCollection('reviews'), getCollection('news')]);
+const feed = getHomeFeed([...reviews.map(entry => ({ entry, type: 'reviews' })), ...news.map(entry => ({ entry, type: 'noticias' }))]);
+const page = Math.min(feed.totalPages, Math.max(1, Math.floor(Number(pageNumber)) || 1));
+const items = feed.items.slice((page - 1) * HOME_PAGE_SIZE, page * HOME_PAGE_SIZE);
+const featured = page === 1 ? feed.featured : undefined;
+const pagePath = (number: number) => number <= 1 ? '/' : `/pagina/${number}/`;
+const title = page === 1 ? 'NexoX' : `Publicaciones — Página ${page}`;
 ---
 <Layout title={title} description="Reviews y noticias de videojuegos en NexoX, ordenadas de la más reciente a la más antigua.">
   <section class="hero"><span class="eyebrow">Tu próximo mundo empieza aquí</span><h1>Conecta con tu<br />próximo juego.</h1><p class="lead">Reviews y noticias para descubrir videojuegos, conocer sus propuestas y encontrar tu próxima aventura.</p></section>
+  {featured && <section class="featured-block" aria-labelledby="featured-label">
+    <h2 id="featured-label" class="eyebrow">Destacado</h2>
+    <a class="featured-card" href={withBase(`/${featured.type}/${featured.entry.id}/`)}>
+      {featured.entry.data.image ? <img src={withBase(featured.entry.data.image)} alt={featured.entry.data.imageAlt?.trim() || ''} loading="lazy" /> : <div class="featured-placeholder" aria-hidden="true">NX</div>}
+      <div class="featured-content">
+        <span class="eyebrow">{featured.type === 'noticias' ? 'Noticia' : 'Review'}</span>
+        <p class="meta"><time datetime={featured.entry.data.date.toISOString()}>{featured.entry.data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })}</time></p>
+        <h3>{featured.entry.data.title}</h3><p>{featured.entry.data.description}</p>
+        <span class="eyebrow">{featured.type === 'noticias' ? 'Leer noticia →' : 'Leer review →'}</span>
+      </div>
+    </a>
+  </section>}
   <section aria-labelledby="latest">
-    <h2 id="latest">{state.page === 1 ? 'Últimas publicaciones' : `Publicaciones — Página ${state.page}`}</h2>
-    <p class="meta">{state.total} {state.total === 1 ? 'publicación' : 'publicaciones'}{state.total > 0 ? ` · Página ${state.page} de ${state.totalPages}` : ''}</p>
+    <h2 id="latest">{page === 1 ? 'Últimas publicaciones' : `Publicaciones — Página ${page}`}</h2>
+    <p class="meta">{feed.total} {feed.total === 1 ? 'publicación' : 'publicaciones'}{feed.total > 0 ? ` · Página ${page} de ${feed.totalPages}` : ''}{featured ? ' · 1 destacado' : ''}</p>
     <div class="grid">
-      {state.items.map(({ entry: { id, data }, type }) => <a class="card" href={withBase(`/${type}/${id}/`)}>
+      {items.map(({ entry: { id, data }, type }) => <a class="card" href={withBase(`/${type}/${id}/`)}>
         {data.image ? <img src={withBase(data.image)} alt={data.imageAlt?.trim() || ''} loading="lazy" /> : <div class="placeholder" aria-hidden="true">NX</div>}
         <div class="card-content">
           <span class="eyebrow">{type === 'noticias' ? 'Noticia' : 'Review'}</span>
@@ -32,15 +40,24 @@ const title = state.page === 1 ? 'NexoX' : `Publicaciones — Página ${state.pa
         </div>
       </a>)}
     </div>
-    {state.total === 0 && <p>Estamos preparando las primeras publicaciones. Vuelve pronto.</p>}
-    {state.totalPages > 1 && <nav class="archive-pagination" aria-label="Paginación de publicaciones">
-      {state.page > 1 && <a href={`${withBase(pagePath(state.page - 1))}#latest`} rel="prev">← Anterior</a>}
-      {Array.from({ length: state.totalPages }, (_, index) => index + 1).map(number => number === state.page ? <span aria-current="page">{number}</span> : <a href={`${withBase(pagePath(number))}#latest`} aria-label={`Ir a la página ${number}`}>{number}</a>)}
-      {state.page < state.totalPages && <a href={`${withBase(pagePath(state.page + 1))}#latest`} rel="next">Siguiente →</a>}
+    {feed.total === 0 && <p>Estamos preparando las primeras publicaciones. Vuelve pronto.</p>}
+    {feed.totalPages > 1 && <nav class="archive-pagination" aria-label="Paginación de publicaciones">
+      {page > 1 && <a href={`${withBase(pagePath(page - 1))}#latest`} rel="prev">← Anterior</a>}
+      {Array.from({ length: feed.totalPages }, (_, index) => index + 1).map(number => number === page ? <span aria-current="page">{number}</span> : <a href={`${withBase(pagePath(number))}#latest`} aria-label={`Ir a la página ${number}`}>{number}</a>)}
+      {page < feed.totalPages && <a href={`${withBase(pagePath(page + 1))}#latest`} rel="next">Siguiente →</a>}
     </nav>}
   </section>
 </Layout>
 <style>
+  .featured-block { margin: 0 0 40px; }
+  .featured-card { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); border: 1px solid #64518e; border-radius: 18px; background: #131722; overflow: hidden; color: #edf0fa; }
+  .featured-card:hover { border-color: #b5a1ff; }
+  .featured-card img { display: block; width: 100%; height: 100%; min-height: 220px; object-fit: cover; }
+  .featured-content { min-width: 0; padding: 28px; overflow-wrap: anywhere; }
+  .featured-content h3 { margin: 12px 0 16px; font-size: clamp(25px, 3vw, 34px); }
+  .featured-content p { color: #b8bed1; }
+  .featured-placeholder { min-height: 220px; display: grid; place-items: center; background: linear-gradient(135deg, #30234e, #162e43); font-size: 64px; font-weight: 900; color: #c7b6ff; }
+  @media (max-width: 700px) { .featured-card { grid-template-columns: minmax(0, 1fr); } .featured-card img { height: auto; min-height: 0; aspect-ratio: 16 / 9; } }
   .archive-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 32px; }
   .archive-pagination a, .archive-pagination span { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 8px 14px; border: 1px solid #64518e; border-radius: 10px; color: #d4c8ff; background: #131722; }
   .archive-pagination [aria-current] { background: #302744; border-color: #b5a1ff; color: #fff; font-weight: 750; }

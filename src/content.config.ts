@@ -64,6 +64,7 @@ const news = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.coerce.date(),
+    featured: z.boolean().default(false),
     image: z.string().nullish(),
     imageAlt: z.string().nullish(),
     platforms: z.array(z.string()).nullish().transform(value => value ?? []),
