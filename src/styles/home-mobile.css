@@ -1,0 +1,11 @@
+@media (max-width: 700px) {
+  body .site-header { padding: 16px 0; row-gap: 8px; }
+  body .site-header > .site-search:not([open]) { top: 16px; }
+  body .primary-nav a { min-height: 36px; }
+  body main { padding: 24px 0 32px; }
+  body .hero { padding: 8px 0 24px; }
+  body .hero h1 { margin: 12px 0 16px; }
+  body .hero .lead { font-size: 18px; line-height: 1.55; margin-bottom: 12px; }
+  body .featured-block { margin-bottom: 28px; }
+  body .archive-pagination { margin-top: 24px; }
+}

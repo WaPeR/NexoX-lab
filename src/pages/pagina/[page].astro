@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import ReviewArchive from '../../components/ReviewArchive.astro';
 import { getHomeFeed } from '../../lib/home-feed.js';
+import '../../styles/home-mobile.css';
 export async function getStaticPaths() {
   const [reviews, news] = await Promise.all([getCollection('reviews'), getCollection('news')]);
   const { totalPages } = getHomeFeed([...reviews.map(entry => ({ entry, type: 'reviews' })), ...news.map(entry => ({ entry, type: 'noticias' }))]);
