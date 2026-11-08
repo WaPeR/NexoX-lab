@@ -1,14 +1,12 @@
 ---
 import { withBase } from '../lib/paths';
 import HeaderSearch from '../components/HeaderSearch.astro';
-import NewsPreview from '../components/NewsPreview.astro';
 const { title = 'NexoX', description = 'Videojuegos, historias y mundos por descubrir.', image, imageAlt, type = 'website' } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const imageURL = image ? new URL(withBase(image), Astro.site) : undefined;
 const imageDescription = imageAlt?.trim() || `Portada de ${title}`;
 const pageTitle = title === 'NexoX' ? 'NexoX — Reviews y noticias de videojuegos' : `${title} | NexoX`;
 const socialTitle = title === 'NexoX' ? pageTitle : title;
-const isHome = Astro.url.pathname === withBase('/');
 const isNews = Astro.url.pathname.startsWith(withBase('/noticias/'));
 ---
 <!doctype html>
@@ -44,12 +42,12 @@ const isNews = Astro.url.pathname.startsWith(withBase('/noticias/'));
     <header class="site-header">
       <a class="logo" href={withBase('/')} aria-label="NexoX, inicio">Nexo<span>X</span></a>
       <nav class="primary-nav" aria-label="Navegación principal">
-        <a href={withBase('/#latest')}>Reviews</a>
+        <a href={`${withBase('/buscar/')}?tipo=reviews`}>Reviews</a>
         <a href={withBase('/noticias/')} aria-current={isNews ? 'location' : undefined}>Noticias</a>
       </nav>
       <HeaderSearch />
     </header>
-    <main><slot />{isHome && <NewsPreview />}</main>
+    <main><slot /></main>
     <footer>© 2026 NexoX · <a href={withBase('/sobre-nexox/')}>Sobre NexoX</a> · <a href={withBase('/privacidad/')}>Privacidad</a> · <a href={withBase('/rss.xml')}>RSS</a></footer>
     <!-- Cloudflare Web Analytics -->
     <script is:inline type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "c79295e2de3f4786ae22d48c024effa9"}'></script>
