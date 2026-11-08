@@ -21,7 +21,7 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
-      - name: Probar búsqueda y paginación
-        run: node --test tests/site-search.test.mjs
+      - name: Probar todas las suites
+        run: node --test tests/*.test.mjs
       - name: Compilar la web
         run: npm run build
