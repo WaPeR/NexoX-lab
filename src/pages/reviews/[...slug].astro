@@ -65,7 +65,7 @@ const shareUrl = new URL(Astro.url.pathname, Astro.site).href;
     </nav>
     <p class="eyebrow">{data.genre || 'NexoX'}</p><h1>{data.title}</h1><p class="lead">{data.description}</p>
     <p class="meta"><span>Por José Ángel &quot;WaPeR&quot;</span> <span aria-hidden="true">·</span> <time datetime={data.date.toISOString()}>{data.date.toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})}</time></p>
-    {data.platforms.length > 0 && <div class="tags">{data.platforms.map(platform => <a class="tag platform-link" href={`${withBase('/')}?${new URLSearchParams({ plataforma: platform }).toString()}#latest`} aria-label={`Ver artículos de ${platform}`}>{platform}</a>)}</div>}
+    {data.platforms.length > 0 && <div class="tags">{data.platforms.map(platform => <a class="tag platform-link" href={`${withBase('/buscar/')}?${new URLSearchParams({ plataforma: platform }).toString()}#search-results`} aria-label={`Ver artículos de ${platform}`}>{platform}</a>)}</div>}
     {data.image && <img class="cover" src={withBase(data.image)} alt={data.imageAlt?.trim() || `Portada de ${data.title}`} />}
     <GameFacts data={data} />
     <div class="prose"><Content /></div>
