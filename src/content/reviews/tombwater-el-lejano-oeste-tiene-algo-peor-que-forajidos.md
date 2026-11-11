@@ -16,7 +16,7 @@ releaseDate: 2026-03-31
 gameStatus: Disponible
 youtube: https://www.youtube.com/watch?v=WxsTRAYlgyg
 purchasePc: https://store.steampowered.com/app/3308200/Tombwater/
-draft: true
+draft: false
 ---
 Llegar a un pueblo buscando a un viejo amigo parece un comienzo bastante normal para una historia del Lejano Oeste. El problema es que Tombwater tiene pocas ganas de seguir las reglas del género. Aquí los peligros no terminan en los revólveres: algo mucho más desagradable se esconde bajo sus calles y sus minas.
 
