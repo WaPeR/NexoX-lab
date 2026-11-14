@@ -3,26 +3,27 @@ import Layout from '../layouts/Layout.astro';
 import { withBase } from '../lib/paths';
 import { getCollection } from 'astro:content';
 import { getHomeFeed, HOME_PAGE_SIZE } from '../lib/home-feed.js';
+import { contentPath, getContentType } from '../lib/content-types.js';
 const { pageNumber = 1 } = Astro.props;
-const [reviews, news] = await Promise.all([getCollection('reviews'), getCollection('news')]);
-const feed = getHomeFeed([...reviews.map(entry => ({ entry, type: 'reviews' })), ...news.map(entry => ({ entry, type: 'noticias' }))]);
+const [reviews, news, previews] = await Promise.all([getCollection('reviews'), getCollection('news'), getCollection('previews')]);
+const feed = getHomeFeed([...reviews.map(entry => ({ entry, type: 'reviews' })), ...news.map(entry => ({ entry, type: 'noticias' })), ...previews.map(entry => ({ entry, type: 'previews' }))]);
 const page = Math.min(feed.totalPages, Math.max(1, Math.floor(Number(pageNumber)) || 1));
 const items = feed.items.slice((page - 1) * HOME_PAGE_SIZE, page * HOME_PAGE_SIZE);
 const featured = page === 1 ? feed.featured : undefined;
 const pagePath = (number: number) => number <= 1 ? '/' : `/pagina/${number}/`;
 const title = page === 1 ? 'NexoX' : `Publicaciones — Página ${page}`;
 ---
-<Layout title={title} description="Reviews y noticias de videojuegos en NexoX, ordenadas de la más reciente a la más antigua.">
-  <section class="hero"><span class="eyebrow">NexoX · Tu punto de encuentro</span><h1>Tú pones las ganas. Aquí encuentras el juego.</h1><p class="lead">Un nexo entre jugadores y mundos por descubrir. Reviews y noticias para encontrar esas aventuras que se quedan contigo.</p></section>
+<Layout title={title} description="Reviews, previews y noticias de videojuegos en NexoX, ordenadas de la más reciente a la más antigua.">
+  <section class="hero"><span class="eyebrow">NexoX · Tu punto de encuentro</span><h1>Tú pones las ganas. Aquí encuentras el juego.</h1><p class="lead">Un nexo entre jugadores y mundos por descubrir. Reviews, previews y noticias para encontrar esas aventuras que se quedan contigo.</p></section>
   {featured && <section class="featured-block" aria-labelledby="featured-label">
     <h2 id="featured-label" class="eyebrow">Destacado</h2>
-    <a class="featured-card" href={withBase(`/${featured.type}/${featured.entry.id}/`)}>
+    <a class="featured-card" href={withBase(contentPath(featured.type, featured.entry.id))}>
       {featured.entry.data.image ? <img src={withBase(featured.entry.data.image)} alt={featured.entry.data.imageAlt?.trim() || ''} loading="lazy" /> : <div class="featured-placeholder" aria-hidden="true">NX</div>}
       <div class="featured-content">
-        <span class="eyebrow">{featured.type === 'noticias' ? 'Noticia' : 'Review'}</span>
+        <span class="eyebrow">{getContentType(featured.type).singular}</span>
         <p class="meta"><time datetime={featured.entry.data.date.toISOString()}>{featured.entry.data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })}</time></p>
         <h3>{featured.entry.data.title}</h3><p>{featured.entry.data.description}</p>
-        <span class="eyebrow">{featured.type === 'noticias' ? 'Leer noticia →' : 'Leer review →'}</span>
+        <span class="eyebrow">{getContentType(featured.type).readLabel} →</span>
       </div>
     </a>
   </section>}
@@ -30,13 +31,13 @@ const title = page === 1 ? 'NexoX' : `Publicaciones — Página ${page}`;
     <h2 id="latest">{page === 1 ? 'Últimas publicaciones' : `Publicaciones — Página ${page}`}</h2>
     <p class="meta">{feed.total} {feed.total === 1 ? 'publicación' : 'publicaciones'}{feed.total > 0 ? ` · Página ${page} de ${feed.totalPages}` : ''}{featured ? ' · 1 destacado' : ''}</p>
     <div class="grid">
-      {items.map(({ entry: { id, data }, type }) => <a class="card" href={withBase(`/${type}/${id}/`)}>
+      {items.map(({ entry: { id, data }, type }) => <a class="card" href={withBase(contentPath(type, id))}>
         {data.image ? <img src={withBase(data.image)} alt={data.imageAlt?.trim() || ''} loading="lazy" /> : <div class="placeholder" aria-hidden="true">NX</div>}
         <div class="card-content">
-          <span class="eyebrow">{type === 'noticias' ? 'Noticia' : 'Review'}</span>
+          <span class="eyebrow">{getContentType(type).singular}</span>
           <p class="meta"><time datetime={data.date.toISOString()}>{data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })}</time></p>
           <h3>{data.title}</h3><p>{data.description}</p>
-          <span class="eyebrow">{type === 'noticias' ? 'Leer noticia →' : 'Leer review →'}</span>
+          <span class="eyebrow">{getContentType(type).readLabel} →</span>
         </div>
       </a>)}
     </div>

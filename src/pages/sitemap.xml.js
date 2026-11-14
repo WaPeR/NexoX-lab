@@ -21,7 +21,8 @@ export async function GET({ site }) {
   ]);
   const { totalPages } = getHomeFeed([
     ...reviews.map(entry => ({ entry, type: 'reviews' })),
-    ...news.map(entry => ({ entry, type: 'noticias' }))
+    ...news.map(entry => ({ entry, type: 'noticias' })),
+    ...previews.map(entry => ({ entry, type: 'previews' }))
   ]);
   const newsPages = Math.max(1, Math.ceil(news.length / NEWS_PAGE_SIZE));
   const previewPages = getPage(previews).totalPages;
