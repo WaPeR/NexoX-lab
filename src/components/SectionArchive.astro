@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { withBase } from '../lib/paths';
+import { getPage } from '../lib/review-pagination.js';
+import { contentPath } from '../lib/content-types.js';
+import { getSectionArchive, sectionPagePath } from '../lib/section-archive.js';
+interface Props { type: 'reviews' | 'previews' | 'noticias'; pageNumber?: number; }
+const { type, pageNumber = 1 } = Astro.props;
+const section = getSectionArchive(type);
+const collection = type === 'noticias' ? 'news' : type;
+const entries = (await getCollection(collection, ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.id.localeCompare(b.id));
+const state = getPage(entries, pageNumber);
+const title = state.page === 1 ? section.label : `${section.label} — Página ${state.page}`;
+const pageHref = (page: number) => `${withBase(sectionPagePath(type, page))}#${section.listId}`;
+---
+<Layout title={title} description={`${section.label} de videojuegos en NexoX. ${section.description}`}>
+  <section aria-labelledby="section-title">
+    <a class="back" href={withBase('/')}>← Inicio</a>
+    <h1 id="section-title">{title}</h1>
+    <p class="lead">{section.description}</p>
+    <h2 id={section.listId}>{section.latest}</h2>
+    <p class="meta">{state.total} {state.total === 1 ? section.singular.toLowerCase() : section.label.toLowerCase()}{state.total > 0 ? ` · Página ${state.page} de ${state.totalPages}` : ''}</p>
+    {state.total === 0 ? <p>{section.empty}</p> : <div class="grid">
+      {state.items.map(({ id, data }) => <a class="card" href={withBase(contentPath(type, id))}>
+        {data.image ? <img src={withBase(data.image)} alt={data.imageAlt?.trim() || ''} loading="lazy" /> : <div class="placeholder" aria-hidden="true">NX</div>}
+        <div class="card-content">
+          <span class="eyebrow">{section.singular}</span>
+          <p class="meta"><time datetime={data.date.toISOString()}>{data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })}</time></p>
+          <h3>{data.title}</h3><p>{data.description}</p>
+          <span class="eyebrow">{section.readLabel} →</span>
+        </div>
+      </a>)}
+    </div>}
+    {state.totalPages > 1 && <nav class="section-pagination" aria-label={`Paginación de ${section.label.toLowerCase()}`}>
+      {state.page > 1 && <a href={pageHref(state.page - 1)} rel="prev">← Anterior</a>}
+      {Array.from({ length: state.totalPages }, (_, index) => index + 1).map(number => number === state.page ? <span aria-current="page">{number}</span> : <a href={pageHref(number)} aria-label={`Ir a la página ${number}`}>{number}</a>)}
+      {state.page < state.totalPages && <a href={pageHref(state.page + 1)} rel="next">Siguiente →</a>}
+    </nav>}
+  </section>
+</Layout>
+<style>
+  .section-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 32px; }
+  .section-pagination a, .section-pagination span { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 8px 14px; border: 1px solid #64518e; border-radius: 10px; color: #d4c8ff; background: #131722; }
+  .section-pagination [aria-current] { background: #302744; border-color: #b5a1ff; color: #fff; font-weight: 750; }
+  .section-pagination a:hover { border-color: #b5a1ff; }
+</style>

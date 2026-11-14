@@ -7,6 +7,7 @@ const imageURL = image ? new URL(withBase(image), Astro.site) : undefined;
 const imageDescription = imageAlt?.trim() || `Portada de ${title}`;
 const pageTitle = title === 'NexoX' ? 'NexoX — Reviews, previews y noticias de videojuegos' : `${title} | NexoX`;
 const socialTitle = title === 'NexoX' ? pageTitle : title;
+const isReviews = Astro.url.pathname.startsWith(withBase('/reviews/'));
 const isNews = Astro.url.pathname.startsWith(withBase('/noticias/'));
 const isPreviews = Astro.url.pathname.startsWith(withBase('/previews/'));
 ---
@@ -43,7 +44,7 @@ const isPreviews = Astro.url.pathname.startsWith(withBase('/previews/'));
     <header class="site-header">
       <a class="logo" href={withBase('/')} aria-label="NexoX, inicio">Nexo<span>X</span></a>
       <nav class="primary-nav" aria-label="Navegación principal">
-        <a href={`${withBase('/buscar/')}?tipo=reviews`}>Reviews</a>
+        <a href={withBase('/reviews/')} aria-current={isReviews ? 'location' : undefined}>Reviews</a>
         <a href={withBase('/previews/')} aria-current={isPreviews ? 'location' : undefined}>Previews</a>
         <a href={withBase('/noticias/')} aria-current={isNews ? 'location' : undefined}>Noticias</a>
       </nav>

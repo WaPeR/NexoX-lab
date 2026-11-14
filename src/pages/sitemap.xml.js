@@ -24,15 +24,18 @@ export async function GET({ site }) {
     ...news.map(entry => ({ entry, type: 'noticias' })),
     ...previews.map(entry => ({ entry, type: 'previews' }))
   ]);
+  const reviewPages = getPage(reviews).totalPages;
   const newsPages = Math.max(1, Math.ceil(news.length / NEWS_PAGE_SIZE));
   const previewPages = getPage(previews).totalPages;
   const urls = [...new Set([
     new URL('/', site).href,
+    new URL('/reviews/', site).href,
     new URL('/noticias/', site).href,
     new URL('/previews/', site).href,
     new URL('/sobre-nexox/', site).href,
     new URL('/privacidad/', site).href,
     ...Array.from({ length: totalPages - 1 }, (_, index) => new URL(`/pagina/${index + 2}/`, site).href),
+    ...Array.from({ length: reviewPages - 1 }, (_, index) => new URL(`/reviews/pagina/${index + 2}/`, site).href),
     ...Array.from({ length: newsPages - 1 }, (_, index) => new URL(newsPagePath(index + 2), site).href),
     ...Array.from({ length: previewPages - 1 }, (_, index) => new URL(`/previews/pagina/${index + 2}/`, site).href),
     ...reviews.map(({ id }) => new URL(contentPath('reviews', id), site).href),
