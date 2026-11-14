@@ -16,7 +16,7 @@ releaseNote: ""
 gameStatus: Próximamente
 youtube: https://www.youtube.com/watch?v=hIfYMKDWxI8
 purchasePc: https://store.steampowered.com/app/4861680/Check_Twice/
-draft: true
+draft: false
 ---
 Una oficina puede parecer un lugar de lo más corriente… hasta que algo deja de encajar. Esa es la premisa de Check Twice, el juego de Shrimp Studio que nos propone observar con atención, detectar anomalías y escoger el ascensor adecuado para intentar escapar de un edificio. Su demo cuenta con ficha propia en Steam.
 
