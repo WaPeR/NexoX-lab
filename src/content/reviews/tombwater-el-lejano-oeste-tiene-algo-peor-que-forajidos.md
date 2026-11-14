@@ -1,6 +1,6 @@
 ---
 title: "Tombwater: el Lejano Oeste tiene algo peor que forajidos"
-date: 2026-11-06T01:28:00.000+01:00
+date: 2026-11-11T01:28:00.000+01:00
 featured: false
 description: Tombwater mezcla disparos, combate exigente y exploración en un
   pueblo del Lejano Oeste consumido por horrores cósmicos. Una aventura de
