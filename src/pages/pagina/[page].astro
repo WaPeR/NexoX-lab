@@ -4,8 +4,8 @@ import ReviewArchive from '../../components/ReviewArchive.astro';
 import { getHomeFeed } from '../../lib/home-feed.js';
 import '../../styles/home-mobile.css';
 export async function getStaticPaths() {
-  const [reviews, news] = await Promise.all([getCollection('reviews'), getCollection('news')]);
-  const { totalPages } = getHomeFeed([...reviews.map(entry => ({ entry, type: 'reviews' })), ...news.map(entry => ({ entry, type: 'noticias' }))]);
+  const [reviews, news, previews] = await Promise.all([getCollection('reviews'), getCollection('news'), getCollection('previews')]);
+  const { totalPages } = getHomeFeed([...reviews.map(entry => ({ entry, type: 'reviews' })), ...news.map(entry => ({ entry, type: 'noticias' })), ...previews.map(entry => ({ entry, type: 'previews' }))]);
   return Array.from({ length: totalPages - 1 }, (_, index) => ({ params: { page: String(index + 2) }, props: { pageNumber: index + 2 } }));
 }
 const { pageNumber } = Astro.props;

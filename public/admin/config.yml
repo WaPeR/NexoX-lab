@@ -21,22 +21,25 @@ collections:
     create: true
     slug: '{{slug}}'
     fields:
-      - { label: Título, name: title, widget: string }
-      - { label: Fecha, name: date, widget: datetime }
-      - label: Destacar en portada
+      - &gameTitle { label: Título, name: title, widget: string }
+      - &gameDate { label: Fecha, name: date, widget: datetime }
+      - &gameFeatured
+        label: Destacar en portada
         name: featured
         widget: boolean
         default: false
         required: false
-        hint: 'Opcional. Entre Reviews y Noticias marcadas se mostrará una sola: la de publicación más reciente. Los borradores no aparecen. No cambia la fecha del artículo.'
-      - { label: Resumen, name: description, widget: text }
-      - { label: Portada, name: image, widget: image, required: false }
-      - label: Descripción de la portada
+        hint: 'Opcional. Entre Reviews, Previews y Noticias marcadas se mostrará una sola: la de publicación más reciente. Los borradores no aparecen. No cambia la fecha del artículo.'
+      - &gameDescription { label: Resumen, name: description, widget: text }
+      - &gameImage { label: Portada, name: image, widget: image, required: false }
+      - &gameImageAlt
+        label: Descripción de la portada
         name: imageAlt
         widget: string
         required: false
         hint: 'Opcional. Describe brevemente lo que se ve en la imagen, sin repetir palabras clave. No es un pie de foto visible. Si lo dejas vacío se usará el texto alternativo automático.'
-      - label: Plataformas
+      - &gamePlatforms
+        label: Plataformas
         name: platforms
         widget: select
         multiple: true
@@ -53,18 +56,21 @@ collections:
           - Android
           - iOS
         hint: 'Opcional. Selecciona una o varias plataformas. En los artículos antiguos, revisa y sustituye manualmente los nombres que no coincidan con esta lista antes de guardar.'
-      - { label: Género, name: genre, widget: string, required: false }
-      - label: Desarrolladora
+      - &gameGenre { label: Género, name: genre, widget: string, required: false }
+      - &gameDeveloper
+        label: Desarrolladora
         name: developer
         widget: string
         required: false
         hint: 'Opcional. Estudio o estudios que desarrollan el juego. Aparecerá en la ficha debajo de la portada.'
-      - label: Distribuidora
+      - &gamePublisher
+        label: Distribuidora
         name: publisher
         widget: string
         required: false
         hint: 'Opcional. Compañía o compañías que publican el juego.'
-      - label: Fecha de lanzamiento del juego
+      - &gameReleaseDate
+        label: Fecha de lanzamiento del juego
         name: releaseDate
         widget: datetime
         required: false
@@ -73,12 +79,14 @@ collections:
         time_format: false
         picker_utc: true
         hint: 'Opcional. Fecha pasada o futura del lanzamiento. No es la fecha de publicación del artículo. Si no conoces el día exacto, déjala vacía y utiliza el campo siguiente.'
-      - label: Lanzamiento aproximado o nota
+      - &gameReleaseNote
+        label: Lanzamiento aproximado o nota
         name: releaseNote
         widget: string
         required: false
         hint: 'Opcional. Por ejemplo, Previsto para 2027, Por anunciar o Fecha correspondiente a PC. Si hay una fecha exacta, la nota aparecerá junto a ella.'
-      - label: Estado del juego
+      - &gameStatus
+        label: Estado del juego
         name: gameStatus
         widget: select
         required: false
@@ -87,38 +95,78 @@ collections:
           - Acceso anticipado
           - Próximamente
         hint: 'Opcional. Selección manual; no cambiará automáticamente cuando pase la fecha de lanzamiento.'
-      - label: Idiomas
+      - &gameLanguages
+        label: Idiomas
         name: languages
         widget: string
         required: false
         hint: 'Opcional. Puedes aclarar textos y voces; por ejemplo, Español (textos), inglés (voces).'
-      - label: Vídeo de YouTube
+      - &gameYoutube
+        label: Vídeo de YouTube
         name: youtube
         widget: string
         required: false
-        hint: 'Opcional. Pega el enlace completo de YouTube o youtu.be. El vídeo aparecerá al final de la review; si dejas este campo vacío, no se mostrará. Los enlaces no reconocidos no generan reproductor.'
-      - label: Enlace de compra — PC
+        hint: 'Opcional. Pega el enlace completo de YouTube o youtu.be. El vídeo aparecerá al final del artículo; si dejas este campo vacío, no se mostrará. Los enlaces no reconocidos no generan reproductor.'
+      - &gamePurchasePc
+        label: Enlace de compra — PC
         name: purchasePc
         widget: string
         required: false
         hint: 'Opcional. URL completa de compra para PC, comenzando por https:// o http://. Si lo dejas vacío no aparecerá este enlace.'
-      - label: Enlace de compra — Xbox
+      - &gamePurchaseXbox
+        label: Enlace de compra — Xbox
         name: purchaseXbox
         widget: string
         required: false
         hint: 'Opcional. URL completa de compra para Xbox, comenzando por https:// o http://. Si lo dejas vacío no aparecerá este enlace.'
-      - label: Enlace de compra — PlayStation
+      - &gamePurchasePlaystation
+        label: Enlace de compra — PlayStation
         name: purchasePlaystation
         widget: string
         required: false
         hint: 'Opcional. URL completa de compra para PlayStation, comenzando por https:// o http://. Si lo dejas vacío no aparecerá este enlace.'
-      - label: Enlace de compra — Nintendo Switch
+      - &gamePurchaseSwitch
+        label: Enlace de compra — Nintendo Switch
         name: purchaseSwitch
         widget: string
         required: false
         hint: 'Opcional. URL completa de compra para Nintendo Switch, comenzando por https:// o http://. Si lo dejas vacío no aparecerá este enlace.'
-      - { label: Borrador, name: draft, widget: boolean, default: true }
-      - { label: Contenido, name: body, widget: markdown }
+      - &gameDraft { label: Borrador, name: draft, widget: boolean, default: true }
+      - &gameBody { label: Contenido, name: body, widget: markdown }
+  - name: previews
+    label: Previews
+    label_singular: Preview
+    folder: src/content/previews
+    create: true
+    slug: '{{slug}}'
+    preview_path: 'previews/{{slug}}/'
+    fields:
+      - *gameTitle
+      - *gameDate
+      - *gameFeatured
+      - *gameDescription
+      - *gameImage
+      - *gameImageAlt
+      - *gamePlatforms
+      - *gameGenre
+      - *gameDeveloper
+      - *gamePublisher
+      - *gameReleaseDate
+      - *gameReleaseNote
+      - *gameStatus
+      - *gameLanguages
+      - label: Contexto de la prueba
+        name: testContext
+        widget: text
+        required: false
+        hint: 'Opcional. Indica la versión probada, la plataforma, el tiempo jugado o las condiciones de acceso. Ejemplo: Demo de Steam, dos horas en PC con una versión en desarrollo. Solo se mostrará en el artículo si lo completas.'
+      - *gameYoutube
+      - *gamePurchasePc
+      - *gamePurchaseXbox
+      - *gamePurchasePlaystation
+      - *gamePurchaseSwitch
+      - *gameDraft
+      - *gameBody
   - name: news
     label: Noticias
     label_singular: Noticia
@@ -130,12 +178,7 @@ collections:
       - { label: Título, name: title, widget: string }
       - { label: Resumen, name: description, widget: text }
       - { label: Fecha de publicación, name: date, widget: datetime }
-      - label: Destacar en portada
-        name: featured
-        widget: boolean
-        default: false
-        required: false
-        hint: 'Opcional. Entre Reviews y Noticias marcadas se mostrará una sola: la de publicación más reciente. Los borradores no aparecen. No cambia la fecha del artículo.'
+      - *gameFeatured
       - { label: Imagen de portada, name: image, widget: image, required: false }
       - { label: Texto alternativo de la imagen, name: imageAlt, widget: string, required: false }
       - label: Plataformas

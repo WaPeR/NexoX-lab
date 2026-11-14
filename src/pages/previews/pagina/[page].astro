@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+import PreviewArchive from '../../../components/PreviewArchive.astro';
+import { getPage } from '../../../lib/review-pagination.js';
+export async function getStaticPaths() {
+  const entries = await getCollection('previews', ({ data }) => !data.draft);
+  const { totalPages } = getPage(entries);
+  return Array.from({ length: totalPages - 1 }, (_, index) => ({
+    params: { page: String(index + 2) },
+    props: { pageNumber: index + 2 }
+  }));
+}
+const { pageNumber } = Astro.props;
+---
+<PreviewArchive pageNumber={pageNumber} />

@@ -2,18 +2,21 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import { withBase } from '../lib/paths';
-const [reviews, news] = await Promise.all([
+import { contentPath } from '../lib/content-types.js';
+const [reviews, news, previews] = await Promise.all([
   getCollection('reviews', ({ data }) => !data.draft),
-  getCollection('news', ({ data }) => !data.draft)
+  getCollection('news', ({ data }) => !data.draft),
+  getCollection('previews', ({ data }) => !data.draft)
 ]);
 const entries = [
   ...reviews.map(entry => ({ entry, type: 'reviews' })),
-  ...news.map(entry => ({ entry, type: 'noticias' }))
+  ...news.map(entry => ({ entry, type: 'noticias' })),
+  ...previews.map(entry => ({ entry, type: 'previews' }))
 ].map(({ entry: { id, data }, type }) => ({
   title: data.title,
   description: data.description,
   type,
-  href: withBase(`/${type}/${id}/`),
+  href: withBase(contentPath(type, id)),
   date: data.date.toISOString(),
   dateLabel: data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }),
   image: data.image ? withBase(data.image) : '',
@@ -22,9 +25,9 @@ const entries = [
 })).sort((a, b) => Date.parse(b.date) - Date.parse(a.date) || a.href.localeCompare(b.href));
 const indexJson = JSON.stringify(entries).replace(/</g, '\\u003c');
 ---
-<Layout title="Buscar" description="Busca reviews y noticias de NexoX por título, resumen, plataforma y tipo de contenido.">
+<Layout title="Buscar" description="Busca reviews, previews y noticias de NexoX por título, resumen, plataforma y tipo de contenido.">
   <h1>Buscar en NexoX</h1>
-  <p class="lead">Encuentra reviews y noticias. Abre la lupa para escribir o ajustar los filtros.</p>
+  <p class="lead">Encuentra reviews, previews y noticias. Abre la lupa para escribir o ajustar los filtros.</p>
   <section data-search-results aria-labelledby="search-results">
     <h2 id="search-results">Resultados</h2>
     <p class="meta" data-search-count role="status" aria-live="polite">Preparando resultados…</p>
@@ -32,11 +35,12 @@ const indexJson = JSON.stringify(entries).replace(/</g, '\\u003c');
     <p data-search-empty hidden>No hay resultados que coincidan. Prueba otra búsqueda o limpia los filtros.</p>
     <nav class="search-pagination" data-search-pagination aria-label="Paginación de resultados" hidden></nav>
     <script is:inline type="application/json" data-search-index set:html={indexJson}></script>
-    <noscript><p>Activa JavaScript para consultar los resultados o visita las secciones <a href={withBase('/#latest')}>Reviews</a> y <a href={withBase('/noticias/')}>Noticias</a>.</p></noscript>
+    <noscript><p>Activa JavaScript para consultar los resultados o visita las secciones <a href={withBase('/#latest')}>Publicaciones</a>, <a href={withBase('/previews/')}>Previews</a> y <a href={withBase('/noticias/')}>Noticias</a>.</p></noscript>
   </section>
 </Layout>
 <script>
   import { getSearchState } from '../lib/site-search.js';
+  import { getContentType } from '../lib/content-types.js';
   const root = document.querySelector('[data-search-results]');
   const form = document.querySelector('#global-search-form');
   const search = document.querySelector('#global-search-query');
@@ -85,12 +89,12 @@ const indexJson = JSON.stringify(entries).replace(/</g, '\\u003c');
           link.append(placeholder);
         }
         const content = document.createElement('div'); content.className = 'card-content';
-        const category = document.createElement('span'); category.className = 'eyebrow'; category.textContent = entry.type === 'noticias' ? 'Noticia' : 'Review';
+        const category = document.createElement('span'); category.className = 'eyebrow'; category.textContent = getContentType(entry.type).singular;
         const date = document.createElement('p'); date.className = 'meta';
         const time = document.createElement('time'); time.dateTime = entry.date; time.textContent = entry.dateLabel; date.append(time);
         const title = document.createElement('h3'); title.textContent = entry.title;
         const description = document.createElement('p'); description.textContent = entry.description;
-        const prompt = document.createElement('span'); prompt.className = 'eyebrow'; prompt.textContent = entry.type === 'noticias' ? 'Leer noticia →' : 'Leer review →';
+        const prompt = document.createElement('span'); prompt.className = 'eyebrow'; prompt.textContent = `${getContentType(entry.type).readLabel} →`;
         content.append(category, date, title, description, prompt); link.append(content);
         return link;
       };
