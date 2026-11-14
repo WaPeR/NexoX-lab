@@ -1,45 +1,6 @@
 ---
-import { getCollection } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-import { withBase } from '../lib/paths';
-import { getPage } from '../lib/review-pagination.js';
-import { contentPath, getContentType } from '../lib/content-types.js';
+import SectionArchive from './SectionArchive.astro';
+interface Props { pageNumber?: number; }
 const { pageNumber = 1 } = Astro.props;
-const entries = (await getCollection('previews', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.id.localeCompare(b.id));
-const state = getPage(entries, pageNumber);
-const section = getContentType('previews');
-const pagePath = (number: number) => number <= 1 ? section.path : `/previews/pagina/${number}/`;
-const title = state.page === 1 ? section.label : `Previews — Página ${state.page}`;
 ---
-<Layout title={title} description="Previews de videojuegos en NexoX: primeras impresiones, demos y versiones en desarrollo.">
-  <h1>{title}</h1>
-  <p class="lead">Primeras impresiones de los juegos que estamos descubriendo.</p>
-  <section aria-labelledby="preview-list">
-    <h2 id="preview-list">Últimas previews</h2>
-    <p class="meta">{state.total} {state.total === 1 ? 'preview' : 'previews'}{state.total ? ` · Página ${state.page} de ${state.totalPages}` : ''}</p>
-    <div class="grid">
-      {state.items.map(({ id, data }) => <a class="card" href={withBase(contentPath('previews', id))}>
-        {data.image ? <img src={withBase(data.image)} alt={data.imageAlt?.trim() || ''} loading="lazy" /> : <div class="placeholder" aria-hidden="true">NX</div>}
-        <div class="card-content">
-          <span class="eyebrow">{section.singular}</span>
-          <p class="meta"><time datetime={data.date.toISOString()}>{data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })}</time></p>
-          <h3>{data.title}</h3><p>{data.description}</p>
-          <span class="eyebrow">{section.readLabel} →</span>
-        </div>
-      </a>)}
-    </div>
-    {state.total === 0 && <p>Estamos preparando las primeras previews. Vuelve pronto.</p>}
-    {state.totalPages > 1 && <nav class="preview-pagination" aria-label="Paginación de previews">
-      {state.page > 1 && <a href={`${withBase(pagePath(state.page - 1))}#preview-list`} rel="prev">← Anterior</a>}
-      {Array.from({ length: state.totalPages }, (_, index) => index + 1).map(number => number === state.page ? <span aria-current="page">{number}</span> : <a href={`${withBase(pagePath(number))}#preview-list`} aria-label={`Ir a la página ${number}`}>{number}</a>)}
-      {state.page < state.totalPages && <a href={`${withBase(pagePath(state.page + 1))}#preview-list`} rel="next">Siguiente →</a>}
-    </nav>}
-  </section>
-</Layout>
-<style>
-  .preview-pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 32px; }
-  .preview-pagination a, .preview-pagination span { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 8px 14px; border: 1px solid #64518e; border-radius: 10px; color: #d4c8ff; background: #131722; }
-  .preview-pagination [aria-current] { background: #302744; border-color: #b5a1ff; color: #fff; font-weight: 750; }
-  .preview-pagination a:hover { border-color: #b5a1ff; }
-</style>
+<SectionArchive type="previews" pageNumber={pageNumber} />
