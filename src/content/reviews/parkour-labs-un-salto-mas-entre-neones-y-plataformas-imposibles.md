@@ -4,8 +4,8 @@ date: 2026-11-06T14:46:00.000+01:00
 featured: true
 description: Parkour Labs convierte la velocidad y la precisión en una aventura
   de estética vaporwave. Una propuesta centrada en dominar el movimiento,
-  descubrir rutas y encadenar saltos, disponible tanto para jugar en pantalla
-  como en realidad virtual.
+  descubrir la mejor ruta y encadenar saltos. Disponible tanto para jugar en
+  pantalla como en realidad virtual.
 image: /images/uploads/img_2896.webp
 platforms:
   - PC
