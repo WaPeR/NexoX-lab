@@ -2,7 +2,7 @@
 title: "Moonlighter 2: The Endless Vault: el peligro de querer llenar una
   estantería más"
 date: 2026-10-18T02:03:00.000+02:00
-featured: true
+featured: false
 description: Moonlighter 2 recupera su mezcla de mazmorras y gestión de tienda
   con una nueva presentación en 3D y más posibilidades para convertir el botín
   en beneficios. Una secuela que conecta combate, exploración y comercio en un
