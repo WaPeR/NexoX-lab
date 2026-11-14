@@ -1,4 +1,5 @@
 import { getPage } from './review-pagination.js';
+import { CONTENT_TYPES } from './content-types.js';
 
 export function normalizeSearch(value) {
   return String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
@@ -6,7 +7,7 @@ export function normalizeSearch(value) {
 
 export function filterSearchEntries(entries, query = '', platform = '', type = '') {
   const terms = normalizeSearch(query).split(' ').filter(Boolean);
-  const section = ['reviews', 'noticias'].includes(type) ? type : '';
+  const section = Object.hasOwn(CONTENT_TYPES, type) ? type : '';
   return entries.filter(entry => {
     if (entry.draft === true) return false;
     if (section && entry.type !== section) return false;
