@@ -3,10 +3,10 @@ import { withBase } from '../lib/paths';
 const platforms = ['PC', 'PlayStation 5', 'PlayStation 4', 'Xbox Series X|S', 'Xbox One', 'Nintendo Switch', 'Nintendo Switch 2', 'Android', 'iOS'];
 ---
 <details class="site-search" id="global-search">
-  <summary id="global-search-toggle" aria-label="Mostrar u ocultar el buscador" title="Buscar reviews y noticias">
+  <summary id="global-search-toggle" aria-label="Mostrar u ocultar el buscador" title="Buscar reviews, previews y noticias">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="7" /><path d="m16 16 5 5" /></svg>
   </summary>
-  <form id="global-search-form" class="search-panel" role="search" aria-label="Buscar reviews y noticias" action={withBase('/buscar/')} method="get">
+  <form id="global-search-form" class="search-panel" role="search" aria-label="Buscar reviews, previews y noticias" action={withBase('/buscar/')} method="get">
     <div class="search-controls">
       <div class="search-field">
         <label for="global-search-query">Buscar</label>
@@ -17,6 +17,7 @@ const platforms = ['PC', 'PlayStation 5', 'PlayStation 4', 'Xbox Series X|S', 'X
         <select id="global-search-type" name="tipo">
           <option value="">Todo</option>
           <option value="reviews">Reviews</option>
+          <option value="previews">Previews</option>
           <option value="noticias">Noticias</option>
         </select>
       </div>
@@ -32,7 +33,7 @@ const platforms = ['PC', 'PlayStation 5', 'PlayStation 4', 'Xbox Series X|S', 'X
         <button data-global-clear class="clear-filters" type="button">Limpiar filtros</button>
       </div>
     </div>
-    <noscript><p>Los resultados del buscador necesitan JavaScript. Puedes navegar por Reviews y Noticias sin usar la búsqueda.</p></noscript>
+    <noscript><p>Los resultados del buscador necesitan JavaScript. Puedes navegar por las publicaciones de portada y las secciones Previews y Noticias sin usar la búsqueda.</p></noscript>
   </form>
 </details>
 <script>
