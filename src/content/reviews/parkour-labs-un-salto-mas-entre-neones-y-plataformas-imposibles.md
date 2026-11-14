@@ -6,6 +6,7 @@ description: Parkour Labs convierte la velocidad y la precisión en una aventura
   de estética vaporwave. Una propuesta centrada en dominar el movimiento,
   descubrir rutas y encadenar saltos, disponible tanto para jugar en pantalla
   como en realidad virtual.
+image: /images/uploads/img_2896.webp
 platforms:
   - PC
   - PlayStation 5
@@ -17,6 +18,7 @@ developer: SoyKhaler
 publisher: Dojo System
 releaseDate: 2026-03-12
 gameStatus: Disponible
+youtube: https://youtu.be/A5V6l0URm60?is=lqGvjGW_s4c2CLJA
 draft: true
 ---
 Hay juegos en los que desplazarse es lo que ocurre entre dos momentos interesantes. En Parkour Labs, desplazarse es precisamente lo interesante. Un salto bien calculado, una curva tomada sin perder velocidad o una plataforma alcanzada por los pelos son la base de una propuesta que prefiere concentrarse en el movimiento antes que rodearlo de explicaciones.
