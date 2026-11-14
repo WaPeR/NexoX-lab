@@ -14,6 +14,7 @@ publisher: Shrimp Studio
 releaseDate: ""
 releaseNote: ""
 gameStatus: Próximamente
+youtube: https://www.youtube.com/watch?v=hIfYMKDWxI8
 purchasePc: https://store.steampowered.com/app/4861680/Check_Twice/
 draft: true
 ---
