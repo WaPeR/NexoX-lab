@@ -1,7 +1,7 @@
 ---
 title: "Parkour Labs: un salto más entre neones y plataformas imposibles"
 date: 2026-11-14T14:46:00.000+01:00
-featured: false
+featured: true
 description: Parkour Labs convierte la velocidad y la precisión en una aventura
   de estética vaporwave. Una propuesta centrada en dominar el movimiento,
   descubrir rutas y encadenar saltos, disponible tanto para jugar en pantalla
@@ -19,7 +19,11 @@ publisher: Dojo System
 releaseDate: 2026-03-12
 gameStatus: Disponible
 youtube: https://youtu.be/A5V6l0URm60?is=lqGvjGW_s4c2CLJA
-draft: true
+purchasePc: https://store.steampowered.com/app/2469260/Parkour_Labs/
+purchaseXbox: https://www.xbox.com/es-ES/games/store/parkour-labs/9NR54XR41RK8
+purchasePlaystation: https://store.playstation.com/es-es/concept/10016431
+purchaseSwitch: https://www.nintendo.com/es-es/Juegos/Programas-descargables-Nintendo-Switch/Parkour-Labs-3042127.html
+draft: false
 ---
 Hay juegos en los que desplazarse es lo que ocurre entre dos momentos interesantes. En Parkour Labs, desplazarse es precisamente lo interesante. Un salto bien calculado, una curva tomada sin perder velocidad o una plataforma alcanzada por los pelos son la base de una propuesta que prefiere concentrarse en el movimiento antes que rodearlo de explicaciones.
 
