@@ -1,6 +1,6 @@
 ---
 title: "Parkour Labs: un salto más entre neones y plataformas imposibles"
-date: 2026-11-14T14:46:00.000+01:00
+date: 2026-11-06T14:46:00.000+01:00
 featured: true
 description: Parkour Labs convierte la velocidad y la precisión en una aventura
   de estética vaporwave. Una propuesta centrada en dominar el movimiento,
