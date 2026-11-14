@@ -31,13 +31,11 @@ El proyecto de SoyKhaler combina plataformas en primera persona con recorridos d
 
 ## Encontrar el ritmo del recorrido
 
-La clave está en conservar el impulso y aprender a enlazar acciones. Correr, deslizarse por superficies y ajustar la dirección en pleno recorrido convierte cada escenario en un pequeño problema de velocidad y precisión.
+La clave está en conservar el impulso y aprender a enlazar acciones. Correr y ajustar la dirección en pleno recorrido convierte cada escenario en un pequeño problema de velocidad y precisión.
 
-Su atractivo no depende únicamente de llegar al final. Reconocer una ruta, descubrir un atajo o entender dónde estás perdiendo velocidad ofrece motivos para volver a intentarlo. El progreso está tanto en los desafíos que desbloqueas como en tu capacidad para moverte con más soltura.
+Su atractivo no depende únicamente de llegar al final. Reconocer la ruta, descubrir un atajo o entender dónde estás perdiendo velocidad ofrece motivos para volver a intentarlo. El progreso está tanto en los desafíos que desbloqueas como en tu capacidad para moverte con más soltura.
 
-Esa claridad de objetivos le sienta bien. Parkour Labs no necesita introducir combates para justificar la tensión: una superficie estrecha o una distancia difícil de calcular ya pueden plantear una decisión interesante. El escenario es el obstáculo y, al mismo tiempo, la herramienta para superarlo.
-
-La ambientación ayuda a darle personalidad. Las referencias visuales a los años ochenta y noventa y los efectos de distorsión encajan con unos espacios que no intentan parecer reales. También permiten que una propuesta centrada en repetir recorridos tenga un envoltorio reconocible.
+El escenario es el obstáculo y, al mismo tiempo, la herramienta para superarlo. La ambientación ayuda a darle personalidad. Las referencias visuales a los años ochenta y noventa y los efectos de distorsión encajan con unos espacios que no intentan parecer reales. También permiten que una propuesta centrada en repetir recorridos tenga un envoltorio reconocible.
 
 ## Una idea concreta, sin demasiadas distracciones
 
@@ -47,6 +45,6 @@ La compatibilidad con realidad virtual ofrece otra forma de acercarse a los reco
 
 ## Veredicto
 
-Parkour Labs tiene un reclamo claro: convertir el movimiento en un desafío con interés propio. Su estética y las posibilidades de encontrar rutas refuerzan una propuesta pensada para quienes disfrutan practicando hasta que un recorrido empieza a salir con naturalidad.
+Parkour Labs tiene un reclamo claro: convertir el movimiento en un desafío con interés propio. Su estética y las posibilidades de encontrar el mejor patrón refuerzan una propuesta pensada para quienes disfrutan practicando hasta que un recorrido empieza a salir con naturalidad.
 
 No necesita ofrecer de todo. Le basta con que mires el siguiente salto y pienses que esta vez sí puedes encadenarlo.
