@@ -3,7 +3,7 @@ import { withBase } from '../lib/paths';
 import HeaderSearch from '../components/HeaderSearch.astro';
 const { title = 'NexoX', description = 'Videojuegos, historias y mundos por descubrir.', image, imageAlt, type = 'website' } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const imageURL = new URL(withBase(image || '/og-default.png'), Astro.site);
+const imageURL = new URL(withBase(image || '/og-default.jpg'), Astro.site);
 const imageDescription = imageAlt?.trim() || (image ? `Portada de ${title}` : 'NexoX — Reviews, previews y noticias de videojuegos');
 const pageTitle = title === 'NexoX' ? 'NexoX — Reviews, previews y noticias de videojuegos' : `${title} | NexoX`;
 const socialTitle = title === 'NexoX' ? pageTitle : title;
