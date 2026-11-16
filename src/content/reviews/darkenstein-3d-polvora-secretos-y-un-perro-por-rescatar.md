@@ -1,6 +1,6 @@
 ---
 title: "Darkenstein 3D: pólvora, secretos y un perro por rescatar"
-date: 2026-11-17T01:36:00.000+01:00
+date: 2026-11-16T13:37:00.000+01:00
 featured: false
 description: "Darkenstein 3D recupera los tiroteos rápidos, las llaves
   escondidas y los secretos de los shooters clásicos en una aventura gratuita
@@ -17,7 +17,7 @@ releaseDate: 2025-10-21
 gameStatus: Disponible
 youtube: https://www.youtube.com/watch?v=sunnDRwpU0M
 purchasePc: https://store.steampowered.com/app/2195910/Darkenstein_3D/
-draft: true
+draft: false
 ---
 Hay motivos complicados para iniciar una aventura y otros que no necesitan demasiadas explicaciones. A Hobo Guy le han robado su perro, Gunther, y piensa recuperarlo aunque tenga que atravesar fortalezas nazis para hacerlo. Darkenstein 3D parte de esa premisa y la convierte en un homenaje descarado a los shooters de otra época: movimiento constante, armas contundentes y rincones que merece la pena investigar.
 
