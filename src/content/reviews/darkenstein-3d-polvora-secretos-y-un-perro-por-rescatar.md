@@ -1,6 +1,6 @@
 ---
 title: "Darkenstein 3D: pólvora, secretos y un perro por rescatar"
-date: 2026-11-06T01:36:00.000+01:00
+date: 2026-11-17T01:36:00.000+01:00
 featured: false
 description: "Darkenstein 3D recupera los tiroteos rápidos, las llaves
   escondidas y los secretos de los shooters clásicos en una aventura gratuita
@@ -15,6 +15,7 @@ developer: Rowye
 publisher: MicroProse Software
 releaseDate: 2025-10-21
 gameStatus: Disponible
+youtube: https://www.youtube.com/watch?v=sunnDRwpU0M
 purchasePc: https://store.steampowered.com/app/2195910/Darkenstein_3D/
 draft: true
 ---
